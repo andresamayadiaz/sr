@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" class="bg-dark">
+<head>
+  <meta charset="utf-8" />
+  <title><%= content_for?(:title) ? yield(:title) : "SoyReceptor" %></title>
+  <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Soyreceptor" %>">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= csrf_meta_tags %>
+</head>
+	<body class="">
+		<!-- .yield -->
+  		<%= yield %>
+		<!-- /.yield -->
+		<!-- footer -->
+		<footer id="footer">
+		  <div class="text-center padder">
+		    <p>
+		      <small>Piloto Automatico S.A. de C.V.<br>&copy; 2014</small>
+		    </p>
+		  </div>
+		</footer>
+		<!-- / footer -->
+		<%= javascript_include_tag 'application' %>
+	</body>
+</html>

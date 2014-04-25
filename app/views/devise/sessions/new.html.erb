@@ -1,26 +1,33 @@
-<div class="authform">
-  <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :role => 'form'}) do |f| %>
-    <h3>Log in</h3>
-    <%= devise_error_messages! %>
-    <div class="form-group">
-      <%- if devise_mapping.registerable? %>
-        <%= link_to 'Sign up', new_registration_path(resource_name), class: 'right'  %>
-      <% end -%>
-      <%= f.label :email %>
-      <%= f.email_field :email, :autofocus => true, class: 'form-control' %>
-    </div>
-    <div class="form-group">
-      <%- if devise_mapping.recoverable? %>
-        <%= link_to "Forgot password?", new_password_path(resource_name), class: 'right' %>
-      <% end -%>
-      <%= f.label :password %>
-      <%= f.password_field :password, class: 'form-control' %>
-    </div>
-      <%= f.submit 'Log in', :class => 'button right' %>
-      <% if devise_mapping.rememberable? -%>
-        <div class="checkbox">
-          <%= f.check_box :remember_me %> <%= f.label :remember_me %>
-        </div>
-      <% end -%>
-  <% end %>
-</div>
+<section id="content" class="m-t-lg wrapper-md animated fadeInUp">    
+	<div class="container aside-xxl">
+	  <a class="navbar-brand block" href="#">SoyReceptor</a>
+	  <section class="panel panel-default bg-white m-t-lg">
+	    <header class="panel-heading text-center">
+	      <strong>Ingresar</strong>
+	    </header>
+		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :role => 'form', :class => 'panel-body wrapper-lg'}) do |f| %>
+		<%= devise_error_messages! %>
+	      <div class="form-group">
+		    <%= f.label :email, :class => 'control-label' %>
+		    <%= f.email_field :email, :autofocus => true, class: 'form-control input-lg', :placeholder => 'usuario@miempresa.com' %>
+	      </div>
+	      <div class="form-group">
+		    <%= f.label :password, :class => 'control-label' %>
+		    <%= f.email_field :password, class: 'form-control input-lg', :placeholder => 'Password' %>
+	      </div>
+	      <% if devise_mapping.rememberable? -%>
+	        <div class="checkbox">
+	          <%= f.check_box :remember_me %> <%= f.label :remember_me, "Recordarme" %>
+	        </div>
+	      <% end -%>
+	      <%- if devise_mapping.recoverable? %>
+	        <%= link_to "Olvide mi Password", new_password_path(resource_name), class: 'pull-right m-t-xs' %>
+	      <% end -%>
+		  <%= f.submit 'Entrar', :class => 'btn btn-primary' %>
+	      <div class="line line-dashed"></div>
+	      <p class="text-muted text-center"><small>¿No Tienes Cuenta?</small></p>
+		  <%= link_to 'Crear una Cuenta', new_user_registration_path, :class => 'btn btn-default btn-block' %>
+	    <% end %>
+	  </section>
+	</div>
+</section>
