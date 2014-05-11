@@ -11,7 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140511162758) do
+ActiveRecord::Schema.define(version: 20140511183518) do
+
+  create_table "perfils", force: true do |t|
+    t.integer "user_id"
+    t.string  "calle"
+    t.string  "noexterior"
+    t.string  "nointerior"
+    t.string  "colonia"
+    t.string  "ciudad"
+    t.string  "estado"
+    t.boolean "notificarfaltas"
+    t.boolean "notificaradvertencias"
+    t.boolean "notificarvalidos"
+    t.string  "emailadicional1"
+    t.string  "emailadicional2"
+    t.string  "cp"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

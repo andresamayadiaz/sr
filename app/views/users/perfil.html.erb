@@ -1,3 +1,4 @@
+<% content_for :breadcrumbs do %>
 <!-- Breadcrumbs -->
 <ul class="breadcrumb no-border no-radius b-b b-light pull-in">
   <li><a href="index.html"><i class="fa fa-home"></i> Inicio</a></li>
@@ -5,6 +6,7 @@
   <li class="active"><%= current_user.name %></li>
 </ul>
 <!-- /Breadcrumbs -->
+<% end %>
 
 <!-- Titulo Pagina -->
 <div class="m-b-md">
@@ -38,51 +40,61 @@
 			<%= image_tag 'avatar_default.jpg' %>
           </div>
         </div>
-		
+	</form>
+		<%= form_for(@perfil, :url => update_generales_user_path, :html => {:class => 'bs-example form-horizontal'} ) do |f| %>
 		<div class="line line-dashed line-lg pull-in"></div>
         <div class="form-group">
           <label class="col-lg-2 control-label">Razón Social</label>
           <div class="col-lg-10">
-            <input type="text" class="form-control" placeholder="Mi Empresa S.A. de C.V." value="<%= @user.name %>">
+			<%= f.fields_for :user, @perfil.user do |u| %>
+				<%= u.text_field :name, :class => "form-control", :placeholder => "Mi Empresa S.A. de C.V." %>
+			<% end %>
           </div>
         </div>
         <div class="form-group has-warning">
           <label class="col-lg-2 control-label">Calle</label>
           <div class="col-lg-10">
-            <input type="text" class="form-control" placeholder="Calle">
+			<%= f.text_field :calle, :class => "form-control", :placeholder => "Calle" %>
           </div>
         </div>
         <div class="form-group has-warning">
           <label class="col-lg-2 control-label"># Exterior e Interior</label>
           <div class="col-lg-5">
-            <input type="text" class="form-control" placeholder="No. Exterior">
+			<%= f.text_field :noexterior, :class => "form-control", :placeholder => "No. Exterior" %>
           </div>
           <div class="col-lg-5">
-            <input type="text" class="form-control" placeholder="No. Interior">
+			<%= f.text_field :nointerior, :class => "form-control", :placeholder => "No. Interior" %>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label">Colonia</label>
           <div class="col-lg-10">
-            <input type="text" class="form-control" placeholder="Colonia">
+			<%= f.text_field :colonia, :class => "form-control", :placeholder => "Colonia" %>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label">Ciudad / Municipio</label>
           <div class="col-lg-10">
-            <input type="text" class="form-control" placeholder="Ciudad">
+			<%= f.text_field :ciudad, :class => "form-control", :placeholder => "Ciudad" %>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label">Estado</label>
           <div class="col-lg-10">
-            <input type="text" class="form-control" placeholder="Estado">
+			<%= f.text_field :estado, :class => "form-control", :placeholder => "Estado" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Código Postal</label>
+          <div class="col-lg-10">
+			<%= f.text_field :cp, :class => "form-control", :placeholder => "C.P." %>
           </div>
         </div>
         
         <div class="form-group">
           <div class="col-lg-offset-2 col-lg-10">
-            <button type="submit" class="btn btn-sm btn-primary">Guardar Cambios</button>
+			<%= f.submit 'Guardar Cambios', :class => 'btn btn-sm btn-primary' %>
+			<% end %>
           </div>
         </div>
       </form>
@@ -96,47 +108,47 @@
   <section class="panel panel-default">
     <header class="panel-heading font-bold">Notificaciones</header>
     <div class="panel-body">
-      <form class="bs-example form-horizontal">
+      <%= form_for(@perfil, :url => update_notificaciones_user_path, :html => {:class => 'bs-example form-horizontal'} ) do |f| %>
         <div class="form-group">
           <label class="col-lg-2 control-label"><strong>Faltas</strong></label>
           <div class="col-lg-10">
-			  <input type="checkbox"> Recibir notificaciones por Faltas.
+			  <%= f.check_box :notificarfaltas %> Recibir notificaciones por Faltas.
             <span class="help-block m-b-none">Faltas se refiere a errores en los comprobantes.</span>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label"><strong>Advertencias</strong></label>
           <div class="col-lg-10">
-			  <input type="checkbox"> Recibir notificaciones por Advertencias.
+			  <%= f.check_box :notificaradvertencias %> Recibir notificaciones por Advertencias.
             <span class="help-block m-b-none">Se refiere a advertencias no graves del comprobante.</span>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label"><strong>Validos</strong></label>
           <div class="col-lg-10">
-			  <input type="checkbox"> Recibir notificaciones de comprobantes correctos.
+			  <%= f.check_box :notificarvalidos %> Recibir notificaciones de comprobantes correctos.
             <span class="help-block m-b-none">Se refiere a comprobantes que no presentan faltas ni advertencias.</span>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label">Email Adicional</label>
           <div class="col-lg-10">
-            <input type="email" class="form-control" placeholder="Email 1">
+			<%= f.text_field :emailadicional1, :class => "form-control", :placeholder => "Email 1" %>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label">Email Adicional</label>
           <div class="col-lg-10">
-            <input type="email" class="form-control" placeholder="Email 2">
+			<%= f.text_field :emailadicional2, :class => "form-control", :placeholder => "Email 2" %>
 			<span class="help-block m-b-none">Los emails adicionales también reciben las notificaciones pero no pueden entrar al sistema.</span>
           </div>
         </div>
         <div class="form-group">
           <div class="col-lg-offset-2 col-lg-10">
-            <button type="submit" class="btn btn-sm btn-default">Guardar</button>
+			<%= f.submit 'Guardar', :class => 'btn btn-sm btn-default' %>
           </div>
         </div>
-      </form>
+	   <% end %>
     </div>
   </section>
 </div>

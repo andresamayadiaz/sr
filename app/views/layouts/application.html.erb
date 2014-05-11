@@ -20,10 +20,13 @@
 			  <section id="content">
 			    <section class="vbox">          
 			      <section class="scrollable padder"> <!-- wrapper -->
+					<%= yield :breadcrumbs %>
 					<%= render 'layouts/flash_messages' %>
+					
 					<!-- .yield -->
 			  		<%= yield %>
 					<!-- /.yield -->
+					
 				  </section>
 				</section>
 				<a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>

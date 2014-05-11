@@ -16,6 +16,8 @@ Soyreceptor::Application.routes.draw do
       get 'perfil', to: 'users#perfil'
       patch 'perfil', to: 'users#perfil'
       patch 'update_password', to: 'users#update_password'
+      patch 'update_generales', to: 'users#update_generales'
+      patch 'update_notificaciones', to: 'users#update_notificaciones'
     end
   end
   
