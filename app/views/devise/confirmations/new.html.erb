@@ -1,0 +1,21 @@
+<section id="content" class="m-t-lg wrapper-md animated fadeInUp">    
+	<div class="container aside-xxl">
+	  <a class="navbar-brand block" href="#">SoyReceptor</a>
+	  <section class="panel panel-default bg-white m-t-lg">
+	    <header class="panel-heading text-center">
+	      <strong>Reenviar Intrucciones de Confirmación</strong>
+	    </header>
+		<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, :class => 'panel-body wrapper-lg' }) do |f| %>
+		<%= devise_error_messages! %>
+	      <div class="form-group">
+		    <%= f.label :email, 'E-mail', :class => 'control-label' %>
+			<%= f.email_field :email, autofocus: true, class: 'form-control input-lg', :placeholder => 'usuario@miempresa.com' %>
+	      </div>
+		  <%= f.submit 'Reenviar Instrucciones de Confirmación', :class => 'btn btn-primary' %>
+	      <div class="line line-dashed"></div>
+	      <p class="text-muted text-center"><small>¿No Tienes Cuenta?</small></p>
+		  <%= link_to 'Crear una Cuenta', new_user_registration_path, :class => 'btn btn-default btn-block' %>
+	    <% end %>
+	  </section>
+	</div>
+</section>

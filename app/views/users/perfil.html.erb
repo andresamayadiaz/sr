@@ -1,0 +1,180 @@
+<!-- Breadcrumbs -->
+<ul class="breadcrumb no-border no-radius b-b b-light pull-in">
+  <li><a href="index.html"><i class="fa fa-home"></i> Inicio</a></li>
+  <li>Perfil</li>
+  <li class="active"><%= current_user.name %></li>
+</ul>
+<!-- /Breadcrumbs -->
+
+<!-- Titulo Pagina -->
+<div class="m-b-md">
+  <h3 class="m-b-none">Perfil de la Empresa</h3>
+</div>
+<!-- /Titulo Pagina -->
+
+<!-- Perfil Datos Generales -->
+<div class="col-sm-6">
+  <section class="panel panel-default">
+    <header class="panel-heading font-bold">Datos Generales</header>
+	 <div class="panel-body">
+    
+      <form class="bs-example form-horizontal">
+        <div class="form-group">
+          <label class="col-lg-2 control-label">R.F.C.</label>
+          <div class="col-lg-10">
+            <input type="text" class="form-control" disabled="disabled" placeholder="RFC" value="XYZ123456ABC">
+            <span class="help-block m-b-none">Si desea modificar su R.F.C. favor de contactarnos.</span>
+          </div>
+        </div>
+		<div class="line line-dashed line-lg pull-in"></div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Logotipo</label>
+          <div class="col-sm-4">
+            <div class="dropfile visible-lg">
+              <small>Arrastre una imágen aquí para cambiar su Logotipo</small>
+            </div>
+          </div>
+          <div class="col-sm-4">
+			<%= image_tag 'avatar_default.jpg' %>
+          </div>
+        </div>
+		
+		<div class="line line-dashed line-lg pull-in"></div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Razón Social</label>
+          <div class="col-lg-10">
+            <input type="text" class="form-control" placeholder="Mi Empresa S.A. de C.V." value="Captiva Tecnologia Digital S.A. de C.V.">
+          </div>
+        </div>
+        <div class="form-group has-warning">
+          <label class="col-lg-2 control-label">Calle</label>
+          <div class="col-lg-10">
+            <input type="text" class="form-control" placeholder="Calle">
+          </div>
+        </div>
+        <div class="form-group has-warning">
+          <label class="col-lg-2 control-label"># Exterior e Interior</label>
+          <div class="col-lg-5">
+            <input type="text" class="form-control" placeholder="No. Exterior">
+          </div>
+          <div class="col-lg-5">
+            <input type="text" class="form-control" placeholder="No. Interior">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Colonia</label>
+          <div class="col-lg-10">
+            <input type="text" class="form-control" placeholder="Colonia">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Ciudad / Municipio</label>
+          <div class="col-lg-10">
+            <input type="text" class="form-control" placeholder="Ciudad">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Estado</label>
+          <div class="col-lg-10">
+            <input type="text" class="form-control" placeholder="Estado">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <div class="col-lg-offset-2 col-lg-10">
+            <button type="submit" class="btn btn-sm btn-primary">Guardar Cambios</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+<!-- /Perfil Datos Generales -->
+
+<!-- Perfil Extra y Notificaciones -->
+<div class="col-sm-6">
+  <section class="panel panel-default">
+    <header class="panel-heading font-bold">Notificaciones</header>
+    <div class="panel-body">
+      <form class="bs-example form-horizontal">
+        <div class="form-group">
+          <label class="col-lg-2 control-label"><strong>Faltas</strong></label>
+          <div class="col-lg-10">
+			  <input type="checkbox"> Recibir notificaciones por Faltas.
+            <span class="help-block m-b-none">Faltas se refiere a errores en los comprobantes.</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label"><strong>Advertencias</strong></label>
+          <div class="col-lg-10">
+			  <input type="checkbox"> Recibir notificaciones por Advertencias.
+            <span class="help-block m-b-none">Se refiere a advertencias no graves del comprobante.</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label"><strong>Validos</strong></label>
+          <div class="col-lg-10">
+			  <input type="checkbox"> Recibir notificaciones de comprobantes correctos.
+            <span class="help-block m-b-none">Se refiere a comprobantes que no presentan faltas ni advertencias.</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Email Adicional</label>
+          <div class="col-lg-10">
+            <input type="email" class="form-control" placeholder="Email 1">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Email Adicional</label>
+          <div class="col-lg-10">
+            <input type="email" class="form-control" placeholder="Email 2">
+			<span class="help-block m-b-none">Los emails adicionales también reciben las notificaciones pero no pueden entrar al sistema.</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-offset-2 col-lg-10">
+            <button type="submit" class="btn btn-sm btn-default">Guardar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+<!-- /Perfil Extra y Notificaciones -->
+
+<!-- Modificar Password -->
+<div class="col-sm-6">
+  <section class="panel panel-default">
+    <header class="panel-heading font-bold">Modificar Password</header>
+    <div class="panel-body">
+      <%= form_for(@user, :url => users_perfil_path, :html => {:class => 'bs-example form-horizontal'} ) do |f| %>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Password Actual</label>
+          <div class="col-lg-10">
+			<%= f.password_field :current_password, :class => "form-control", :placeholder => "Password Actual" %>
+            <span class="help-block m-b-none">Por seguridad debe escribir su password actual.</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Nuevo Password</label>
+          <div class="col-lg-10">
+			<%= f.password_field :password, :autocomplete => "off", :class => "form-control", :placeholder => "Nuevo Password"  %>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Repetir Nuevo Password</label>
+          <div class="col-lg-10">
+			<%= f.password_field :password_confirmation, :class => "form-control", :placeholder => "Repetir Nuevo Password" %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <div class="col-lg-offset-2 col-lg-10">
+			<%= f.submit 'Modificar Password', :class => 'btn btn-sm btn-default' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+</div>
+<!-- /Modificar Password -->

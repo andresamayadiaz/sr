@@ -1,0 +1,10 @@
+# es.activerecord.errors.models.user.attributes.confirmation_token.invalid
+
+es:
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            confirmation_token:
+              invalid: "el token de confirmación es inválido."

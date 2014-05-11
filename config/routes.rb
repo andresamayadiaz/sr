@@ -1,5 +1,18 @@
 Soyreceptor::Application.routes.draw do
-  root :to => "home#index"
   devise_for :users, :controllers => {:registrations => "registrations"}
-  resources :users
+
+  devise_scope :user do
+    authenticated :user do
+      root 'home#index', as: :authenticated_root
+    end
+
+    unauthenticated do
+      root 'devise/sessions#new', as: :unauthenticated_root
+    end
+  end
+  
+  #resources :users
+  get 'users/perfil', to: 'users#perfil'
+  patch 'users/perfil', to: 'users#perfil'
+  
 end

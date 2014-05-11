@@ -1,0 +1,10 @@
+<% flash.each do |key, value| %>
+<br />
+<div class="row">
+	<div class="col-lg-3"></div>
+	<div class="col-lg-6 alert <%= flash_class(key) %>">
+	  <button type="button" class="close" data-dismiss="alert">×</button>
+	  <h6><%= value %></h6>
+	</div>
+</div>
+<% end %>
