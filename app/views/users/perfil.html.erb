@@ -22,7 +22,7 @@
         <div class="form-group">
           <label class="col-lg-2 control-label">R.F.C.</label>
           <div class="col-lg-10">
-            <input type="text" class="form-control" disabled="disabled" placeholder="RFC" value="XYZ123456ABC">
+            <input type="text" class="form-control" disabled="disabled" placeholder="RFC" value="<%= @user.rfc %>">
             <span class="help-block m-b-none">Si desea modificar su R.F.C. favor de contactarnos.</span>
           </div>
         </div>
@@ -43,7 +43,7 @@
         <div class="form-group">
           <label class="col-lg-2 control-label">Razón Social</label>
           <div class="col-lg-10">
-            <input type="text" class="form-control" placeholder="Mi Empresa S.A. de C.V." value="Captiva Tecnologia Digital S.A. de C.V.">
+            <input type="text" class="form-control" placeholder="Mi Empresa S.A. de C.V." value="<%= @user.name %>">
           </div>
         </div>
         <div class="form-group has-warning">
@@ -147,7 +147,7 @@
   <section class="panel panel-default">
     <header class="panel-heading font-bold">Modificar Password</header>
     <div class="panel-body">
-      <%= form_for(@user, :url => users_perfil_path, :html => {:class => 'bs-example form-horizontal'} ) do |f| %>
+      <%= form_for(@user, :url => update_password_user_path, :html => {:class => 'bs-example form-horizontal'} ) do |f| %>
         <div class="form-group">
           <label class="col-lg-2 control-label">Password Actual</label>
           <div class="col-lg-10">

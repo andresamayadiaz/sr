@@ -11,8 +11,15 @@ Soyreceptor::Application.routes.draw do
     end
   end
   
+  resource :user, only: [:edit] do
+    collection do
+      get 'perfil', to: 'users#perfil'
+      patch 'perfil', to: 'users#perfil'
+      patch 'update_password', to: 'users#update_password'
+    end
+  end
+  
   #resources :users
-  get 'users/perfil', to: 'users#perfil'
-  patch 'users/perfil', to: 'users#perfil'
+  
   
 end

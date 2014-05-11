@@ -8,3 +8,7 @@ es:
           attributes:
             confirmation_token:
               invalid: "el token de confirmación es inválido."
+            current_password:
+              invalid: "El password actual es inválido."
+            password:
+              too_short: "El password es demasiado corto, al menos 8 caracteres."
