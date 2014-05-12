@@ -1,6 +1,6 @@
 Soyreceptor::Application.routes.draw do
   devise_for :users, :controllers => {:registrations => "registrations"}
-
+  
   devise_scope :user do
     authenticated :user do
       root 'home#index', as: :authenticated_root
@@ -21,8 +21,5 @@ Soyreceptor::Application.routes.draw do
       post 'update_logo', to: 'users#update_logo'
     end
   end
-  
-  #resources :users
-  
   
 end
