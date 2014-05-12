@@ -32,12 +32,12 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">Logotipo</label>
           <div class="col-sm-4">
-            <div class="dropfile visible-lg">
+            <div class="dropfile visible-lg" id="dropfile">
               <small>Arrastre una imágen aquí para cambiar su Logotipo</small>
             </div>
           </div>
           <div class="col-sm-4">
-			<%= image_tag 'avatar_default.jpg' %>
+			<%= image_tag @user.logo.url(:medium), :id => "logo" %>
           </div>
         </div>
 	</form>
@@ -190,3 +190,51 @@
   </section>
 </div>
 <!-- /Modificar Password -->
+<% content_for :specific_js do %>
+<script type="text/javascript" charset="utf-8">
+	var dropfile = document.getElementById("dropfile");
+	
+	var acceptedTypes = {
+      'image/png': true,
+      'image/jpeg': true,
+      'image/gif': true
+    }
+	
+	// drop function
+	drop = function(evt) {   
+	    evt.stopPropagation();
+	    evt.preventDefault();
+	    var file = evt.dataTransfer.files[0];
+		
+		if ( acceptedTypes[file.type] === true ) {
+			
+			var formData = new FormData();
+			formData.append('file', file);
+		    
+			// upload File
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '<%= update_logo_user_url %>');
+			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+			xhr.onload = function () {
+			  if (xhr.status === 200) {
+				$('.dropfile').html('<small>Arrastre una imágen aquí para cambiar su Logotipo</small>');
+				alert('Logotipo modificado con éxito.');
+			  } else {
+			    alert('Ocurrio un error al cargar logotipo, favor de intenta de nuevo.');
+			  }
+			};
+			
+			xhr.send(formData);
+			
+		} else {
+			alert("Formato de imágen invalido.");
+			return false;
+		}
+		$('.dropfile').html('<small>Arrastre una imágen aquí para cambiar su Logotipo</small>');
+	  }
+	  // /.drop function
+	
+	dropfile.addEventListener("drop", drop, false);
+	
+</script>
+<% end %>

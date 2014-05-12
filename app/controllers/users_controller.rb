@@ -54,6 +54,18 @@ class UsersController < ApplicationController
     
   end
   
+  def update_logo
+    
+    logger.debug "Entro a update_logo"
+    @user = User.find(current_user.id)
+    
+    @user.logo = params[:file]
+    @user.save
+    
+    render :json => @user.logo.url(:medium)
+    
+  end
+  
   private
   
     def user_params

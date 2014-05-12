@@ -18,6 +18,7 @@ Soyreceptor::Application.routes.draw do
       patch 'update_password', to: 'users#update_password'
       patch 'update_generales', to: 'users#update_generales'
       patch 'update_notificaciones', to: 'users#update_notificaciones'
+      post 'update_logo', to: 'users#update_logo'
     end
   end
   
