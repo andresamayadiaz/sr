@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     @perfil = @user.perfil
     
     if @perfil.update(notificaciones_params)
-      flash[:success] = "Notificaciones Actualizadas Exitosamente"
+      flash[:success] = "Notificaciones Actualizadas Exitosamente."
     else
       flash[:alert] = "Error al Actualizar sus Notificaciones, favor de intentar nuevamente."
     end
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     @perfil = @user.perfil
     
     if @perfil.update(generales_params)
-      flash[:success] = "Perfil Actualizado Exitosamente"
+      flash[:success] = "Perfil Actualizado Exitosamente."
     else
       flash[:alert] = "Error al Actualizar su Perfil, favor de intentar nuevamente."
     end
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
     if @user.update_with_password(user_params)
       # Sign in the user by passing validation in case his password changed
       sign_in @user, :bypass => true
-      flash[:success] = "Password Actualizado Exitosamente"
+      flash[:success] = "Password Actualizado Exitosamente."
       redirect_to perfil_user_path
     else
       flash[:alert] = @user.errors.full_messages

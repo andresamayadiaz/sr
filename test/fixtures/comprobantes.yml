@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  version: MyString
+  fecha: 2014-05-15 17:38:50
+  sello: MyText
+  formaDePago: MyString
+  noCertificado: MyString
+  certificado: MyText
+  subTotal: 9.99
+  total: 9.99
+  tipoDeComprobante: MyString
+  metodoDePago: MyString
+  lugarExpedicion: MyText
+  emisor_id: 
+  receptor_id: 
+
+two:
+  version: MyString
+  fecha: 2014-05-15 17:38:50
+  sello: MyText
+  formaDePago: MyString
+  noCertificado: MyString
+  certificado: MyText
+  subTotal: 9.99
+  total: 9.99
+  tipoDeComprobante: MyString
+  metodoDePago: MyString
+  lugarExpedicion: MyText
+  emisor_id: 
+  receptor_id: 

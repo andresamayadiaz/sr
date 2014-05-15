@@ -11,7 +11,50 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140512214318) do
+ActiveRecord::Schema.define(version: 20140515224912) do
+
+  create_table "comprobantes", force: true do |t|
+    t.string   "version"
+    t.datetime "fecha"
+    t.text     "sello"
+    t.string   "formaDePago"
+    t.string   "noCertificado"
+    t.text     "certificado"
+    t.decimal  "subTotal",          precision: 10, scale: 6
+    t.decimal  "total",             precision: 10, scale: 6
+    t.string   "tipoDeComprobante"
+    t.string   "metodoDePago"
+    t.text     "lugarExpedicion"
+    t.integer  "emisor_id"
+    t.integer  "receptor_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "xml_file_name"
+    t.string   "xml_content_type"
+    t.integer  "xml_file_size"
+    t.datetime "xml_updated_at"
+  end
+
+  add_index "comprobantes", ["emisor_id"], name: "index_comprobantes_on_emisor_id", using: :btree
+  add_index "comprobantes", ["receptor_id"], name: "index_comprobantes_on_receptor_id", using: :btree
+
+  create_table "emisors", force: true do |t|
+    t.string   "rfc"
+    t.text     "regimenFiscal"
+    t.text     "nombre"
+    t.string   "domicilio_calle"
+    t.string   "domicilio_noExterior"
+    t.string   "domicilio_noInterior"
+    t.string   "domicilio_colonia"
+    t.string   "domicilio_localidad"
+    t.string   "domicilio_referencia"
+    t.string   "domicilio_municipio"
+    t.string   "domicilio_estado"
+    t.string   "domicilio_pais"
+    t.string   "domicilio_codigoPostal", limit: 5
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "perfils", force: true do |t|
     t.integer "user_id"
@@ -27,6 +70,23 @@ ActiveRecord::Schema.define(version: 20140512214318) do
     t.string  "emailadicional1"
     t.string  "emailadicional2"
     t.string  "cp"
+  end
+
+  create_table "receptors", force: true do |t|
+    t.string   "rfc"
+    t.text     "nombre"
+    t.string   "domicilio_calle"
+    t.string   "domicilio_noExterior"
+    t.string   "domicilio_noInterior"
+    t.string   "domicilio_colonia"
+    t.string   "domicilio_localidad"
+    t.string   "domicilio_referencia"
+    t.string   "domicilio_municipio"
+    t.string   "domicilio_estado"
+    t.string   "domicilio_pais"
+    t.string   "domicilio_codigoPostal", limit: 5
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
