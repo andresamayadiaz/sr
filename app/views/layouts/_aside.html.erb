@@ -3,11 +3,13 @@
   <section class="vbox">
     <header class="header bg-primary lter text-center clearfix">
       <div class="btn-group">
-        <button type="button" class="btn btn-sm btn-dark btn-icon" title="New project"><i class="fa fa-plus"></i></button>
+        <button type="button" class="btn btn-sm btn-dark btn-icon" title="Nuevo Comprobante"><i class="fa fa-plus"></i></button>
         <div class="btn-group hidden-nav-xs">
-          <button type="button" class="btn btn-sm btn-primary">
-            Subir Comprobante
-          </button>
+			<%= form_for(@perfil, :url => update_generales_user_path, :html => {:class => 'bs-example form-horizontal'} ) do |f| %>
+	          <button type="button" class="btn btn-sm btn-primary">
+	            Subir Comprobante
+	          </button>
+			<% end %>
         </div>
       </div>
     </header>
