@@ -5,10 +5,13 @@
       <div class="btn-group">
         <button type="button" class="btn btn-sm btn-dark btn-icon" title="Nuevo Comprobante"><i class="fa fa-plus"></i></button>
         <div class="btn-group hidden-nav-xs">
-			<%= form_for(@perfil, :url => update_generales_user_path, :html => {:class => 'bs-example form-horizontal'} ) do |f| %>
-	          <button type="button" class="btn btn-sm btn-primary">
-	            Subir Comprobante
-	          </button>
+			<%= form_for(Comprobante.new, :url => upload_comprobante_path, :html => {:multipart => true, :class => 'bs-example form-horizontal', :id => 'new_comprobante'} ) do |f| %>
+			  <% f.file_field :comprobante, {:class => 'btn btn-sm btn-primary', :id => 'new_comprobante_file'} %>
+			  <% f.submit 'Subir Comprobante', {:class => 'btn btn-sm btn-primary'} %>
+			  <button class='btn btn-sm btn-primary'>
+			              Subir Comprobante
+			              <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="file_source" size="40"  onchange='$("#upload-file-info").html($(this).val());'>
+					  </button>
 			<% end %>
         </div>
       </div>
@@ -323,4 +326,13 @@
 	
   </section>
 </aside>
+<% content_for :specific_js do %>
+	
+	<script type="text/javascript" charset="utf-8">
+	
+		
+		
+	</script>
+	
+<% end %>
 <!-- /.aside -->

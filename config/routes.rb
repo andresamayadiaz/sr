@@ -4,6 +4,7 @@ Soyreceptor::Application.routes.draw do
   devise_scope :user do
     authenticated :user do
       root 'home#index', as: :authenticated_root
+      post 'upload_comprobante', to: 'home#upload_comprobante'
     end
 
     unauthenticated do

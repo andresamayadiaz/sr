@@ -5,16 +5,16 @@ class HomeController < ApplicationController
   def index
     
     @user = User.find(current_user.id)
-    
-    
+    @perfil = @user.perfil
     
   end
   
-  def update_comprobante
+  def upload_comprobante
     
     @user = User.find(current_user.id)
     
-    logger.debug "Entro a update_comprobante"
+    logger.debug "Entro a upload_comprobante"
+    
     
     
     
