@@ -254,3 +254,9 @@ Date.now = Date.now || function() { return +new Date; };
 
   });
 }(jQuery);
+
+var acceptedTypes = {
+  'image/png': true,
+  'image/jpeg': true,
+  'image/gif': true
+}

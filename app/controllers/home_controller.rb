@@ -15,6 +15,19 @@ class HomeController < ApplicationController
     
     logger.debug "Entro a upload_comprobante"
     
+    @comprobante = Comprobante.new
+    @comprobante.xml = params[:file]
+    
+    if @comprobante.save
+      
+      render :json => @comprobante.xml.url
+      
+    else
+      
+      render :json => {:error => "Not Acceptable"}.to_json, :status => 406
+      
+    end
+    
     
     
     

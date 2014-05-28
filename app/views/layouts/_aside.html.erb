@@ -3,15 +3,11 @@
   <section class="vbox">
     <header class="header bg-primary lter text-center clearfix">
       <div class="btn-group">
-        <button type="button" class="btn btn-sm btn-dark btn-icon" title="Nuevo Comprobante"><i class="fa fa-plus"></i></button>
+        <button type="button" class="btn btn-sm btn-dark btn-icon" title="Nuevo Comprobante"><i class="fa fa-plus"></i></button> 
         <div class="btn-group hidden-nav-xs">
 			<%= form_for(Comprobante.new, :url => upload_comprobante_path, :html => {:multipart => true, :class => 'bs-example form-horizontal', :id => 'new_comprobante'} ) do |f| %>
-			  <% f.file_field :comprobante, {:class => 'btn btn-sm btn-primary', :id => 'new_comprobante_file'} %>
-			  <% f.submit 'Subir Comprobante', {:class => 'btn btn-sm btn-primary'} %>
-			  <button class='btn btn-sm btn-primary'>
-			              Subir Comprobante
-			              <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="file_source" size="40"  onchange='$("#upload-file-info").html($(this).val());'>
-					  </button>
+			  <% f.file_field :comprobante, {:class => 'filestyle'} %>
+			  <%= f.submit 'Subir Comprobante', {:class => 'btn btn-sm btn-primary', :id => 'btn_file'} %>
 			<% end %>
         </div>
       </div>
@@ -264,7 +260,7 @@
                     <span>Signin</span>
                   </a>
                 </li>
-                <li >
+                <li>
                   <a href="signup.html" >                                                        
                     <i class="fa fa-angle-right"></i>
                     <span>Signup</span>
@@ -278,7 +274,7 @@
                 </li>
               </ul>
             </li>
-            <li >
+            <li>
               <a href="#"  >
                 <b class="badge bg-danger pull-right">3</b>
                 <i class="fa fa-bell icon">
@@ -287,7 +283,7 @@
                 <span>Alertas</span>
               </a>
             </li>
-            <li >
+            <li>
               <a href="notebook.html"  >
                 <i class="fa fa-pencil icon">
                   <b class="bg-info"></b>
@@ -295,6 +291,34 @@
                 <span>Notes</span>
               </a>
             </li>
+            <li >
+              <a href="#subir">
+                <i class="fa fa-cloud-upload icon">
+                  <b class="bg-dark"></b>
+                </i>
+                <span class="pull-right">
+                  <i class="fa fa-angle-down text"></i>
+                  <i class="fa fa-angle-up text-active"></i>
+                </span>
+                <span>Cargar</span>
+              </a>
+              <ul class="nav lt">
+				<li>
+					<strong>Drag & Drop</strong>
+					<div class="dropfile visible-lg" id="nuevo_comprobante">
+						<small>Arrastre una Comprobante para Cargar</small>
+					</div>
+				</li>
+				<hr>
+				<li>
+					<strong>O Seleccione un Archivo</strong>
+					<%= form_for(Comprobante.new, :url => upload_comprobante_path, :html => {:multipart => true, :class => 'bs-example form-horizontal', :id => 'new_comprobante'} ) do |f| %>
+					  <%= f.file_field :comprobante %>
+					  <%= f.submit 'Cargar', {:class => 'btn btn-sm btn-primary'} %>
+					<% end %>
+				</li>
+			</ul>
+		</li>
           </ul>
         </nav>
         <!-- / nav -->
@@ -330,7 +354,38 @@
 	
 	<script type="text/javascript" charset="utf-8">
 	
+		var nuevo_comprobante = document.getElementById("nuevo_comprobante");
 		
+		// nuevo_drop function
+		nuevo_drop = function(evt) {   
+		    evt.stopPropagation();
+		    evt.preventDefault();
+		    var file = evt.dataTransfer.files[0];
+			
+			var formData = new FormData();
+			formData.append('file', file);
+	    	
+			// upload File
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '<%= upload_comprobante_url %>');
+			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+			xhr.onload = function () {
+			  if (xhr.status === 200) {
+				$('#nuevo_comprobante').html('<small>Arrastre una Comprobante para Cargar</small>');
+				alert('Logotipo modificado con éxito.');
+			  } else {
+				$('#nuevo_comprobante').html('<small>Arrastre una Comprobante para Cargar</small>');
+			    alert('Ocurrio un error al cargar logotipo, favor de intenta de nuevo.');
+			  }
+			};
+			
+			xhr.send(formData);
+		
+			$('#nuevo_comprobante').html('<small>Arrastre una Comprobante para Cargar</small>');
+		  }
+		  // /.nuevo_drop function
+		  
+		nuevo_comprobante.addEventListener("drop", nuevo_drop, false);
 		
 	</script>
 	
