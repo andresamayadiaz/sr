@@ -24,5 +24,7 @@ module Soyreceptor
     config.assets.paths << "#{Rails.root}/app/assets/fonts"
     config.assets.precompile += %w(.svg .eot .woff .ttf)
     
+    config.autoload_paths += %W(#{config.root}/lib)
+    
   end
 end

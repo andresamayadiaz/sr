@@ -13,7 +13,7 @@ class HomeController < ApplicationController
     
     @user = User.find(current_user.id)
     
-    logger.debug "Entro a upload_comprobante"
+    logger.debug "HomeController.upload_comprobante"
     
     @comprobante = Comprobante.new
     @comprobante.xml = params[:file]

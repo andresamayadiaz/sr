@@ -30,35 +30,25 @@ module COMPROBANTEFACTORY
   
   require 'cfdi32/Cfdi32'
   
+  class Emisor
+    
+    attr_accessor :rfc, :regimenFiscal, :nombre
+    
+  end
+  
+  class Receptor
+    
+    attr_accessor :rfc, :nombre
+    
+  end
+  
   class Comprobante
     
-    attr_accessor :file
-    
-    def initialize(file)
-      
-      @file = file
-      doc = Nokogiri::XML( File.read(@file) )
-      @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
-      
-    end
-    
-    def self.nuevo(file)
-      
-      @file = file
-      doc = Nokogiri::XML( File.read(@file) )
-      @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
-      
-      if @version == '3.2'
-        return COMPROBANTEFACTORY::Cfdi32.new(@file)
-      else
-        return nil
-      end
-      
-    end
+    attr_accessor :file, :doc
     
     # Valida la estructura del Comprobante
     def validate_schema
-  
+      
       # open("http://www.sat.gob.mx/cfd/3/cfdv32.xsd")
       doc = Nokogiri::XML( File.read(@file) )
       
@@ -97,6 +87,10 @@ module COMPROBANTEFACTORY
       	return schema2.validate(doc)
       end
   
+    end
+    
+    def cadena_original
+      nil
     end
     
     def version

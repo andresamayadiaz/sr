@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140515224912) do
+ActiveRecord::Schema.define(version: 20140601211807) do
 
   create_table "comprobantes", force: true do |t|
     t.string   "version"
@@ -20,13 +20,11 @@ ActiveRecord::Schema.define(version: 20140515224912) do
     t.string   "formaDePago"
     t.string   "noCertificado"
     t.text     "certificado"
-    t.decimal  "subTotal",          precision: 10, scale: 6
-    t.decimal  "total",             precision: 10, scale: 6
+    t.decimal  "subTotal",          precision: 17, scale: 6, default: 0.0
+    t.decimal  "total",             precision: 17, scale: 6, default: 0.0
     t.string   "tipoDeComprobante"
     t.string   "metodoDePago"
     t.text     "lugarExpedicion"
-    t.integer  "emisor_id"
-    t.integer  "receptor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "xml_file_name"
@@ -34,9 +32,6 @@ ActiveRecord::Schema.define(version: 20140515224912) do
     t.integer  "xml_file_size"
     t.datetime "xml_updated_at"
   end
-
-  add_index "comprobantes", ["emisor_id"], name: "index_comprobantes_on_emisor_id", using: :btree
-  add_index "comprobantes", ["receptor_id"], name: "index_comprobantes_on_receptor_id", using: :btree
 
   create_table "emisors", force: true do |t|
     t.string   "rfc"
@@ -54,7 +49,10 @@ ActiveRecord::Schema.define(version: 20140515224912) do
     t.string   "domicilio_codigoPostal", limit: 5
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "comprobante_id"
   end
+
+  add_index "emisors", ["comprobante_id"], name: "index_emisors_on_comprobante_id", using: :btree
 
   create_table "perfils", force: true do |t|
     t.integer "user_id"
@@ -87,7 +85,10 @@ ActiveRecord::Schema.define(version: 20140515224912) do
     t.string   "domicilio_codigoPostal", limit: 5
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "comprobante_id"
   end
+
+  add_index "receptors", ["comprobante_id"], name: "index_receptors_on_comprobante_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

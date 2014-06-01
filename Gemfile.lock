@@ -87,6 +87,9 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
+    libxml-ruby (2.7.0)
+    libxslt-ruby (1.1.0)
+      libxml-ruby (>= 2.4.0)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -174,6 +177,7 @@ DEPENDENCIES
   figaro!
   jbuilder (~> 2.0)
   jquery-rails
+  libxslt-ruby
   mysql2
   nokogiri
   paperclip!
