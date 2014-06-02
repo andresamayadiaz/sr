@@ -1,6 +1,6 @@
 # aad mayo 2014
 require 'comprobantefactory'
-require 'xslt'
+require 'libxslt'
 
 module COMPROBANTEFACTORY
   
@@ -55,8 +55,8 @@ module COMPROBANTEFACTORY
     
     def cadena_original
   
-      stylesheet_doc = XML::Document.file("public/sat/cadenaoriginal_3_2.xslt")
-      stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
+      stylesheet_doc = LibXML::XML::Document.file("public/sat/cadenaoriginal_3_2.xslt")
+      stylesheet = LibXSLT::XSLT::Stylesheet.new(stylesheet_doc)
   
       result = stylesheet.apply(@doc)
   

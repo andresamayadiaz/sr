@@ -1,0 +1,207 @@
+<% content_for :breadcrumbs do %>
+<!-- Breadcrumbs -->
+<ul class="breadcrumb no-border no-radius b-b b-light pull-in">
+  <li><a href="index.html"><i class="fa fa-home"></i> Inicio</a></li>
+  <li>Comprobantes</li>
+  <li class="active">Emitidos</li>
+</ul>
+<!-- /Breadcrumbs -->
+<% end %>
+
+<!-- Titulo Pagina -->
+<div class="m-b-md">
+  <h3 class="m-b-none">Comprobantes Emitidos</h3>
+</div>
+<!-- /Titulo Pagina -->
+
+<!-- Lista de Emitidos -->
+<section class="panel panel-default">
+  <header class="panel-heading">
+    Listado de Comprobantes Emitidos por la Empresa
+  </header>
+  <div class="row wrapper">
+    <div class="col-sm-5 m-b-xs">
+      <span class="help-block m-b-none">Desde</span>
+	  <input class="input-sm input-s datepicker-input form-control" size="10" type="text" value="<%= Date.today.at_beginning_of_month %>" data-date-format="yyyy-mm-dd" >
+	  <span class="help-block m-b-none">Hasta</span>
+	  <input class="input-sm input-s datepicker-input form-control" size="10" type="text" value="<%= Date.today.at_end_of_month %>" data-date-format="yyyy-mm-dd" >
+    </div>
+    <div class="col-sm-4 m-b-xs">
+      <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-sm btn-default">
+          <input type="radio" name="options" id="option_dia" onChange="set_dia();"> Dia
+        </label>
+        <label class="btn btn-sm btn-default">
+          <input type="radio" name="options" id="option_semana" onChange="set_semana();"> Semana
+        </label>
+        <label class="btn btn-sm btn-default active">
+          <input type="radio" name="options" id="option_mes" onChange="set_mes();"> Mes
+        </label>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="input-sm form-control" placeholder="Buscar" data-toggle="tooltip" data-placement="top" title="RFC, Receptor, UUID, Serie, ...">
+        <span class="input-group-btn">
+          <button class="btn btn-sm btn-default" type="button">Buscar</button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped b-t b-light">
+      <thead>
+        <tr>
+          <th width="20"></th>
+          <th>UUID, Serie-Folio</th>
+          <th>Receptor (RFC, Razón Social)</th>
+		  <th>Total</th>
+          <th class="th-sortable" data-toggle="class">Fecha
+            <span class="th-sort">
+              <a><i class="fa fa-sort-down text"></i></a>
+              <a><i class="fa fa-sort-up text-active"></i></a>
+              <a><i class="fa fa-sort"></i></a>
+            </span>
+		  </th>
+          <th width="30"></th>
+        </tr>
+      </thead>
+      <tbody>
+		<% @emitidos.each do |e| %>
+		
+	        <tr>
+	          <td><i class="text-success fa fa-circle"></i></td>
+	          <td><%= e.to_s %></td>
+	          <td><%= e.receptor.to_s %></td>
+	          <td><%= number_to_currency(e.total) %></td>
+	          <td><%= e.fecha %></td>
+			  <td><a href="#" class="btn btn-info">Ver</a></td>
+	        </tr>
+		
+		<% end %>
+        <tr>
+          <td><i class="text-success fa fa-circle"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, A-27</td>
+          <td>CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</td>
+          <td>$58,236.00</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+        <tr>
+          <td><i class="text-warning fa fa-circle" data-toggle="tooltip" data-placement="right" title="Advertencias"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, B-81</td>
+          <td>EMP1234567ZYX, Empresa Patito S.A. de C.V.</td>
+          <td>$258,276.00</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+        <tr>
+          <td><i class="text-warning fa fa-circle" data-toggle="tooltip" data-placement="right" title="Advertencias"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, MTY-3567</td>
+          <td>JP0102030405JK1, Productos y Derivados S.A. de C.V.</td>
+          <td>$127,090.36</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+        <tr>
+          <td><i class="text-danger fa fa-circle" data-toggle="tooltip" data-placement="right" title="Faltas"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, </td>
+          <td>CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</td>
+          <td>$1,234,678.50</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+        <tr>
+          <td><i class="text-success fa fa-circle"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, CCL-348</td>
+          <td>CMEX04050607RT3, Comercial Mexicana S.A. de C.V.</td>
+          <td>$58,236.00</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+        <tr>
+          <td><i class="text-danger fa fa-circle" data-toggle="tooltip" data-placement="right" title="Faltas"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, NL-9056</td>
+          <td>HDM9876543SA1, Home Depot S.A. de C.V.</td>
+          <td>$10,160.00</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+        <tr>
+          <td><i class="text-success fa fa-circle"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, MO-35892</td>
+          <td>PLA1928385ZS9, Productos Lacteos de México S.A. de C.V.</td>
+          <td>$1,145.00</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+        <tr>
+          <td><i class="text-success fa fa-circle"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, A-28</td>
+          <td>CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</td>
+          <td>$58,236.00</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <footer class="panel-footer">
+    <div class="row">
+      <div class="col-sm-4 hidden-xs">
+      	<small class="text-muted inline m-t-sm m-b-sm">mostrando 20-30 de 50 comprobantes</small>
+      </div>
+      <div class="col-sm-4 text-center">
+        
+      </div>
+      <div class="col-sm-4 text-right text-center-xs">                
+        <ul class="pagination pagination-sm m-t-none m-b-none">
+          <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
+          <li><a href="#">1</a></li>
+          <li class="active"><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+          <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</section>
+<!-- /Lista de Emitidos -->
+
+<% content_for :specific_js do %>
+
+<script type="text/javascript" charset="utf-8">
+	
+	function set_dia(){
+		alert('selecciono dia');
+	}
+	
+	function set_semana(){
+		alert('selecciono semana');
+	}
+	
+	function set_mes(){
+		alert('selecciono mes');
+	}
+	
+</script>
+
+<% end %>

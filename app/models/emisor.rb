@@ -12,5 +12,5 @@ class Emisor < ActiveRecord::Base
     "#{self.rfc} #{self.nombre}"
     
   end
-
+  
 end

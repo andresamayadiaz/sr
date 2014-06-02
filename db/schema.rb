@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140601211807) do
+ActiveRecord::Schema.define(version: 20140602022905) do
 
   create_table "comprobantes", force: true do |t|
     t.string   "version"
@@ -31,7 +31,14 @@ ActiveRecord::Schema.define(version: 20140601211807) do
     t.string   "xml_content_type"
     t.integer  "xml_file_size"
     t.datetime "xml_updated_at"
+    t.boolean  "emitido",                                    default: false
+    t.boolean  "recibido",                                   default: false
+    t.integer  "user_id"
   end
+
+  add_index "comprobantes", ["emitido"], name: "index_comprobantes_on_emitido", using: :btree
+  add_index "comprobantes", ["recibido"], name: "index_comprobantes_on_recibido", using: :btree
+  add_index "comprobantes", ["user_id"], name: "index_comprobantes_on_user_id", using: :btree
 
   create_table "emisors", force: true do |t|
     t.string   "rfc"

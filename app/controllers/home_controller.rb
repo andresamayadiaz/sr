@@ -9,6 +9,20 @@ class HomeController < ApplicationController
     
   end
   
+  def emitidos
+    
+    @user = User.find(current_user.id)
+    
+    @emitidos = @user.comprobantes.where("emitido = ?", true)
+    
+  end
+  
+  def recibidos
+    
+    @user = User.find(current_user.id)
+    
+  end
+  
   def upload_comprobante
     
     @user = User.find(current_user.id)
@@ -17,6 +31,7 @@ class HomeController < ApplicationController
     
     @comprobante = Comprobante.new
     @comprobante.xml = params[:file]
+    @comprobante.user = @user
     
     if @comprobante.save
       
