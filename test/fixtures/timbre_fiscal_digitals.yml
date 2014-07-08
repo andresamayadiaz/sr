@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  version: MyString
+  uuid: MyString
+  fechaTimbrado: 2014-07-07 21:10:37
+  selloCFD: MyText
+  noCertificadoSAT: MyString
+  selloSAT: MyText
+  comprobante_id: 
+
+two:
+  version: MyString
+  uuid: MyString
+  fechaTimbrado: 2014-07-07 21:10:37
+  selloCFD: MyText
+  noCertificadoSAT: MyString
+  selloSAT: MyText
+  comprobante_id: 

@@ -6,6 +6,7 @@ Soyreceptor::Application.routes.draw do
       root 'home#index', as: :authenticated_root
       post 'upload_comprobante', to: 'home#upload_comprobante'
       get 'emitidos', to: 'home#emitidos'
+      get 'recibidos', to: 'home#recibidos'
     end
 
     unauthenticated do

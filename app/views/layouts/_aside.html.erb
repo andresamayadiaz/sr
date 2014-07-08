@@ -83,9 +83,9 @@
               </a>
               <ul class="nav lt">
                 <li >
-                  <a href="buttons.html" >                                                        
+                  <a href="<%= recibidos_url %>" >                                                        
                     <i class="fa fa-angle-right"></i>
-                    <span>Buttons</span>
+                    <span>Todos</span>
                   </a>
                 </li>
                 <li >
@@ -372,10 +372,10 @@
 			xhr.onload = function () {
 			  if (xhr.status === 200) {
 				$('#nuevo_comprobante').html('<small>Arrastre una Comprobante para Cargar</small>');
-				alert('Logotipo modificado con éxito.');
+				alert('Comprobante Cargado Con Exito!');
 			  } else {
 				$('#nuevo_comprobante').html('<small>Arrastre una Comprobante para Cargar</small>');
-			    alert('Ocurrio un error al cargar logotipo, favor de intenta de nuevo.');
+			    alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
 			  }
 			};
 			

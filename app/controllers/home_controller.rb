@@ -21,6 +21,8 @@ class HomeController < ApplicationController
     
     @user = User.find(current_user.id)
     
+    @recibidos = @user.comprobantes.where("recibido = ?", true)
+    
   end
   
   def upload_comprobante

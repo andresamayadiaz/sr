@@ -2,6 +2,7 @@ class Comprobante < ActiveRecord::Base
   
   has_one :emisor, :dependent => :destroy
   has_one :receptor, :dependent => :destroy
+  has_one :TimbreFiscalDigital, :dependent => :destroy
   belongs_to :user
   
   has_attached_file :xml,
@@ -66,8 +67,26 @@ class Comprobante < ActiveRecord::Base
     
     def to_s
       
+      str = ""
+      # UUID [a-f0-9A-F]{8}-[a-f0-9A-F]{4}-[a-f0-9A-F]{4}-[a-f0-9A-F]{4}-[a-f0-9A-F]{12}
       # TODO implementar algo mas amigable
-      super
+      if version == '3.2'
+        #"#{self.TimbreFiscalDigital.UUID},#{self.serie}#{self.folio}"
+        if !self.TimbreFiscalDigital.nil?
+          if !self.TimbreFiscalDigital.uuid.nil?
+            str += self.TimbreFiscalDigital.uuid
+          end
+        end
+        if !self.serie.nil?
+          str += " "+self.serie
+        end
+        if !self.folio.nil?
+          str += "-"+self.folio
+        end
+        return str
+      else
+        super
+      end
       
     end
     
@@ -96,7 +115,7 @@ class Comprobante < ActiveRecord::Base
       
       logger.debug "=================== Comprobante.procesar ==================="
       logger.debug self.xml.queued_for_write[:original].path
-      logger.debug "=================== Comprobante.procesar ==================="
+      logger.debug "=================== /Comprobante.procesar ==================="
       
       begin
         doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
@@ -118,14 +137,27 @@ class Comprobante < ActiveRecord::Base
           self.total = file.total
           self.metodoDePago = file.metodoDePago
           self.lugarExpedicion = file.lugarExpedicion
+          self.serie = file.serie
+          self.folio = file.folio
           
           # Emisor
           self.emisor = Emisor.new(file.emisor.instance_values)
-          logger.debug self.emisor.inspect
+          logger.debug self.emisor.to_json
+          if self.emisor.rfc == self.user.rfc
+            self.emitido = true
+          end
           
           # Receptor
           self.receptor = Receptor.new(file.receptor.instance_values)
           logger.debug self.receptor.to_json
+          if self.receptor.rfc == self.user.rfc
+            self.recibido = true
+          end
+          
+          # Timbre Fiscal Digital
+          self.TimbreFiscalDigital = TimbreFiscalDigital.new(file.timbre.instance_values)
+          logger.debug self.TimbreFiscalDigital.to_json
+          #logger.debug file.timbre.to_json
           
         else
         

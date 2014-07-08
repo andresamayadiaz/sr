@@ -28,6 +28,8 @@ module COMPROBANTEFACTORY
       @total = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("total").to_s.to_d
       @metodoDePago = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("metodoDePago").to_s
       @lugarExpedicion = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("lugarExpedicion").to_s
+      @serie = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("serie").to_s
+      @folio = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("folio").to_s
       
       # Emisor
       @emisor = COMPROBANTEFACTORY::Emisor.new
@@ -45,11 +47,24 @@ module COMPROBANTEFACTORY
       #logger.debug "Receptor: #{@receptor.to_json.to_s}"
       
       # Otros
+      @timbre = COMPROBANTEFACTORY::TimbreFiscal.new
       @uuid = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("UUID").to_s
+      @timbre.uuid = @uuid
+      
       @selloSAT = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("selloSAT").to_s
+      @timbre.selloSAT = @selloSAT
+      
+      @selloCFD = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("selloCFD").to_s
+      @timbre.selloCFD = @selloCFD
+      
       @versionComplemento = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("version").to_s
+      @timbre.version = @versionComplemento
+      
       @noCertificadoSAT = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("noCertificadoSAT").to_s
+      @timbre.noCertificadoSAT = @noCertificadoSAT
+      
       @fechaTimbrado = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("FechaTimbrado").to_s
+      @timbre.fechaTimbrado = @fechaTimbrado
       
     end
     

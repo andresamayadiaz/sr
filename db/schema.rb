@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140602022905) do
+ActiveRecord::Schema.define(version: 20140708030941) do
 
   create_table "comprobantes", force: true do |t|
     t.string   "version"
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(version: 20140602022905) do
     t.boolean  "emitido",                                    default: false
     t.boolean  "recibido",                                   default: false
     t.integer  "user_id"
+    t.string   "serie"
+    t.string   "folio"
   end
 
   add_index "comprobantes", ["emitido"], name: "index_comprobantes_on_emitido", using: :btree
@@ -96,6 +98,20 @@ ActiveRecord::Schema.define(version: 20140602022905) do
   end
 
   add_index "receptors", ["comprobante_id"], name: "index_receptors_on_comprobante_id", using: :btree
+
+  create_table "timbre_fiscal_digitals", force: true do |t|
+    t.string   "version"
+    t.string   "uuid"
+    t.datetime "fechaTimbrado"
+    t.text     "selloCFD"
+    t.string   "noCertificadoSAT"
+    t.text     "selloSAT"
+    t.integer  "comprobante_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "timbre_fiscal_digitals", ["comprobante_id"], name: "index_timbre_fiscal_digitals_on_comprobante_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

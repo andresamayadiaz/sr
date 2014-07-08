@@ -42,6 +42,12 @@ module COMPROBANTEFACTORY
     
   end
   
+  class TimbreFiscal
+    
+    attr_accessor :version, :uuid, :fechaTimbrado, :selloCFD, :noCertificadoSAT, :selloSAT
+    
+  end
+  
   class Comprobante
     
     attr_accessor :file, :doc
@@ -147,6 +153,18 @@ module COMPROBANTEFACTORY
     
     def conceptos
       @conceptos
+    end
+    
+    def serie
+      @serie
+    end
+    
+    def folio
+      @folio
+    end
+    
+    def timbre
+      @timbre
     end
     
   end
