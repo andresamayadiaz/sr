@@ -1,5 +1,6 @@
 class Comprobante < ActiveRecord::Base
   
+  belongs_to :user
   has_one :emisor, :dependent => :destroy
   has_one :receptor, :dependent => :destroy
   has_one :TimbreFiscalDigital, :dependent => :destroy
@@ -7,6 +8,9 @@ class Comprobante < ActiveRecord::Base
   
   has_attached_file :xml,
   :path => ":rails_root/public/system/:class/:attachment/:id_partition/:filename"
+  
+  # Tags
+  acts_as_taggable
   
   before_save :procesar
   
@@ -115,8 +119,15 @@ class Comprobante < ActiveRecord::Base
     def set_uuid
       self.internal_uuid = SecureRandom.uuid
     end
-  
+    
     def procesar
+      
+      if !self.version.blank?
+        # Se esta haciendo un save a un comprobante previamente guardado,
+        # probablemente se este actualizado el tags_list
+        logger.debug "Comprobante Already Exists!"
+        return
+      end
       
       logger.debug "=================== Comprobante.procesar ==================="
       logger.debug self.xml.queued_for_write[:original].path

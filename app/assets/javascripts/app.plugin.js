@@ -76,7 +76,7 @@
 		  return false;
 		};
 	});
-
+	
 	// fuelux pillbox
 	var addPill = function($input){
 		var $text = $input.val(), $pills = $input.closest('.pillbox'), $repeat = false, $repeatPill;
@@ -91,16 +91,17 @@
 	    	$repeatPill.fadeOut().fadeIn();
 	    	return;
 	    };
+		
 	    $item = $('<li class="label bg-dark">'+$text+'</li> ');
 		$item.insertBefore($input);
 		$input.val('');
-		$pills.trigger('change', $item);
+		$pills.trigger('added', $text);
 	};
-
+	
 	$('.pillbox input').on('blur', function() {
 		addPill($(this));
 	});
-
+	
 	$('.pillbox input').on('keypress', function(e) {
 	    if(e.which == 13) {
 	        e.preventDefault();

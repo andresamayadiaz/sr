@@ -27,3 +27,6 @@ end
 
 # Paginado
 gem 'kaminari'
+
+# Tags
+gem 'acts-as-taggable-on', '>=3.0'

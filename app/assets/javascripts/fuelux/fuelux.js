@@ -670,11 +670,42 @@
 				return $.extend({ text: $this.text() }, $this.data());
 			}).get();
 		},
-
+		
 		itemclicked: function (e) {
+			var $li = $(e.currentTarget);
+			var data = $.extend({
+				text : $li.html()
+			}, $li.data());
+			
+			$li.remove();
+			e.preventDefault();
+			this.$element.trigger('removed', data);
+			
+			/*
 			$(e.currentTarget).remove();
 			e.preventDefault();
+			*/
+		},
+		
+		itemCount: function() {
+			return this.$element.find('li').length;
+		},
+		
+		addItem: function(text, value) {
+			value   = value || text;
+			var $li = $('<li data-value="' + value + '">' + text + '</li>');
+
+			if( this.$element.find('ul').length > 0 ) {
+				this.$element.find('ul').append($li);
+			} else {
+				this.$element.append($li);
+			}
+
+			this.$element.trigger( 'added', { text: text, value: value } );
+
+			return $li;
 		}
+		
 	};
 
 

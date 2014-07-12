@@ -5,6 +5,8 @@ Soyreceptor::Application.routes.draw do
     authenticated :user do
       root 'home#index', as: :authenticated_root
       post 'upload_comprobante', to: 'home#upload_comprobante'
+      post 'add_tag', to: 'home#add_tag', ad: :add_tag
+      post 'remove_tag', to: 'home#remove_tag', ad: :remove_tag
       get 'emitidos', to: 'home#emitidos'
       get 'recibidos', to: 'home#recibidos'
       get 'comprobante/:id', to: 'home#comprobante', as: :comprobante

@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require datepicker/bootstrap-datepicker
+//= require fuelux/fuelux
 //= require_self
 //= require slimscroll/jquery.slimscroll.min
 //= require app.plugin

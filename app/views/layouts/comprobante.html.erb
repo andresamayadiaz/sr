@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" class="app">
+<head>
+  <meta charset="utf-8" />
+  <title><%= content_for?(:title) ? yield(:title) : "SoyReceptor" %></title>
+  <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Soyreceptor" %>">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= yield :specific_css %>
+  <%= csrf_meta_tags %>
+</head>
+  
+  <body class="">
+	  <section class="vbox">
+		  <%= render 'layouts/navigation' %>
+	      <section>
+	        <section class="hbox stretch">
+	          
+			  <%= render 'layouts/aside' %>
+			  
+			  <section id="content">
+			    <section class="vbox bg-white">          
+					
+					<%= yield :breadcrumbs %>
+					<%= render 'layouts/flash_messages' %>
+					
+					<!-- .yield -->
+			  		<%= yield %>
+					<!-- /.yield -->
+					
+				</section>
+				<a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>
+			  </section>
+			  
+	        <aside class="bg-light lter b-l aside-md hide" id="notes">
+	          <div class="wrapper">Notification</div>
+	        </aside>
+	      </section>
+	    </section>
+	  </section>
+	<%= javascript_include_tag 'application' %>
+	<%= yield :specific_js %>
+  </body>
+  
+</html>

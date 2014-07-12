@@ -1,8 +1,9 @@
-# aad mayo 2014
+# aad mayo 2014 - inicial
+# aad julio 2014 - tags, lista con filtros de emitidos y recibidos, paginado
 
 class HomeController < ApplicationController
   before_filter :authenticate_user!
-  before_action :set_comprobante, only: [:comprobante]
+  before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag]
   
   def index
     
@@ -15,7 +16,7 @@ class HomeController < ApplicationController
     
     @user = User.find(current_user.id)
     
-    
+    render layout: "comprobante"
     
   end
   
@@ -63,15 +64,33 @@ class HomeController < ApplicationController
     
     @recibidos = @user.comprobantes.joins(:emisor).where("recibido = ? AND fecha BETWEEN ? AND ? AND (emisors.rfc LIKE ? OR emisors.nombre LIKE ?)", true, @from, @to, @q, @q).page params[:page]
     
-    cookies[:current_page] = params[:page]
+  end
+  
+  def add_tag
+    
+    @added_tag = params[:tag]
+    
+    @comprobante.tag_list.add(@added_tag)
+    @comprobante.save
+    
+    render :json => @comprobante.tag_list.to_json
+    
+  end
+  
+  def remove_tag
+    
+    @removed_tag = params[:tag]
+    
+    @comprobante.tag_list.remove(@removed_tag)
+    @comprobante.save
+    
+    render :json => @comprobante.tag_list.to_json
     
   end
   
   def upload_comprobante
     
     @user = User.find(current_user.id)
-    
-    logger.debug "HomeController.upload_comprobante"
     
     @comprobante = Comprobante.new
     @comprobante.xml = params[:file]

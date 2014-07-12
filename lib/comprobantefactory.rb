@@ -32,14 +32,14 @@ module COMPROBANTEFACTORY
   
   class Emisor
     
-    attr_accessor :rfc, :regimenFiscal, :nombre
+    attr_accessor :rfc, :regimenFiscal, :nombre, :domicilio_calle, :domicilio_noExterior, :domicilio_noInterior, :domicilio_municipio, :domicilio_colonia, :domicilio_estado, :domicilio_pais, :domicilio_codigoPostal
     
   end
   
   class Receptor
     
-    attr_accessor :rfc, :nombre
-    
+    attr_accessor :rfc, :nombre, :domicilio_calle, :domicilio_noExterior, :domicilio_noInterior, :domicilio_municipio, :domicilio_colonia, :domicilio_estado, :domicilio_pais, :domicilio_codigoPostal
+      
   end
   
   class TimbreFiscal
