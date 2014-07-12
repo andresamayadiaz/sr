@@ -3,7 +3,7 @@ class Comprobante < ActiveRecord::Base
   has_one :emisor, :dependent => :destroy
   has_one :receptor, :dependent => :destroy
   has_one :TimbreFiscalDigital, :dependent => :destroy
-  belongs_to :user
+  before_create :set_uuid
   
   has_attached_file :xml,
   :path => ":rails_root/public/system/:class/:attachment/:id_partition/:filename"
@@ -111,6 +111,11 @@ class Comprobante < ActiveRecord::Base
     end
     
   private
+  
+    def set_uuid
+      self.internal_uuid = SecureRandom.uuid
+    end
+  
     def procesar
       
       logger.debug "=================== Comprobante.procesar ==================="

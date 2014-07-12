@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
-
+  
   def perfil
       
     @user = User.find(current_user.id)
@@ -56,7 +56,6 @@ class UsersController < ApplicationController
   
   def update_logo
     
-    logger.debug "Entro a update_logo"
     @user = User.find(current_user.id)
     
     @user.logo = params[:file]

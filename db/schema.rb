@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140708030941) do
+ActiveRecord::Schema.define(version: 20140711231332) do
 
   create_table "comprobantes", force: true do |t|
     t.string   "version"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20140708030941) do
     t.integer  "user_id"
     t.string   "serie"
     t.string   "folio"
+    t.string   "internal_uuid"
   end
 
   add_index "comprobantes", ["emitido"], name: "index_comprobantes_on_emitido", using: :btree

@@ -1,6 +1,8 @@
 # aad mayo 2014
 
 class HomeController < ApplicationController
+  before_filter :authenticate_user!
+  before_action :set_comprobante, only: [:comprobante]
   
   def index
     
@@ -9,11 +11,35 @@ class HomeController < ApplicationController
     
   end
   
+  def comprobante
+    
+    @user = User.find(current_user.id)
+    
+    
+    
+  end
+  
   def emitidos
     
     @user = User.find(current_user.id)
     
-    @emitidos = @user.comprobantes.where("emitido = ?", true)
+    if params[:from] and params[:to]
+      @from = params[:from]
+      @to = params[:to]
+    else
+      @from = Date.today.at_beginning_of_month
+      @to = Date.today.at_end_of_month
+    end
+    
+    if params[:q]
+      @q = '%' + params[:q] + '%'
+    else
+      @q = '%%'
+    end
+    
+    @emitidos = @user.comprobantes.joins(:receptor).where("emitido = ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", true, @from, @to, @q, @q).page params[:page]
+    
+    cookies[:current_page] = params[:page]
     
   end
   
@@ -21,7 +47,23 @@ class HomeController < ApplicationController
     
     @user = User.find(current_user.id)
     
-    @recibidos = @user.comprobantes.where("recibido = ?", true)
+    if params[:from] and params[:to]
+      @from = params[:from]
+      @to = params[:to]
+    else
+      @from = Date.today.at_beginning_of_month
+      @to = Date.today.at_end_of_month
+    end
+    
+    if params[:q]
+      @q = '%' + params[:q] + '%'
+    else
+      @q = '%%'
+    end
+    
+    @recibidos = @user.comprobantes.joins(:emisor).where("recibido = ? AND fecha BETWEEN ? AND ? AND (emisors.rfc LIKE ? OR emisors.nombre LIKE ?)", true, @from, @to, @q, @q).page params[:page]
+    
+    cookies[:current_page] = params[:page]
     
   end
   
@@ -44,10 +86,14 @@ class HomeController < ApplicationController
       render :json => {:error => "Not Acceptable"}.to_json, :status => 406
       
     end
-    
-    
-    
-    
+
   end
+  
+  private
+    
+    # Use callbacks to share common setup or constraints between actions.
+    def set_comprobante
+      @comprobante = current_user.comprobantes.find(params[:id])
+    end
   
 end

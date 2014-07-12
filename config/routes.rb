@@ -7,6 +7,7 @@ Soyreceptor::Application.routes.draw do
       post 'upload_comprobante', to: 'home#upload_comprobante'
       get 'emitidos', to: 'home#emitidos'
       get 'recibidos', to: 'home#recibidos'
+      get 'comprobante/:id', to: 'home#comprobante', as: :comprobante
     end
 
     unauthenticated do

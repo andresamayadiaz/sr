@@ -22,9 +22,9 @@
   <div class="row wrapper">
     <div class="col-sm-5 m-b-xs">
       <span class="help-block m-b-none">Desde</span>
-	  <input class="input-sm input-s datepicker-input form-control" size="10" type="text" value="<%= Date.today.at_beginning_of_month %>" data-date-format="yyyy-mm-dd" >
+	  <input class="input-sm input-s datepicker-input form-control" size="10" type="text" value="<%= @from %>" data-date-format="yyyy-mm-dd" id="date_from" >
 	  <span class="help-block m-b-none">Hasta</span>
-	  <input class="input-sm input-s datepicker-input form-control" size="10" type="text" value="<%= Date.today.at_end_of_month %>" data-date-format="yyyy-mm-dd" >
+	  <input class="input-sm input-s datepicker-input form-control" size="10" type="text" value="<%= @to %>" data-date-format="yyyy-mm-dd"  id="date_to" >
     </div>
     <div class="col-sm-4 m-b-xs">
       <div class="btn-group" data-toggle="buttons">
@@ -41,7 +41,7 @@
     </div>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="input-sm form-control" placeholder="Buscar" data-toggle="tooltip" data-placement="top" title="RFC, Receptor, UUID, Serie, ...">
+        <input type="text" class="input-sm form-control" placeholder="Buscar" data-toggle="tooltip" data-placement="top" title="RFC, Razon Social, UUID, ...">
         <span class="input-group-btn">
           <button class="btn btn-sm btn-default" type="button">Buscar</button>
         </span>
@@ -91,15 +91,7 @@
         
       </div>
       <div class="col-sm-4 text-right text-center-xs">                
-        <ul class="pagination pagination-sm m-t-none m-b-none">
-          <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-          <li><a href="#">1</a></li>
-          <li class="active"><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">4</a></li>
-          <li><a href="#">5</a></li>
-          <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-        </ul>
+        <%= paginate @recibidos %>
       </div>
     </div>
   </footer>
@@ -111,15 +103,18 @@
 <script type="text/javascript" charset="utf-8">
 	
 	function set_dia(){
-		alert('selecciono dia');
+		$("#date_from").val('<%= Date.today %>');
+		$("#date_to").val('<%= Date.today %>');
 	}
-	
+
 	function set_semana(){
-		alert('selecciono semana');
+		$("#date_from").val('<%= Date.today.at_beginning_of_week %>');
+		$("#date_to").val('<%= Date.today.at_end_of_week %>');
 	}
-	
+
 	function set_mes(){
-		alert('selecciono mes');
+		$("#date_from").val('<%= Date.today.at_beginning_of_month %>');
+		$("#date_to").val('<%= Date.today.at_end_of_month %>');
 	}
 	
 </script>
