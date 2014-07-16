@@ -1,26 +1,5 @@
 # aad mayo 2014
 
-# Y quiero que los strings no tengan espacios extraños
-class String
-
-  # Limpia whitespace de extremos y espacios repetidos
-  # 
-  # @return [String] Una copia del string sin espacios extraños
-  def squish
-    dup.squish!
-  end
-
-  # Lo mismo que squish, pero destructivo
-  # 
-  # @return [String] El string original sin espacios extraños
-  def squish!
-    strip!
-    gsub!(/\s(\s+)/, ' ')
-    self
-  end
-
-end
-
 module COMPROBANTEFACTORY
   
   require 'nokogiri'
@@ -29,6 +8,7 @@ module COMPROBANTEFACTORY
   #require 'base64'
   
   require 'cfdi32/Cfdi32'
+  require 'timbrefiscaldigital/Tfd1'
   
   class Emisor
     
@@ -45,6 +25,12 @@ module COMPROBANTEFACTORY
   class TimbreFiscal
     
     attr_accessor :version, :uuid, :fechaTimbrado, :selloCFD, :noCertificadoSAT, :selloSAT
+    
+  end
+  
+  class Concepto
+    
+    attr_accessor :cantidad, :unidad, :descripcion, :valorUnitario, :importe
     
   end
   
@@ -93,10 +79,6 @@ module COMPROBANTEFACTORY
       	return schema2.validate(doc)
       end
   
-    end
-    
-    def cadena_original
-      nil
     end
     
     def version

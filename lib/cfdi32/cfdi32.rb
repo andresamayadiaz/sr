@@ -1,12 +1,13 @@
 # aad mayo 2014
-require 'comprobantefactory'
+#require 'comprobantefactory'
+#require 'tfd1'
 require 'libxslt'
 
 module COMPROBANTEFACTORY
   
   # Clase Cfdi32 para comprobnates CFDI version 3.2
   #
-  class Cfdi32 < COMPROBANTEFACTORY::Comprobante
+  class Cfdi32 #< COMPROBANTEFACTORY::Comprobante
     
     attr_accessor :doc
     
@@ -14,10 +15,12 @@ module COMPROBANTEFACTORY
       
       @doc = doc
       
-      #TODO if version !- 3.2 raise error
+      @version = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("version").to_s
+      if @version != '3.2'
+        raise "El Comprobante no es version 3.2, version #{@version}"
+      end
       
       # Atributos Requeridos
-      @version = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("version").to_s
       @fecha = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("fecha").to_s
       @sello = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("sello").to_s
       @certificado = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("certificado").to_s
@@ -66,41 +69,176 @@ module COMPROBANTEFACTORY
         
       #logger.debug "Receptor: #{@receptor.to_json.to_s}"
       
-      # Otros
-      @timbre = COMPROBANTEFACTORY::TimbreFiscal.new
-      @uuid = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("UUID").to_s
-      @timbre.uuid = @uuid
-      
-      @selloSAT = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("selloSAT").to_s
-      @timbre.selloSAT = @selloSAT
-      
-      @selloCFD = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("selloCFD").to_s
-      @timbre.selloCFD = @selloCFD
-      
+      # Timbre Fiscal Digital
       @versionComplemento = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("version").to_s
-      @timbre.version = @versionComplemento
       
-      @noCertificadoSAT = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("noCertificadoSAT").to_s
-      @timbre.noCertificadoSAT = @noCertificadoSAT
+      if @versionComplemento == '1.0'
+        
+        @timbre = COMPROBANTEFACTORY::Tfd1.new(@doc)
+        #@timbre.version = @versionComplemento
+        
+        @uuid = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("UUID").to_s
+        #@timbre.uuid = @uuid
       
-      @fechaTimbrado = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("FechaTimbrado").to_s
-      @timbre.fechaTimbrado = @fechaTimbrado
+        @selloSAT = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("selloSAT").to_s
+        #@timbre.selloSAT = @selloSAT
+      
+        @selloCFD = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("selloCFD").to_s
+        #@timbre.selloCFD = @selloCFD
+        
+        @noCertificadoSAT = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("noCertificadoSAT").to_s
+        #@timbre.noCertificadoSAT = @noCertificadoSAT
+        
+        @fechaTimbrado = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("FechaTimbrado").to_s
+        #@timbre.fechaTimbrado = @fechaTimbrado
+        
+        # Conceptos
+        @conceptos = Array.new
+        @doc.root.xpath("//cfdi:Concepto", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).each do |concepto|
+          
+          c = COMPROBANTEFACTORY::Concepto.new
+          c.cantidad = concepto.attribute("cantidad").to_s
+          c.unidad = concepto.attribute("unidad").to_s
+          c.valorUnitario = concepto.attribute("valorUnitario").to_s
+          c.descripcion = concepto.attribute("descripcion").to_s
+          c.importe = concepto.attribute("importe").to_s
+          @conceptos.push ( c )
+          
+        end
+        
+      else 
+        
+        raise "Version de Timbre Fiscal #{@versionComplemento} No Soportada"
+        
+      end
       
     end
     
     def cadena_original
-  
+      
+      file = LibXML::XML::Document.string(@doc.to_s)
+      
       stylesheet_doc = LibXML::XML::Document.file("public/sat/cadenaoriginal_3_2.xslt")
       stylesheet = LibXSLT::XSLT::Stylesheet.new(stylesheet_doc)
-  
-      result = stylesheet.apply(@doc)
-  
+      
+      result = stylesheet.apply(file)
+      
       result.child.to_s
+  
+    end
+    
+    # Valida la estructura del Comprobante
+    def validate_schema
+      
+      # open("http://www.sat.gob.mx/cfd/3/cfdv32.xsd")
+      
+      #puts "KEYS: " + doc.root.keys.to_s
+      #puts "Schema: " + doc.root["xsi:schemaLocation"]
+      #puts doc.xpath("//*[@xsi:schemaLocation]")
+      #puts doc.collect_namespaces
+      # Hash[ doc.root["xsi:schemaLocation"].scan(/(\S+)\s+(\S+)/) ]
+      
+      schema_final = "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' elementFormDefault='qualified' attributeFormDefault='unqualified'>"
+      @doc.xpath("//*[@xsi:schemaLocation]").each do |element|
+  
+  	    schemata_by_ns = Hash[ element["xsi:schemaLocation"].scan(/(\S+)\s+(\S+)/) ]
+
+  	      schemata_by_ns.each do |ns,xsd_uri|
+  	      xsd = Nokogiri::XML::Schema(open(xsd_uri))
+  	      #puts "NS: #{ns} --- URI: #{xsd_uri}"
+  	      #puts "VALID: " + xsd.valid?(doc).to_s
+  	      schema_final += "<xs:import namespace='#{ns}' schemaLocation='#{xsd_uri}'/>"
+
+  	    end
+
+      end
+      schema_final += "</xs:schema>"
+      #puts "SCHEMA FINAL: " + schema_final
+      schema2 = Nokogiri::XML::Schema.new(schema_final)
+      
+      #puts ">>>>> VALID? " + schema2.valid?(doc).to_s
+      #schema2.validate(doc).each do |error|
+      #    puts error.message
+      #end
+      
+      if schema2.valid?(doc) == true
+      	return true
+      else
+      	return schema2.validate(doc)
+      end
   
     end
     
     def uuid
       @uuid
+    end
+    
+    def version
+      @version
+    end
+    
+    def fecha
+      @fecha
+    end
+    
+    def sello
+      @sello
+    end
+    
+    def formaDePago
+      @formaDePago
+    end
+    
+    def noCertificado
+      @noCertificado
+    end
+    
+    def certificado
+      @certificado
+    end
+    
+    def subTotal
+      @subTotal
+    end
+    
+    def total
+      @total
+    end
+    
+    def tipoDeComprobante
+      @tipoDeComprobante
+    end
+    
+    def metodoDePago
+      @metodoDePago
+    end
+    
+    def lugarExpedicion
+      @lugarExpedicion
+    end
+    
+    def emisor
+      @emisor
+    end
+    
+    def receptor
+      @receptor
+    end
+    
+    def conceptos
+      @conceptos
+    end
+    
+    def serie
+      @serie
+    end
+    
+    def folio
+      @folio
+    end
+    
+    def timbre
+      @timbre
     end
     
   end

@@ -71,9 +71,12 @@ class HomeController < ApplicationController
     @added_tag = params[:tag]
     
     @comprobante.tag_list.add(@added_tag)
-    @comprobante.save
     
-    render :json => @comprobante.tag_list.to_json
+    if @comprobante.save
+      render :json => @comprobante.tag_list.to_json
+    else
+      render :json => {:error => "Not Acceptable"}.to_json, :status => 406
+    end
     
   end
   
@@ -82,9 +85,12 @@ class HomeController < ApplicationController
     @removed_tag = params[:tag]
     
     @comprobante.tag_list.remove(@removed_tag)
-    @comprobante.save
     
-    render :json => @comprobante.tag_list.to_json
+    if @comprobante.save
+      render :json => @comprobante.tag_list.to_json
+    else
+      render :json => {:error => "Not Acceptable"}.to_json, :status => 406
+    end
     
   end
   

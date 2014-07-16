@@ -4,7 +4,7 @@ class Comprobante < ActiveRecord::Base
   has_one :emisor, :dependent => :destroy
   has_one :receptor, :dependent => :destroy
   has_one :TimbreFiscalDigital, :dependent => :destroy
-  before_create :set_uuid
+  before_create :set_internal_uuid
   
   has_attached_file :xml,
   :path => ":rails_root/public/system/:class/:attachment/:id_partition/:filename"
@@ -38,26 +38,8 @@ class Comprobante < ActiveRecord::Base
     
     def prevalida_cfd
       
-      # despues de actualizar enviar la solicitud de procesar el comprobante
-      # TODO validar que exista el rfc del emisor y receptor de lo contrario devuelve error
-      emitido = false
-      recibido = false
-      
-      if self.emisor
-        if self.emisor.rfc == self.user.rfc
-          emitido = true
-        end
-      end
-      
-      if self.receptor
-        if self.receptor.rfc == self.user.rfc
-          recibido = true
-        end
-      end
-      
-      # TODO validar si ambos emitido y recibido son false ponerlo en categoria de externo ???
-      
-      self.update_columns(:emitido => emitido, :recibido => recibido)
+      # TODO validar si es emitido que el RFC y datos ficales del emisor coincidan con el perfil
+      # TODO validar si es recibido que el RFC y datos fiscales del receptor coincidan con el perfil
       
     end
     
@@ -97,26 +79,27 @@ class Comprobante < ActiveRecord::Base
     # TODO XSLT not working with version 2.0
     def cadena_original
       
+      return self.xml_obj.cadena_original
+      
+    end
+    
+    def xml_obj
+      
       doc = Nokogiri::XML( File.read(self.xml.path) )
       @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
       
       if @version == '3.2'
-      
-        file = COMPROBANTEFACTORY::Cfdi32.new(doc)
-        file.cadena_original
-        
+        return COMPROBANTEFACTORY::Cfdi32.new(doc)
       else
-        
-        logger.debug "============ Version No Soportada ============"
-        return nil
-        
+        raise "Version #{@version} No Soportada"
       end
       
     end
     
   private
-  
-    def set_uuid
+    
+    # Generar un UUID interno al comprobante para uso futuro
+    def set_internal_uuid
       self.internal_uuid = SecureRandom.uuid
     end
     
@@ -124,7 +107,7 @@ class Comprobante < ActiveRecord::Base
       
       if !self.version.blank?
         # Se esta haciendo un save a un comprobante previamente guardado,
-        # probablemente se este actualizado el tags_list
+        # probablemente se este actualizando el tags_list
         logger.debug "Comprobante Already Exists!"
         return
       end
@@ -180,10 +163,10 @@ class Comprobante < ActiveRecord::Base
           # version no soportada, nula o no es un CFD
           # TODO generar notificacion de comprobante erroneo
           logger.debug "============ Version No Soportada ============"
-          return false
+          raise "Version #{@version} No Soportada"
         
         end
-      
+    
     # Archivo No Compatible
     rescue Exception => e
       

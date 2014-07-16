@@ -104,47 +104,46 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-		<td>pza</td>
-        <td>iPhone 5 32GB White & Silver (GSM) Unlocked</td>
-        <td align="right">$749.00</td>
-        <td align="right">$749.00</td>
-      </tr>
-      <tr>
-        <td>2</td>
-		<td>pza</td>
-        <td>iPad mini with Wi-Fi 32GB - White & Silver</td>
-        <td align="right">$429.00</td>
-        <td align="right">$858.00</td>
-      </tr>
-      <tr>
+	  
+	  <% @comprobante.xml_obj.conceptos.each do |concepto| %>
+	  
+        <tr>
+          <td><%= concepto.cantidad %></td>
+  		  <td><%= concepto.unidad %></td>
+          <td><%= concepto.descripcion %></td>
+          <td align="right"><%= number_to_currency(concepto.valorUnitario) %></td>
+          <td align="right"><%= number_to_currency(concepto.importe) %></td>
+        </tr>
+	  
+	  <% end %>
+      
+	  <tr>
         <td colspan="4" class="text-right"><strong>Subtotal</strong></td>
-        <td align="right">$1,607.00</td>
+        <td align="right"><%= number_to_currency(@comprobante.subTotal) %></td>
       </tr>
       <tr>
         <td colspan="4" class="text-right no-border"><strong>Descuento</strong></td>
-        <td align="right">$0.00</td>
+        <td align="right">???</td>
       </tr>
       <tr>
         <td colspan="4" class="text-right no-border"><strong>IVA</strong></td>
-        <td align="right">$0.00</td>
+        <td align="right">???</td>
       </tr>
       <tr>
         <td colspan="4" class="text-right no-border"><strong>IEPS</strong></td>
-        <td align="right">$0.00</td>
+        <td align="right">???</td>
       </tr>
       <tr>
         <td colspan="4" class="text-right no-border"><strong>IVA Ret.</strong></td>
-        <td align="right">$0.00</td>
+        <td align="right">???</td>
       </tr>
       <tr>
         <td colspan="4" class="text-right no-border"><strong>ISR</strong></td>
-        <td align="right">$0.00</td>
+        <td align="right">???</td>
       </tr>
       <tr>
         <td colspan="4" class="text-right no-border"><strong>Total</strong></td>
-        <td align="right"><strong>$1,607.00</strong></td>
+        <td align="right"><strong><%= number_to_currency(@comprobante.total) %></strong></td>
       </tr>
     </tbody>
   </table>
@@ -178,8 +177,7 @@
 <script type="text/javascript" charset="utf-8">
 	
 	$('#MyPillbox').on('added', function( event, data ) {
-		//alert("ADDED " + data.text);
-		//console.log(data);
+		
 		var formData = new FormData();
 		formData.append('tag', data);
 		formData.append('id', '<%= @comprobante.id %>');
@@ -188,7 +186,7 @@
 		xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
 		xhr.onload = function () {
 		  if (xhr.status === 200) {
-			alert('Tag Agregada con Exito!');
+			  // do nothing
 		  } else {
 		    alert('Error al agregar tag.');
 		  }
@@ -198,8 +196,7 @@
 	});
 	
 	$('#MyPillbox').on('removed', function( event, data ) {
-		//alert("REMOVED " + data.text);
-		//console.log(data);
+		
 		var formData = new FormData();
 		formData.append('tag', data.text);
 		formData.append('id', '<%= @comprobante.id %>');
@@ -208,7 +205,7 @@
 		xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
 		xhr.onload = function () {
 		  if (xhr.status === 200) {
-			alert('Tag Eliminada con Exito!');
+			  // do nothing
 		  } else {
 		    alert('Error al eliminar tag.');
 		  }
