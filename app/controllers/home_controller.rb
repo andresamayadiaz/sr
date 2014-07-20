@@ -23,6 +23,7 @@ class HomeController < ApplicationController
   def emitidos
     
     @user = User.find(current_user.id)
+    logger.debug "USER TAG CLOUD: " + @user.tag_cloud.to_json
     
     if params[:from] and params[:to]
       @from = params[:from]
@@ -39,8 +40,6 @@ class HomeController < ApplicationController
     end
     
     @emitidos = @user.comprobantes.joins(:receptor).where("emitido = ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", true, @from, @to, @q, @q).page params[:page]
-    
-    cookies[:current_page] = params[:page]
     
   end
   

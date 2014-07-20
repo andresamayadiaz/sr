@@ -3,12 +3,9 @@
   <section class="vbox">
     <header class="header bg-primary lter text-center clearfix">
       <div class="btn-group">
-        <button type="button" class="btn btn-sm btn-dark btn-icon" title="Nuevo Comprobante"><i class="fa fa-plus"></i></button> 
+        <button type="button" class="btn btn-sm btn-dark btn-icon" title="Nuevo Comprobante" data-toggle="modal" data-target="#uploadModal"><i class="fa fa-plus"></i></button> 
         <div class="btn-group hidden-nav-xs">
-			<%= form_for(Comprobante.new, :url => upload_comprobante_path, :html => {:multipart => true, :class => 'bs-example form-horizontal', :id => 'new_comprobante'} ) do |f| %>
-			  <% f.file_field :comprobante, {:class => 'filestyle'} %>
-			  <%= f.submit 'Subir Comprobante', {:class => 'btn btn-sm btn-primary', :id => 'btn_file'} %>
-			<% end %>
+			<a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#uploadModal" name="commit">Subir Comprobante</a>
         </div>
       </div>
     </header>
@@ -44,30 +41,16 @@
                     <span>Todos</span>
                   </a>
                 </li>
-                <li >
-                  <a href="layout-r.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Right nav</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="layout-h.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Hbox Layout</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="layout-boxed.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Boxed Layout</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="layout-fluid.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Fluid Layout</span>
-                  </a>
-                </li>
+                
+                <% current_user.tag_cloud.each do |tag| %>
+	                <li >
+	                  <a href="#" >                                                        
+	                    <i class="fa fa-angle-right"></i>
+	                    <span><%= tag %></span>
+	                  </a>
+	                </li>
+				<% end %>
+				
               </ul>
             </li>
             <li >
@@ -305,7 +288,7 @@
               <ul class="nav lt">
 				<li>
 					<strong>Drag & Drop</strong>
-					<div class="dropfile visible-lg" id="nuevo_comprobante">
+					<div class="dropfile visible-lg" id="nuevo_comprobanteOLD">
 						<small>Arrastre una Comprobante para Cargar</small>
 					</div>
 				</li>
@@ -360,29 +343,30 @@
 		nuevo_drop = function(evt) {   
 		    evt.stopPropagation();
 		    evt.preventDefault();
-		    var file = evt.dataTransfer.files[0];
 			
-			var formData = new FormData();
-			formData.append('file', file);
-	    	
-			// upload File
-			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '<%= upload_comprobante_url %>');
-			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-			xhr.onload = function () {
-			  if (xhr.status === 200) {
-				$('#nuevo_comprobante').html('<small>Arrastre una Comprobante para Cargar</small>');
-				alert('Comprobante Cargado Con Exito!');
-			  } else {
-				$('#nuevo_comprobante').html('<small>Arrastre una Comprobante para Cargar</small>');
-			    alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
-			  }
-			};
-			
-			xhr.send(formData);
-		
-			$('#nuevo_comprobante').html('<small>Arrastre una Comprobante para Cargar</small>');
-		  }
+			for (a = 0; a < evt.dataTransfer.files.length; ++a){
+				
+				var file = evt.dataTransfer.files[a];
+				//console.log(file);
+				var formData = new FormData();
+	 			formData.append('file', file);
+				
+	 			// upload File
+	 			var xhr = new XMLHttpRequest();
+	 			xhr.open('POST', '<%= upload_comprobante_url %>');
+	 			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+	 			xhr.onload = function () {
+	 			  if (xhr.status === 200) {
+	 				alert('Comprobante Cargado Con Exito!');
+	 			  } else {
+	 			    alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
+	 			  }
+	 			};
+	
+	 			xhr.send(formData);
+
+	 		  }
+			}
 		  // /.nuevo_drop function
 		  
 		nuevo_comprobante.addEventListener("drop", nuevo_drop, false);

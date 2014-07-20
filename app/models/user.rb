@@ -22,4 +22,15 @@ class User < ActiveRecord::Base
     Perfil.create(user: self, notificarfaltas: true, notificaradvertencias: true, notificarvalidos: true)
   end
   
+  def tag_cloud
+    tag_cloud = Array.new
+    self.comprobantes.limit(50).each do |comprobante|
+      comprobante.tag_list.each do |tag|
+        return tag_cloud if tag_cloud.size >= 10
+        tag_cloud.push(tag)
+      end
+    end
+    return tag_cloud
+  end 
+  
 end

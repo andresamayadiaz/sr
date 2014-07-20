@@ -53,7 +53,7 @@
 
 	// datepicker
 	$(".datepicker-input").each(function(){ $(this).datepicker();});
-
+	
 	// dropfile
 	$('.dropfile').each(function(){
 		var $dropbox = $(this);
@@ -61,17 +61,19 @@
 		  $('small',this).html('File API & FileReader API not supported').addClass('text-danger');
 		  return;
 		}
-
+		
 		this.ondragover = function () {$dropbox.addClass('hover'); return false; };
 		this.ondragend = function () {$dropbox.removeClass('hover'); return false; };
 		this.ondrop = function (e) {
 		  e.preventDefault();
-		  $dropbox.removeClass('hover').html('');
+		  $dropbox.removeClass('hover'); // .html('')
 		  var file = e.dataTransfer.files[0],
 		      reader = new FileReader();
+			  /*
 		  reader.onload = function (event) {
 		  	$dropbox.append($('<img>').attr('src', event.target.result));
 		  };
+			  */
 		  reader.readAsDataURL(file);
 		  return false;
 		};

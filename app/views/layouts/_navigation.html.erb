@@ -136,5 +136,24 @@
       </ul>
     </li>
 	<% end %>
-  </ul>      
+  </ul>  
+  <!-- uploadModal -->
+  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="uploadModalLabel">Cargar Comprobantes</h4>
+        </div>
+        <div class="modal-body dropfile" id="nuevo_comprobante">
+          Selecciona archivos para cargarlos. Puedes seleccionar más de un archivo a la vez. También puedes arrastrar y soltar archivos en esta sección para comenzar a cargarlos.
+        </div>
+        <div class="modal-footer">
+          <button type="file" class="btn btn-primary" name="file[]" multiple>Elegir Archivos</button>
+		  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.uploadModal -->    
 </header>
