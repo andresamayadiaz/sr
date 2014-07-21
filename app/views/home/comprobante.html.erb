@@ -60,9 +60,9 @@
           <li class="label bg-danger">Ingreso</li>
           <li class="label bg-info">Item Five</li>
           <li class="label bg-success">Item Six</li>
-		  <% @comprobante.tags.each do |tag| %>
+		  <% @comprobante.tags_from(@comprobante.user).each do |tag| %>
 		  
-		  	  <li class="label bg-dark"><%= tag.name %></li>
+		  	  <li class="label bg-dark"><%= tag %></li>
 		  
 		  <% end %>
           <input type="text" placeHolder="agregar etiqueta">

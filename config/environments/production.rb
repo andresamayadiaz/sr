@@ -96,4 +96,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  
+  ActsAsTaggableOn.remove_unused_tags = true
+  
 end

@@ -42,7 +42,7 @@
                   </a>
                 </li>
                 
-                <% current_user.tag_cloud.each do |tag| %>
+                <%  (current_user.owned_tags.order(taggings_count: :desc).limit 10).each do |tag| %>
 	                <li >
 	                  <a href="#" >                                                        
 	                    <i class="fa fa-angle-right"></i>

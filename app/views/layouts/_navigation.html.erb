@@ -149,7 +149,10 @@
           Selecciona archivos para cargarlos. Puedes seleccionar más de un archivo a la vez. También puedes arrastrar y soltar archivos en esta sección para comenzar a cargarlos.
         </div>
         <div class="modal-footer">
-          <button type="file" class="btn btn-primary" name="file[]" multiple>Elegir Archivos</button>
+		  <%= form_for(Comprobante.new, :url => upload_comprobante_path, :html => {:multipart => true, :class => 'bs-example form-horizontal', :id => 'new_comprobante'} ) do |f| %>
+		  	<% f.file_field :comprobante, {:id => 'files', :class => 'filestyle hide', :multiple => 'multiple'} %>
+		  <% end %>
+		  <button type="button" class="btn btn-primary" onClick='$("#files").click();'>Elegir Archivos</button>
 		  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
         </div>
       </div>

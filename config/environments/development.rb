@@ -51,4 +51,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  
+  ActsAsTaggableOn.remove_unused_tags = true
+  
 end

@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
   
   after_create :build_perfil
   
+  acts_as_tagger
+  
   def build_perfil
     
     Perfil.create(user: self, notificarfaltas: true, notificaradvertencias: true, notificarvalidos: true)

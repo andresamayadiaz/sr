@@ -23,7 +23,6 @@ class HomeController < ApplicationController
   def emitidos
     
     @user = User.find(current_user.id)
-    logger.debug "USER TAG CLOUD: " + @user.tag_cloud.to_json
     
     if params[:from] and params[:to]
       @from = params[:from]
@@ -69,7 +68,7 @@ class HomeController < ApplicationController
     
     @added_tag = params[:tag]
     
-    @comprobante.tag_list.add(@added_tag)
+    @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@added_tag), :on => :tags)
     
     if @comprobante.save
       render :json => @comprobante.tag_list.to_json
@@ -83,7 +82,7 @@ class HomeController < ApplicationController
     
     @removed_tag = params[:tag]
     
-    @comprobante.tag_list.remove(@removed_tag)
+    @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).remove(@removed_tag), :on => :tags)
     
     if @comprobante.save
       render :json => @comprobante.tag_list.to_json

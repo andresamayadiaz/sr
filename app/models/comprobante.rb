@@ -154,7 +154,8 @@ class Comprobante < ActiveRecord::Base
           end
           
           # Timbre Fiscal Digital
-          self.TimbreFiscalDigital = TimbreFiscalDigital.new(file.timbre.instance_values.delete(:doc))
+          timbre_values = file.timbre.instance_values.tap{|x| x.delete("doc")}
+          self.TimbreFiscalDigital = TimbreFiscalDigital.new(timbre_values)
           logger.debug self.TimbreFiscalDigital.to_json
           #logger.debug file.timbre.to_json
           
