@@ -150,11 +150,11 @@
 	<div class="well m-t">
 		<div class="row">
 			<div class="col-xs-12">
-				<%= image_tag 'cbb.png' %>
+				<%= image_tag cbb_url(format: :png, id: @comprobante.id), height: '200', width: '200' %>
 				<br>
 				<strong>Cadena Original del Complemento de Certificacion:</strong>
 				<p style="word-wrap: break-word;">
-					||1.0|69D4C012-49AF-4EE0-95E4-A56070146011|2014-05-07T10:09:31|gUwU+dMWaYZIHDIhAIVcm8sSY8HESN4s8fYOir2ADWHmTPFUsq6IDyX1VKt kp8LTNZJL/wod96LXcX45vxqU/h9XHf/2oI0l7MI40y2GsC29tvyaLc90GD+vuIcHf3sGaUadZgclAn07FmL7N2tU1VVN0bQowQ/KjWcsdFPN114=|00001000 000201455572||
+					<%= @comprobante.xml_obj.timbre.cadena_original %>
 				</p>
 				<strong>Sello Digital del CFDi:</strong><br>
 				<p style="word-wrap: break-word;">

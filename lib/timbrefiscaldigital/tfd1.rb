@@ -29,14 +29,14 @@ module COMPROBANTEFACTORY
     
     def cadena_original
       
-      file = LibXML::XML::Document.string(@doc.to_s)
+      file = LibXML::XML::Document.string(@doc.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).to_s)
       
       stylesheet_doc = LibXML::XML::Document.file("public/sat/cadenaoriginal_TFD_1_0.xslt")
       stylesheet = LibXSLT::XSLT::Stylesheet.new(stylesheet_doc)
       
       result = stylesheet.apply(file)
       
-      result.child.to_s
+      return result.child.to_s
       
     end
     

@@ -92,23 +92,23 @@ module COMPROBANTEFACTORY
         @fechaTimbrado = @doc.root.xpath("//tfd:TimbreFiscalDigital", 'tfd' => @doc.collect_namespaces["xmlns:tfd"]).attribute("FechaTimbrado").to_s
         #@timbre.fechaTimbrado = @fechaTimbrado
         
-        # Conceptos
-        @conceptos = Array.new
-        @doc.root.xpath("//cfdi:Concepto", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).each do |concepto|
-          
-          c = COMPROBANTEFACTORY::Concepto.new
-          c.cantidad = concepto.attribute("cantidad").to_s
-          c.unidad = concepto.attribute("unidad").to_s
-          c.valorUnitario = concepto.attribute("valorUnitario").to_s
-          c.descripcion = concepto.attribute("descripcion").to_s
-          c.importe = concepto.attribute("importe").to_s
-          @conceptos.push ( c )
-          
-        end
-        
       else 
         
         raise "Version de Timbre Fiscal #{@versionComplemento} No Soportada"
+        
+      end
+      
+      # Conceptos
+      @conceptos = Array.new
+      @doc.root.xpath("//cfdi:Concepto", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).each do |concepto|
+        
+        c = COMPROBANTEFACTORY::Concepto.new
+        c.cantidad = concepto.attribute("cantidad").to_s
+        c.unidad = concepto.attribute("unidad").to_s
+        c.valorUnitario = concepto.attribute("valorUnitario").to_s
+        c.descripcion = concepto.attribute("descripcion").to_s
+        c.importe = concepto.attribute("importe").to_s
+        @conceptos.push ( c )
         
       end
       
@@ -123,7 +123,7 @@ module COMPROBANTEFACTORY
       
       result = stylesheet.apply(file)
       
-      result.child.to_s
+      return result.child.to_s
   
     end
     

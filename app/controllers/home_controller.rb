@@ -3,7 +3,7 @@
 
 class HomeController < ApplicationController
   before_filter :authenticate_user!
-  before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag]
+  before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb]
   
   def index
     
@@ -17,6 +17,17 @@ class HomeController < ApplicationController
     @user = User.find(current_user.id)
     
     render layout: "comprobante"
+    
+  end
+  
+  def cbb
+    
+    txt = @comprobante.xml_obj.timbre.cadena_original
+    
+    respond_to do |format|
+      format.html
+      format.png  { render :qrcode => txt, :size => 10, :level => :l, :unit => 10 }
+    end
     
   end
   

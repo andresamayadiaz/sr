@@ -10,8 +10,9 @@ Soyreceptor::Application.routes.draw do
       get 'emitidos', to: 'home#emitidos'
       get 'recibidos', to: 'home#recibidos'
       get 'comprobante/:id', to: 'home#comprobante', as: :comprobante
+      get 'cbb/:id', to: 'home#cbb', as: :cbb
     end
-
+    
     unauthenticated do
       root 'devise/sessions#new', as: :unauthenticated_root
     end
