@@ -754,6 +754,8 @@ body.container {
   .vbox > footer {
     position: relative;
   }
+  .visible-print  { display: inherit !important; }
+  .hidden-print   { display: none !important; }
 }
 .slimScrollBar {
   border-radius: 0 !important;

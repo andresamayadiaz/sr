@@ -1,6 +1,12 @@
 <!-- Titulo Pagina -->
 <header class="header b-b b-light hidden-print">
-  <button href="#" class="btn btn-sm btn-info pull-right" onClick="window.print();">Imprimir</button>
+  <button class="btn btn-sm btn-info dropdown-toggle pull-right" data-toggle="dropdown">Acciones <span class="caret"></span></button>
+  <ul class="dropdown-menu pull-right">
+    <li><a onClick="window.print();">Imprimir</a></li>
+    <li><%= link_to 'Descargar XML', @comprobante.xml.url(:original, false) %></li>
+    <li><a href="#">Descargar PDF</a></li>
+	<li><a href="#" class='btn-warning'>Eliminar</a></li>
+  </ul>
   <p>Comprobante <%= @comprobante.to_s %></p>
 </header>
 <!-- /Titulo Pagina -->
@@ -29,7 +35,7 @@
   </div>
   <!-- /Tiene Faltas -->
   
-  <i class="fa fa-apple fa fa-3x"></i>
+  <i class="fa fa-file-text fa fa-3x"></i>
   <div class="row">
     <div class="col-xs-6">
       <h4><%= @comprobante.emisor.nombre %></h4>

@@ -5,7 +5,7 @@
       <div class="btn-group">
         <button type="button" class="btn btn-sm btn-dark btn-icon" title="Nuevo Comprobante" data-toggle="modal" data-target="#uploadModal"><i class="fa fa-plus"></i></button> 
         <div class="btn-group hidden-nav-xs">
-			<a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#uploadModal" name="commit">Subir Comprobante</a>
+			<a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#uploadModal" name="commit">Subir Comprobante(s)</a>
         </div>
       </div>
     </header>
@@ -41,16 +41,6 @@
                     <span>Todos</span>
                   </a>
                 </li>
-                
-                <%  (current_user.owned_tags.order(taggings_count: :desc).limit 10).each do |tag| %>
-	                <li >
-	                  <a href="#" >                                                        
-	                    <i class="fa fa-angle-right"></i>
-	                    <span><%= tag %></span>
-	                  </a>
-	                </li>
-				<% end %>
-				
               </ul>
             </li>
             <li >
@@ -71,190 +61,28 @@
                     <span>Todos</span>
                   </a>
                 </li>
-                <li >
-                  <a href="icons.html" >                            
-                    <b class="badge bg-info pull-right">369</b>                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Icons</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="grid.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Grid</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="widgets.html" >                            
-                    <b class="badge  pull-right">8</b>                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Widgets</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="components.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Components</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="list.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>List group</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="#table" >                            
-                    <i class="fa fa-angle-down text"></i>
-                    <i class="fa fa-angle-up text-active"></i>
-                    <span>Table</span>
-                  </a>
-                  <ul class="nav bg">
-                    <li >
-                      <a href="table-static.html" >
-                        <i class="fa fa-angle-right"></i>
-                        <span>Table static</span>
-                      </a>
-                    </li>
-                    <li >
-                      <a href="table-datatable.html" >
-                        <i class="fa fa-angle-right"></i>
-                        <span>Datatable</span>
-                      </a>
-                    </li>
-                    <li >
-                      <a href="table-datagrid.html" >
-                        <i class="fa fa-angle-right"></i>
-                        <span>Datagrid</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li >
-                  <a href="#form" >                            
-                    <i class="fa fa-angle-down text"></i>
-                    <i class="fa fa-angle-up text-active"></i>
-                    <span>Form</span>
-                  </a>
-                  <ul class="nav bg">
-                    <li >
-                      <a href="form-elements.html" >
-                        <i class="fa fa-angle-right"></i>
-                        <span>Form elements</span>
-                      </a>
-                    </li>
-                    <li >
-                      <a href="form-validation.html" >
-                        <i class="fa fa-angle-right"></i>
-                        <span>Form validation</span>
-                      </a>
-                    </li>
-                    <li >
-                      <a href="form-wizard.html" >
-                        <i class="fa fa-angle-right"></i>
-                        <span>Form wizard</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li >
-                  <a href="chart.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Chart</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="fullcalendar.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Fullcalendar</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="portlet.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Portlet</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="timeline.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Timeline</span>
-                  </a>
-                </li>
               </ul>
-            </li>
-            <li >
+                
+            <li>
               <a href="#pages"  >
-                <i class="fa fa-file-text icon">
+                <i class="fa fa-tags icon">
                   <b class="bg-primary"></b>
                 </i>
                 <span class="pull-right">
                   <i class="fa fa-angle-down text"></i>
                   <i class="fa fa-angle-up text-active"></i>
                 </span>
-                <span>Pages</span>
+                <span>Tags</span>
               </a>
               <ul class="nav lt">
-                <li >
-                  <a href="gallery.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Gallery</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="profile.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="invoice.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Invoice</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="intro.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Intro</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="master.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Master</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="gmap.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Google Map</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="jvectormap.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Vector Map</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="signin.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Signin</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="signup.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>Signup</span>
-                  </a>
-                </li>
-                <li >
-                  <a href="404.html" >                                                        
-                    <i class="fa fa-angle-right"></i>
-                    <span>404</span>
-                  </a>
-                </li>
+                <%  (current_user.owned_tags.order(taggings_count: :desc).limit 10).each do |tag| %>
+	                <li >
+	                  <a href="#" >                                                        
+	                    <i class="fa fa-angle-right"></i>
+	                    <span><%= tag %></span>
+	                  </a>
+	                </li>
+				<% end %>
               </ul>
             </li>
             <li>
@@ -313,11 +141,11 @@
         <section class="dropdown-menu on aside-md m-l-n">
           <section class="panel bg-white">
             <header class="panel-heading b-b b-light">
-              John <i class="fa fa-circle text-success"></i>
+              SoyReceptor <i class="fa fa-circle text-success"></i>
             </header>
             <div class="panel-body animated fadeInRight">
-              <p class="text-sm">No contacts in your lists.</p>
-              <p><a href="#" class="btn btn-sm btn-facebook"><i class="fa fa-fw fa-facebook"></i> Invite from Facebook</a></p>
+              <p class="text-sm">Un servicio de Piloto Automatico, S.A. de C.V.</p>
+              <p><a href="#" class="btn btn-sm btn-dark">Sitio Web Piloto Automatico</a></p>
             </div>
           </section>
         </section>
@@ -336,8 +164,9 @@
 <% content_for :specific_js do %>
 	
 	<script type="text/javascript" charset="utf-8">
-	
+		
 		var nuevo_comprobante = document.getElementById("nuevo_comprobante");
+		var nuevo_oldstyle = document.getElementById("files");
 		
 		// nuevo_drop function
 		nuevo_drop = function(evt) {   
@@ -369,7 +198,38 @@
 			}
 		  // /.nuevo_drop function
 		  
+		  // nuevo_oldstyle function
+		  nuevo_old = function(evt){
+  		    evt.stopPropagation();
+  		    evt.preventDefault();
+			
+			for (a = 0; a < evt.target.files.length; ++a){
+				
+				var file = evt.target.files[a];
+				var formData = new FormData();
+	 			formData.append('file', file);
+				
+	 			// upload File
+	 			var xhr = new XMLHttpRequest();
+	 			xhr.open('POST', '<%= upload_comprobante_url %>');
+	 			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+	 			xhr.onload = function () {
+	 			  if (xhr.status === 200) {
+	 				alert('Comprobante Cargado Con Exito!');
+	 			  } else {
+	 			    alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
+	 			  }
+	 			};
+	
+	 			xhr.send(formData);
+				
+			}
+			
+		  }
+		  // /.nuevo_oldstyle function
+		  
 		nuevo_comprobante.addEventListener("drop", nuevo_drop, false);
+		nuevo_oldstyle.addEventListener("change", nuevo_old, false);
 		
 	</script>
 	

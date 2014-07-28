@@ -25,7 +25,6 @@ class HomeController < ApplicationController
     txt = @comprobante.xml_obj.timbre.cadena_original
     
     respond_to do |format|
-      format.html
       format.png  { render :qrcode => txt, :size => 10, :level => :l, :unit => 10 }
     end
     
