@@ -28,6 +28,13 @@
             <span class="help-block m-b-none">Si desea modificar su R.F.C. favor de contactarnos.</span>
           </div>
         </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Usuario</label>
+          <div class="col-lg-10">
+            <input type="text" class="form-control" disabled="disabled" placeholder="RFC" value="<%= @user.email %>">
+            <span class="help-block m-b-none">Si desea modificar su usuario favor de contactarnos.</span>
+          </div>
+        </div>
 		<div class="line line-dashed line-lg pull-in"></div>
         <div class="form-group">
           <label class="col-sm-2 control-label">Logotipo</label>
@@ -51,13 +58,13 @@
 			<% end %>
           </div>
         </div>
-        <div class="form-group has-warning">
+        <div class="form-group <%= "has-warning" if @perfil.calle.blank?  %>">
           <label class="col-lg-2 control-label">Calle</label>
           <div class="col-lg-10">
 			<%= f.text_field :calle, :class => "form-control", :placeholder => "Calle" %>
           </div>
         </div>
-        <div class="form-group has-warning">
+        <div class="form-group <%= "has-warning" if @perfil.noexterior.blank?  %>">
           <label class="col-lg-2 control-label"># Exterior e Interior</label>
           <div class="col-lg-5">
 			<%= f.text_field :noexterior, :class => "form-control", :placeholder => "No. Exterior" %>
@@ -66,25 +73,25 @@
 			<%= f.text_field :nointerior, :class => "form-control", :placeholder => "No. Interior" %>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group <%= "has-warning" if @perfil.colonia.blank?  %>">
           <label class="col-lg-2 control-label">Colonia</label>
           <div class="col-lg-10">
 			<%= f.text_field :colonia, :class => "form-control", :placeholder => "Colonia" %>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group <%= "has-warning" if @perfil.ciudad.blank?  %>">
           <label class="col-lg-2 control-label">Ciudad / Municipio</label>
           <div class="col-lg-10">
 			<%= f.text_field :ciudad, :class => "form-control", :placeholder => "Ciudad" %>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group <%= "has-warning" if @perfil.estado.blank?  %>">
           <label class="col-lg-2 control-label">Estado</label>
           <div class="col-lg-10">
 			<%= f.text_field :estado, :class => "form-control", :placeholder => "Estado" %>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group <%= "has-warning" if @perfil.cp.blank?  %>">
           <label class="col-lg-2 control-label">Código Postal</label>
           <div class="col-lg-10">
 			<%= f.text_field :cp, :class => "form-control", :placeholder => "C.P." %>
@@ -174,7 +181,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="col-lg-2 control-label">Repetir Nuevo Password</label>
+          <label class="col-lg-2 control-label">Repetir Password</label>
           <div class="col-lg-10">
 			<%= f.password_field :password_confirmation, :class => "form-control", :placeholder => "Repetir Nuevo Password" %>
           </div>

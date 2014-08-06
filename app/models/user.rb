@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
   validates_attachment :logo, :content_type => { :content_type => ["image/jpeg", "image/gif", "image/png"] },
     :size => { :in => 0..800.kilobytes }
   
+  validates :rfc, presence: true
+  
   has_one :perfil
   
   after_create :build_perfil
