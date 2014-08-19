@@ -38,8 +38,8 @@ class HomeController < ApplicationController
       @from = params[:from]
       @to = params[:to]
     else
-      @from = Date.today.at_beginning_of_month
-      @to = Date.today.at_end_of_month
+      @from = Date.today.at_beginning_of_month.to_s
+      @to = Date.today.at_end_of_month.to_s
     end
     
     if params[:q]
@@ -48,7 +48,7 @@ class HomeController < ApplicationController
       @q = '%%'
     end
     
-    @emitidos = @user.comprobantes.joins(:receptor).where("emitido = ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", true, @from, @to, @q, @q).page params[:page]
+    @emitidos = @user.comprobantes.joins(:receptor).where("emitido = ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q).page params[:page]
     
   end
   
@@ -60,8 +60,8 @@ class HomeController < ApplicationController
       @from = params[:from]
       @to = params[:to]
     else
-      @from = Date.today.at_beginning_of_month
-      @to = Date.today.at_end_of_month
+      @from = Date.today.at_beginning_of_month.to_s
+      @to = Date.today.at_end_of_month.to_s
     end
     
     if params[:q]
@@ -70,7 +70,7 @@ class HomeController < ApplicationController
       @q = '%%'
     end
     
-    @recibidos = @user.comprobantes.joins(:emisor).where("recibido = ? AND fecha BETWEEN ? AND ? AND (emisors.rfc LIKE ? OR emisors.nombre LIKE ?)", true, @from, @to, @q, @q).page params[:page]
+    @recibidos = @user.comprobantes.joins(:emisor).where("recibido = ? AND fecha BETWEEN ? AND ? AND (emisors.rfc LIKE ? OR emisors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q).page params[:page]
     
   end
   
@@ -119,7 +119,7 @@ class HomeController < ApplicationController
       render :json => {:error => "Not Acceptable"}.to_json, :status => 406
       
     end
-
+  
   end
   
   private
