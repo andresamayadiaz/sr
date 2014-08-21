@@ -72,7 +72,7 @@
                   <i class="fa fa-angle-down text"></i>
                   <i class="fa fa-angle-up text-active"></i>
                 </span>
-                <span>Tags</span>
+                <span>Etiquetas</span>
               </a>
               <ul class="nav lt">
                 <%  (current_user.owned_tags.order(taggings_count: :desc).limit 10).each do |tag| %>
@@ -173,6 +173,8 @@
 		    evt.stopPropagation();
 		    evt.preventDefault();
 			
+			$('#nuevo_comprobante').append('<br /><i class="fa fa-spinner fa fa-spin fa fa-2x"></i>');
+			
 			for (a = 0; a < evt.dataTransfer.files.length; ++a){
 				
 				var file = evt.dataTransfer.files[a];
@@ -186,15 +188,20 @@
 	 			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
 	 			xhr.onload = function () {
 	 			  if (xhr.status === 200) {
-	 				alert('Comprobante Cargado Con Exito!');
+					$('#nuevo_comprobante').append('<br /><span class="label bg-info">' + file.name + ' Cargado</span>');
+	 				//alert('Comprobante Cargado Con Exito!');
 	 			  } else {
-	 			    alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
+					$('#nuevo_comprobante').append('<br /><span class="label bg-danger">' + file.name + ' ERROR</span>');
+	 			    //alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
 	 			  }
 	 			};
-	
+				
 	 			xhr.send(formData);
-
+				
 	 		  }
+			  
+			  $('#nuevo_comprobante .fa').first().remove();
+			  
 			}
 		  // /.nuevo_drop function
 		  
@@ -202,6 +209,8 @@
 		  nuevo_old = function(evt){
   		    evt.stopPropagation();
   		    evt.preventDefault();
+			
+			$('#nuevo_comprobante').append('<br /><i class="fa fa-spinner fa fa-spin fa fa-2x"></i>');
 			
 			for (a = 0; a < evt.target.files.length; ++a){
 				
@@ -215,15 +224,19 @@
 	 			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
 	 			xhr.onload = function () {
 	 			  if (xhr.status === 200) {
-	 				alert('Comprobante Cargado Con Exito!');
+					  $('#nuevo_comprobante').append('<br /><span class="label bg-info">' + file.name + ' Cargado</span>');
+	 				//alert('Comprobante Cargado Con Exito!');
 	 			  } else {
-	 			    alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
+					  $('#nuevo_comprobante').append('<br /><span class="label bg-danger">' + file.name + ' ERROR</span>');
+	 			    //alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
 	 			  }
 	 			};
 	
 	 			xhr.send(formData);
 				
 			}
+			
+			$('#nuevo_comprobante .fa').first().remove();
 			
 		  }
 		  // /.nuevo_oldstyle function

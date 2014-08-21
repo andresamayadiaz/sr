@@ -76,7 +76,7 @@ class Comprobante < ActiveRecord::Base
       
     end
     
-    # TODO XSLT not working with version 2.0
+    # XSLT not working with version 2.0, we manually changed xslt files to version 1.0
     def cadena_original
       
       return self.xml_obj.cadena_original
@@ -84,6 +84,8 @@ class Comprobante < ActiveRecord::Base
     end
     
     def xml_obj
+      
+      # TODO validar si ya cargo el objeto no volverlo a cargar cada que se mande llamar
       
       doc = Nokogiri::XML( File.read(self.xml.path) )
       @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s

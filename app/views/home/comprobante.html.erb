@@ -61,11 +61,6 @@
   	  <strong>Etiquetas</strong><br>
       <div id="MyPillbox" class="pillbox clearfix">
         <ul>
-          <li class="label bg-success">Efectivo</li>
-          <li class="label bg-warning">MXN</li>
-          <li class="label bg-danger">Ingreso</li>
-          <li class="label bg-info">Item Five</li>
-          <li class="label bg-success">Item Six</li>
 		  <% @comprobante.tags_from(@comprobante.user).each do |tag| %>
 		  
 		  	  <li class="label bg-dark"><%= tag %></li>
@@ -88,8 +83,12 @@
       <div class="col-xs-6">
 	  	
 		Tipo de Comprobante: <strong><%= @comprobante.tipoDeComprobante %></strong><br>
-		?Moneda: <strong>MXN</strong><br>
-		?Tipo de Cambio: <strong>1.00</strong><br>
+		<% if !@comprobante.xml_obj.moneda.blank? %>
+			Moneda: <strong><%= @comprobante.xml_obj.moneda %></strong><br>
+		<% end %>
+		<% if !@comprobante.xml_obj.tipoCambio.blank? %>
+			Tipo de Cambio: <strong><%= @comprobante.xml_obj.tipoCambio %></strong><br>
+		<% end %>
 		No. Serie CSD: <strong><%= @comprobante.noCertificado %></strong><br>
 		No. Serie CSD SAT: <strong><%= @comprobante.TimbreFiscalDigital.noCertificadoSAT %></strong><br>
 		Forma de Pago: <strong><%= @comprobante.formaDePago %></strong><br>
@@ -115,8 +114,8 @@
 	  <% @comprobante.xml_obj.conceptos.each do |concepto| %>
 	  
         <tr>
-          <td><%= concepto.cantidad %></td>
-  		  <td><%= concepto.unidad %></td>
+          <td align="right"><%= concepto.cantidad %></td>
+  		  <td align="right"><%= concepto.unidad %></td>
           <td><%= concepto.descripcion %></td>
           <td align="right"><%= number_to_currency(concepto.valorUnitario) %></td>
           <td align="right"><%= number_to_currency(concepto.importe) %></td>
@@ -130,24 +129,28 @@
       </tr>
       <tr>
         <td colspan="4" class="text-right no-border"><strong>Descuento</strong></td>
-        <td align="right">???</td>
+        <td align="right"><%= number_to_currency(@comprobante.xml_obj.descuento) %></td>
       </tr>
       <tr>
-        <td colspan="4" class="text-right no-border"><strong>IVA</strong></td>
-        <td align="right">???</td>
+        <td colspan="4" class="text-right no-border"><strong>Impuestos Trasladados</strong></td>
+        <td align="right"><%= number_to_currency(@comprobante.xml_obj.totalImpuestosTrasladados) %></td>
       </tr>
-      <tr>
+      <!--
+	  <tr>
         <td colspan="4" class="text-right no-border"><strong>IEPS</strong></td>
         <td align="right">???</td>
       </tr>
+	  -->
       <tr>
-        <td colspan="4" class="text-right no-border"><strong>IVA Ret.</strong></td>
-        <td align="right">???</td>
+        <td colspan="4" class="text-right no-border"><strong>Impuestos Retenidos</strong></td>
+        <td align="right"><%= number_to_currency(@comprobante.xml_obj.totalImpuestosRetenidos) %></td>
       </tr>
+	  <!--
       <tr>
         <td colspan="4" class="text-right no-border"><strong>ISR</strong></td>
         <td align="right">???</td>
       </tr>
+	  -->
       <tr>
         <td colspan="4" class="text-right no-border"><strong>Total</strong></td>
         <td align="right"><strong><%= number_to_currency(@comprobante.total) %></strong></td>

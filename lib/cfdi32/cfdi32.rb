@@ -27,8 +27,13 @@ module COMPROBANTEFACTORY
       @tipoDeComprobante = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("tipoDeComprobante").to_s
       @formaDePago = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("formaDePago").to_s
       @noCertificado = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("noCertificado").to_s
+      @moneda = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("Moneda").to_s
+      @tipoCambio = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("TipoCambio").to_s.to_d
       @subTotal = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("subTotal").to_s.to_d
       @total = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("total").to_s.to_d
+      @descuento = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("descuento").to_s.to_d
+      @totalImpuestosRetenidos = @doc.root.xpath("//cfdi:Impuestos", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("totalImpuestosRetenidos").to_s.to_d
+      @totalImpuestosTrasladados = @doc.root.xpath("//cfdi:Impuestos", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("totalImpuestosTrasladados").to_s.to_d
       @metodoDePago = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("metodoDePago").to_s
       @lugarExpedicion = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("lugarExpedicion").to_s
       @serie = @doc.root.xpath("//cfdi:Comprobante", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).attribute("serie").to_s
@@ -197,12 +202,32 @@ module COMPROBANTEFACTORY
       @certificado
     end
     
+    def moneda
+      @moneda
+    end
+    
+    def tipoCambio
+      @tipoCambio
+    end
+    
     def subTotal
       @subTotal
     end
     
     def total
       @total
+    end
+    
+    def descuento
+      @descuento
+    end
+    
+    def totalImpuestosRetenidos
+      @totalImpuestosRetenidos
+    end
+    
+    def totalImpuestosTrasladados
+      @totalImpuestosTrasladados
     end
     
     def tipoDeComprobante

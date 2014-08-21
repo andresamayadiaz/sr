@@ -112,6 +112,12 @@ class HomeController < ApplicationController
     
     if @comprobante.save
       
+      # Save Default Tags
+      @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.tipoDeComprobante), :on => :tags)
+      if !@comprobante.xml_obj.moneda.blank?
+        @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.xml_obj.moneda), :on => :tags)
+      end
+      
       render :json => @comprobante.xml.url
       
     else
