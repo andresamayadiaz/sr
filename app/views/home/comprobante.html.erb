@@ -4,7 +4,7 @@
   <ul class="dropdown-menu pull-right">
     <li><a onClick="window.print();">Imprimir</a></li>
     <li><%= link_to 'Descargar XML', @comprobante.xml.url(:original, false) %></li>
-    <li><a href="#">Descargar PDF</a></li>
+    <li><a href="#">Generar PDF</a></li>
 	<li><a href="#" class='btn-warning'>Eliminar</a></li>
   </ul>
   <p>Comprobante <%= @comprobante.to_s %></p>

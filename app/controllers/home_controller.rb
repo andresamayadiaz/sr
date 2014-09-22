@@ -30,6 +30,29 @@ class HomeController < ApplicationController
     
   end
   
+  def tags
+    
+    @user = User.find(current_user.id)
+    
+    logger.debug "TAGS: "
+    logger.debug params[:tags]
+    
+    if params[:tags].blank?
+      @tags = []
+    else
+      @tags = params[:tags].split ","
+    end
+    
+    @comprobantes = Comprobante.tagged_with(@tags, :wild => true).page params[:page]
+    # :match_all => true, 
+    # Find users that matches all given tags:
+    #User.tagged_with(["awesome", "cool"], :match_all => true)
+    
+    # Find users with any of the specified tags:
+    #User.tagged_with(["awesome", "cool"], :any => true)
+    
+  end
+  
   def emitidos
     
     @user = User.find(current_user.id)

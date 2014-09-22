@@ -62,7 +62,14 @@
                   </a>
                 </li>
               </ul>
-                
+            <li>
+              <a href="#"  >
+                <i class="fa fa-exclamation icon">
+                  <b class="bg-info"></b>
+                </i>
+                <span>Otros</span>
+              </a>
+            </li>    
             <li>
               <a href="#pages"  >
                 <i class="fa fa-tags icon">
@@ -77,10 +84,7 @@
               <ul class="nav lt">
                 <%  (current_user.owned_tags.order(taggings_count: :desc).limit 10).each do |tag| %>
 	                <li >
-	                  <a href="#" >                                                        
-	                    <i class="fa fa-angle-right"></i>
-	                    <span><%= tag %></span>
-	                  </a>
+	                    <%= link_to raw('<i class="fa fa-angle-right"></i>'+tag.name), tags_path(:tags => tag.name) %>
 	                </li>
 				<% end %>
               </ul>
@@ -94,14 +98,7 @@
                 <span>Alertas</span>
               </a>
             </li>
-            <li>
-              <a href="notebook.html"  >
-                <i class="fa fa-pencil icon">
-                  <b class="bg-info"></b>
-                </i>
-                <span>Notes</span>
-              </a>
-            </li>
+            
             <li >
               <a href="#subir">
                 <i class="fa fa-cloud-upload icon">

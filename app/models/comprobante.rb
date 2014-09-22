@@ -17,9 +17,9 @@ class Comprobante < ActiveRecord::Base
   validates_attachment :xml, :presence => true,
     :content_type => { :content_type => ["text/plain", "text/xml"] },
     :size => { :in => 0..900.kilobytes }
-    
+  
   default_scope { order('created_at DESC') }
-    
+  
 =begin
   validates :version, presence: true
   validates :fecha, presence: true
