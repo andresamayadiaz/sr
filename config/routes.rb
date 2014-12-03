@@ -9,6 +9,7 @@ Soyreceptor::Application.routes.draw do
       post 'remove_tag', to: 'home#remove_tag', ad: :remove_tag
       get 'emitidos', to: 'home#emitidos'
       get 'recibidos', to: 'home#recibidos'
+      get 'otros', to: 'home#otros'
       get 'tags', to: 'home#tags'
       get 'comprobante/:id', to: 'home#comprobante', as: :comprobante
       get 'cbb/:id', to: 'home#cbb', as: :cbb

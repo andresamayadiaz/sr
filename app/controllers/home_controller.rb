@@ -97,6 +97,28 @@ class HomeController < ApplicationController
     
   end
   
+  def otros
+    
+    @user = User.find(current_user.id)
+    
+    if params[:from] and params[:to]
+      @from = params[:from]
+      @to = params[:to]
+    else
+      @from = Date.today.at_beginning_of_month.to_s
+      @to = Date.today.at_end_of_month.to_s
+    end
+    
+    if params[:q]
+      @q = '%' + params[:q] + '%'
+    else
+      @q = '%%'
+    end
+    
+    @otros = @user.comprobantes.joins(:receptor).where("emitido = ? AND recibido= ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", false, false, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q).page params[:page]  
+    
+  end
+  
   def add_tag
     
     @added_tag = params[:tag]
