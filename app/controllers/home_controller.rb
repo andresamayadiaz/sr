@@ -172,6 +172,20 @@ class HomeController < ApplicationController
     end
   
   end
+
+  def buscar
+        
+    @user = current_user
+    
+    if params[:q]
+      @q = '%' + params[:q] + '%'
+    else
+      @q = '%%'
+    end
+    
+    @buscar = @user.comprobantes.joins(:receptor,:emisor,:TimbreFiscalDigital).where("serie LIKE ? OR folio LIKE? OR receptors.rfc LIKE ? OR receptors.nombre LIKE ? OR emisors.rfc LIKE ? OR emisors.nombre LIKE ? OR timbre_fiscal_digitals.uuid LIKE ?", @q, @q, @q, @q, @q, @q, @q).page params[:page]
+
+  end
   
   private
     

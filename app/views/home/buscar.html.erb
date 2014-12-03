@@ -1,0 +1,114 @@
+<% content_for :breadcrumbs do %>
+<!-- Breadcrumbs -->
+<ul class="breadcrumb no-border no-radius b-b b-light pull-in">
+  <li><a href="index.html"><i class="fa fa-home"></i> Inicio</a></li>
+  <li>Comprobantes</li>
+  <li class="active">Buscar</li>
+</ul>
+<!-- /Breadcrumbs -->
+<% end %>
+
+<!-- Titulo Pagina -->
+<div class="m-b-md">
+  <h3 class="m-b-none">Resultados de la Busqueda</h3>
+</div>
+<!-- /Titulo Pagina -->
+
+<!-- Lista de Buscar -->
+<section class="panel panel-default">
+  <header class="panel-heading">
+    Listado de Comprobantes Encontrados en la Busqueda
+  </header>
+  <div class="row wrapper">
+	<%= form_tag buscar_path, :method => 'get' do |f| %>
+		<%= hidden_field_tag 'page', params[:page]  %>
+	    <div class="col-sm-3">
+	      <div class="input-group">
+	        <input type="text" class="input-sm form-control" placeholder="Buscar" data-toggle="tooltip" data-placement="top" title="RFC, Razon Social, UUID, ..." name="q" value="<%= params[:q] %>">
+	        <span class="input-group-btn">
+			  <%= button_tag "Buscar", class: 'btn btn-sm btn-default' %>
+	        </span>
+	      </div>
+	    </div>
+	<% end %>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped b-t b-light">
+      <thead>
+        <tr>
+          <th width="20"></th>
+          <th>UUID, Serie-Folio</th>
+          <th>Receptor (RFC, Razón Social)</th>
+		  <th class="text-center">Total</th>
+          <th class="th-sortable" data-toggle="class">Fecha
+            <span class="th-sort">
+              <a><i class="fa fa-sort-down text"></i></a>
+              <a><i class="fa fa-sort-up text-active"></i></a>
+              <a><i class="fa fa-sort"></i></a>
+            </span>
+		  </th>
+          <th width="30"></th>
+        </tr>
+      </thead>
+      <tbody>
+		<% @buscar.each do |b| %>
+		
+	        <tr>
+	          <td><i class="text-success fa fa-circle"></i></td>
+	          <td><%= b.to_s %></td>
+	          <td><%= b.receptor.to_s %></td>
+	          <td class="text-right"><%= number_to_currency(b.total) %></td>
+	          <td><%= b.fecha %></td>
+			  <td><%= link_to 'Ver', b, :class => "btn btn-info"  %></td>
+	        </tr>
+		
+		<% end %>
+		<!--
+        <tr>
+          <td><i class="text-success fa fa-circle"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, A-27</td>
+          <td>CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</td>
+          <td>$58,236.00</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+        <tr>
+          <td><i class="text-warning fa fa-circle" data-toggle="tooltip" data-placement="right" title="Advertencias"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, MTY-3567</td>
+          <td>JP0102030405JK1, Productos y Derivados S.A. de C.V.</td>
+          <td>$127,090.36</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+        <tr>
+          <td><i class="text-danger fa fa-circle" data-toggle="tooltip" data-placement="right" title="Faltas"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, </td>
+          <td>CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</td>
+          <td>$1,234,678.50</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+		-->
+      </tbody>
+    </table>
+  </div>
+  <footer class="panel-footer">
+    <div class="row">
+      <div class="col-sm-4 hidden-xs">
+      	<small class="text-muted inline m-t-sm m-b-sm"><%= page_entries_info @buscar %></small>
+      </div>
+      <div class="col-sm-4 text-center">        
+      </div>
+      <div class="col-sm-4 text-right text-center-xs">
+		    <%= paginate @buscar %>
+      </div>
+    </div>
+  </footer>
+</section>
+<!-- /Lista de Buscar -->
