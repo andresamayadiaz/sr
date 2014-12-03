@@ -1,0 +1,156 @@
+<% content_for :breadcrumbs do %>
+<!-- Breadcrumbs -->
+<ul class="breadcrumb no-border no-radius b-b b-light pull-in">
+  <li><a href="index.html"><i class="fa fa-home"></i> Inicio</a></li>
+  <li>Comprobantes</li>
+  <li class="active">Otros</li>
+</ul>
+<!-- /Breadcrumbs -->
+<% end %>
+
+<!-- Titulo Pagina -->
+<div class="m-b-md">
+  <h3 class="m-b-none">Otros Comprobantes</h3>
+</div>
+<!-- /Titulo Pagina -->
+
+<!-- Lista de Otros -->
+<section class="panel panel-default">
+  <header class="panel-heading">
+    Listado de Otros Comprobantes
+  </header>
+  <div class="row wrapper">
+	<%= form_tag otros_path, :method => 'get' do |f| %>
+		<%= hidden_field_tag 'page', params[:page]  %>
+	    <div class="col-sm-5 m-b-xs">
+	      <span class="help-block m-b-none">Desde</span>
+		  <input class="input-sm input-s datepicker-input form-control" name="from" size="10" type="text" value="<%= @from %>" data-date-format="yyyy-mm-dd" id="date_from" >
+		  <span class="help-block m-b-none">Hasta</span>
+		  <input class="input-sm input-s datepicker-input form-control" name="to" size="10" type="text" value="<%= @to %>" data-date-format="yyyy-mm-dd"  id="date_to" >
+	    </div>
+	    <div class="col-sm-4 m-b-xs">
+	      <div class="btn-group" data-toggle="buttons">
+	        <label class="btn btn-sm btn-default <%= 'active' if params[:options]=='0' %>">
+	          <input type="radio" name="options" id="option_dia" onChange="set_dia();" value=0> Dia
+	        </label>
+	        <label class="btn btn-sm btn-default <%= 'active' if params[:options]=='1' %>">
+	          <input type="radio" name="options" id="option_semana" onChange="set_semana();" value=1> Semana
+	        </label>
+	        <label class="btn btn-sm btn-default <%= 'active' if params[:options]=='2' %>">
+	          <input type="radio" name="options" id="option_mes" onChange="set_mes();" value=2> Mes
+	        </label>
+	      </div>
+	    </div>
+	    <div class="col-sm-3">
+	      <div class="input-group">
+	        <input type="text" class="input-sm form-control" placeholder="Buscar" data-toggle="tooltip" data-placement="top" title="RFC, Razon Social, UUID, ..." name="q" value="<%= params[:q] %>">
+	        <span class="input-group-btn">
+			  <%= button_tag "Buscar", class: 'btn btn-sm btn-default' %>
+	        </span>
+	      </div>
+	    </div>
+	<% end %>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped b-t b-light">
+      <thead>
+        <tr>
+          <th width="20"></th>
+          <th>UUID, Serie-Folio</th>
+          <th>Receptor (RFC, Razón Social)</th>
+		  <th class="text-center">Total</th>
+          <th class="th-sortable" data-toggle="class">Fecha
+            <span class="th-sort">
+              <a><i class="fa fa-sort-down text"></i></a>
+              <a><i class="fa fa-sort-up text-active"></i></a>
+              <a><i class="fa fa-sort"></i></a>
+            </span>
+		  </th>
+          <th width="30"></th>
+        </tr>
+      </thead>
+      <tbody>
+		<% @otros.each do |o| %>
+		
+	        <tr>
+	          <td><i class="text-success fa fa-circle"></i></td>
+	          <td><%= o.to_s %></td>
+	          <td><%= o.receptor.to_s %></td>
+	          <td class="text-right"><%= number_to_currency(o.total) %></td>
+	          <td><%= o.fecha %></td>
+			  <td><%= link_to 'Ver', o, :class => "btn btn-info"  %></td>
+	        </tr>
+		
+		<% end %>
+		<!--
+        <tr>
+          <td><i class="text-success fa fa-circle"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, A-27</td>
+          <td>CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</td>
+          <td>$58,236.00</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+        <tr>
+          <td><i class="text-warning fa fa-circle" data-toggle="tooltip" data-placement="right" title="Advertencias"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, MTY-3567</td>
+          <td>JP0102030405JK1, Productos y Derivados S.A. de C.V.</td>
+          <td>$127,090.36</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+        <tr>
+          <td><i class="text-danger fa fa-circle" data-toggle="tooltip" data-placement="right" title="Faltas"></i></td>
+          <td>550e8400-e29b-41d4-a716-446655440000, </td>
+          <td>CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</td>
+          <td>$1,234,678.50</td>
+          <td>
+            2014-02-25T13:05:27
+          </td>
+		  <td><a href="#" class="btn btn-info">Ver</a></td>
+        </tr>
+		-->
+      </tbody>
+    </table>
+  </div>
+  <footer class="panel-footer">
+    <div class="row">
+      <div class="col-sm-4 hidden-xs">
+      	<small class="text-muted inline m-t-sm m-b-sm"><%= page_entries_info @otros %></small>
+      </div>
+      <div class="col-sm-4 text-center">        
+      </div>
+      <div class="col-sm-4 text-right text-center-xs">
+		<%= paginate @otros %>
+      </div>
+    </div>
+  </footer>
+</section>
+<!-- /Lista de Otros -->
+
+<% content_for :specific_js do %>
+
+<script type="text/javascript" charset="utf-8">
+	
+	function set_dia(){
+		$("#date_from").val('<%= Date.today %>');
+		$("#date_to").val('<%= Date.today %>');
+	}
+	
+	function set_semana(){
+		$("#date_from").val('<%= Date.today.at_beginning_of_week %>');
+		$("#date_to").val('<%= Date.today.at_end_of_week %>');
+	}
+	
+	function set_mes(){
+		$("#date_from").val('<%= Date.today.at_beginning_of_month %>');
+		$("#date_to").val('<%= Date.today.at_end_of_month %>');
+	}
+	
+</script>
+
+<% end %>
