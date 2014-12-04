@@ -303,4 +303,13 @@ $(document).ready(function(){
       } 
     }     
   });
+  $(".table-striped .th-sortable").click(function(){
+    if($(this).hasClass('headerSortDown')){
+     $(this).find('.th-sort a:nth-child(1)').find('i').removeClass('text-active');
+     $(this).find('.th-sort a:nth-child(2)').find('i').addClass('text-active');
+    } else{
+     $(this).find('.th-sort a:nth-child(1)').find('i').addClass('text-active');
+     $(this).find('.th-sort a:nth-child(2)').find('i').removeClass('text-active');
+    }
+  })
 });
