@@ -262,3 +262,12 @@ var acceptedTypes = {
   'image/jpeg': true,
   'image/gif': true
 }
+
+$(window).load(function(){
+  //autofocus on search text-box at top right of the page
+  $("#search-button-top-right").click(function(){
+    if($("#search-form-top-right").is(":hidden")){
+      setTimeout(function() { $("#search-form-top-right").find("input[name='q']").focus(), 1000 });
+    }
+  });
+});
