@@ -16,7 +16,6 @@
 //= require datepicker/bootstrap-datepicker
 //= require fuelux/fuelux
 //= require_self
-//= require jquery.tablesorter.min
 //= require slimscroll/jquery.slimscroll.min
 //= require app.plugin
 
@@ -272,44 +271,41 @@ $(window).load(function(){
     }
   });
 });
-
 $(document).ready(function(){
-  $.tablesorter.addParser({
-    id: 'datetime_sort_function',
-    is: function(s) {
-      return false;
-    },
-    format: function(s) {
-      [s].sort(function(a,b){
-        return new Date(b.date) - new Date(a.date);
-      });
-      return s;
-    },
-    type: 'text'
-  });
-  $("table.table-striped").tablesorter({
-    headers: { 
-      1: { 
-        sorter: false 
-      }, 
-      2: { 
-        sorter: false 
-      },
-      3: {
-        sorter: false
-      },
-      4: {
-        sorter: 'datetime_sort_function'
-      } 
-    }     
-  });
-  $(".table-striped .th-sortable").click(function(){
-    if($(this).hasClass('headerSortDown')){
-     $(this).find('.th-sort a:nth-child(1)').find('i').removeClass('text-active');
-     $(this).find('.th-sort a:nth-child(2)').find('i').addClass('text-active');
-    } else{
-     $(this).find('.th-sort a:nth-child(1)').find('i').addClass('text-active');
-     $(this).find('.th-sort a:nth-child(2)').find('i').removeClass('text-active');
+  var current_url = window.location.href;
+  
+  if ( current_url.indexOf('&sort=asc')!=-1 && current_url.indexOf('&sort=desc')==-1 ){
+     $(".table-striped .th-sortable").find('.th-sort a:nth-child(1)').find('i').addClass('text-active');
+     $(".table-striped .th-sortable").find('.th-sort a:nth-child(2)').find('i').removeClass('text-active');
+  }
+      
+  if ( current_url.indexOf('&sort=asc')==-1 && current_url.indexOf('&sort=desc')!=-1 ){
+     $(".table-striped .th-sortable").find('.th-sort a:nth-child(1)').find('i').removeClass('text-active');
+     $(".table-striped .th-sortable").find('.th-sort a:nth-child(2)').find('i').addClass('text-active');
+  }
+
+  $(".th-sortable ").click(function(){
+    var sort_url;
+    var $this = $(this);
+    if ( current_url.indexOf('sort=')==-1  ){
+        
+      if( $this.find('fa-sort-up').hasClass('text-active') ){
+        sort_url = current_url+"&sort=desc"
+      } else {
+        sort_url = current_url+"&sort=asc"
+      }       
+
+    } else {
+      
+      if ( current_url.indexOf('&sort=asc')!=-1 && current_url.indexOf('&sort=desc')==-1 ){
+        sort_url = current_url.replace('&sort=asc','&sort=desc');
+      }
+      
+      if ( current_url.indexOf('&sort=asc')==-1 && current_url.indexOf('&sort=desc')!=-1 ){
+        sort_url = current_url.replace('&sort=desc','&sort=asc');
+      }
+
     }
+    window.location.href = sort_url;
   })
 });
