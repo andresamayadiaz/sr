@@ -217,9 +217,21 @@
 				
 	 			// upload File
 	 			var xhr = new XMLHttpRequest();
+        var progressBar = document.createElement("progress");
 	 			xhr.open('POST', '<%= upload_comprobante_url %>');
 	 			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-	 			xhr.onload = function () {
+        xhr.onloadstart = function(pe) {
+            $("#nuevo_comprobante").append("<br/>");
+					  document.getElementById("nuevo_comprobante").appendChild(progressBar)
+        }
+        xhr.onprogress = function(pe) {
+           if(pe.lengthComputable) {
+              progressBar.max = pe.total
+              progressBar.value = pe.loaded
+           }
+        }
+	 			xhr.onloadend = function (pe) {
+          progressBar.value = pe.loaded
 	 			  if (xhr.status === 200) {
 					  $('#nuevo_comprobante').append('<br /><span class="label bg-info">' + file.name + ' Cargado</span>');
 	 				//alert('Comprobante Cargado Con Exito!');
