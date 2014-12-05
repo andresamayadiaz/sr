@@ -4,17 +4,19 @@
 class HomeController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb]
-  
+  before_filter :set_vars, only: [:emitidos, :recibidos, :otros]
+  before_filter :set_sort
+ 
   def index
     
-    @user = User.find(current_user.id)
+    @user = current_user
     @perfil = @user.perfil
     
   end
   
   def comprobante
     
-    @user = User.find(current_user.id)
+    @user = current_user
     
     render layout: "comprobante"
     
@@ -32,7 +34,7 @@ class HomeController < ApplicationController
   
   def tags
     
-    @user = User.find(current_user.id)
+    @user = current_user
     
     logger.debug "TAGS: "
     logger.debug params[:tags]
@@ -43,7 +45,9 @@ class HomeController < ApplicationController
       @tags = params[:tags].split ","
     end
     
-    @comprobantes = Comprobante.tagged_with(@tags, :wild => true).page params[:page]
+    @comprobantes = Comprobante.tagged_with(@tags, :wild => true)
+    @comprobantes = Sorter.sort_by_fecha(@sort,@comprobantes)
+    @comprobantes = Kaminari.paginate_array(@comprobantes).page params[:page]
     # :match_all => true, 
     # Find users that matches all given tags:
     #User.tagged_with(["awesome", "cool"], :match_all => true)
@@ -55,68 +59,41 @@ class HomeController < ApplicationController
   
   def emitidos
     
-    @user = User.find(current_user.id)
-    
-    if params[:from] and params[:to]
-      @from = params[:from]
-      @to = params[:to]
-    else
-      @from = Date.today.at_beginning_of_month.to_s
-      @to = Date.today.at_end_of_month.to_s
-    end
-    
     if params[:q]
       @q = '%' + params[:q] + '%'
     else
       @q = '%%'
     end
     
-    @emitidos = @user.comprobantes.joins(:receptor).where("emitido = ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q).page params[:page]
-    
+    @emitidos = @user.comprobantes.joins(:receptor).where("emitido = ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q)
+    @emitidos = Sorter.sort_by_fecha(@sort,@emitidos)
+    @emitidos = Kaminari.paginate_array(@emitidos).page params[:page]
   end
   
   def recibidos
     
-    @user = User.find(current_user.id)
-    
-    if params[:from] and params[:to]
-      @from = params[:from]
-      @to = params[:to]
-    else
-      @from = Date.today.at_beginning_of_month.to_s
-      @to = Date.today.at_end_of_month.to_s
-    end
-    
     if params[:q]
       @q = '%' + params[:q] + '%'
     else
       @q = '%%'
     end
     
-    @recibidos = @user.comprobantes.joins(:emisor).where("recibido = ? AND fecha BETWEEN ? AND ? AND (emisors.rfc LIKE ? OR emisors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q).page params[:page]
-    
+    @recibidos = @user.comprobantes.joins(:emisor).where("recibido = ? AND fecha BETWEEN ? AND ? AND (emisors.rfc LIKE ? OR emisors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q)
+    @recibidos = Sorter.sort_by_fecha(@sort,@recibidos)
+    @recibidos = Kaminari.paginate_array(@recibidos).page params[:page]
   end
   
   def otros
     
-    @user = User.find(current_user.id)
-    
-    if params[:from] and params[:to]
-      @from = params[:from]
-      @to = params[:to]
-    else
-      @from = Date.today.at_beginning_of_month.to_s
-      @to = Date.today.at_end_of_month.to_s
-    end
-    
     if params[:q]
       @q = '%' + params[:q] + '%'
     else
       @q = '%%'
     end
     
-    @otros = @user.comprobantes.joins(:receptor).where("emitido = ? AND recibido= ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", false, false, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q).page params[:page]  
-    
+    @otros = @user.comprobantes.joins(:receptor).where("emitido = ? AND recibido= ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", false, false, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q) 
+    @otros = Sorter.sort_by_fecha(@sort,@otros)
+    @otros = Kaminari.paginate_array(@otros).page params[:page]
   end
   
   def add_tag
@@ -149,7 +126,7 @@ class HomeController < ApplicationController
   
   def upload_comprobante
     
-    @user = User.find(current_user.id)
+    @user = current_user
     
     @comprobante = Comprobante.new
     @comprobante.xml = params[:file]
@@ -183,11 +160,30 @@ class HomeController < ApplicationController
       @q = '%%'
     end
     
-    @buscar = @user.comprobantes.joins(:receptor,:emisor,:TimbreFiscalDigital).where("serie LIKE ? OR folio LIKE? OR receptors.rfc LIKE ? OR receptors.nombre LIKE ? OR emisors.rfc LIKE ? OR emisors.nombre LIKE ? OR timbre_fiscal_digitals.uuid LIKE ?", @q, @q, @q, @q, @q, @q, @q).page params[:page]
-
+    @buscar = @user.comprobantes.joins(:receptor,:emisor,:TimbreFiscalDigital).where("serie LIKE ? OR folio LIKE? OR receptors.rfc LIKE ? OR receptors.nombre LIKE ? OR emisors.rfc LIKE ? OR emisors.nombre LIKE ? OR timbre_fiscal_digitals.uuid LIKE ?", @q, @q, @q, @q, @q, @q, @q)
+    @buscar = Sorter.sort_by_fecha(@sort,@buscar)
+    @buscar = Kaminari.paginate_array(@buscar).page params[:page]
   end
   
   private
+    
+    def set_vars
+      
+      @user = current_user
+    
+      if params[:from] and params[:to]
+        @from = params[:from]
+        @to = params[:to]
+      else
+        @from = Date.today.at_beginning_of_month.to_s
+        @to = Date.today.at_end_of_month.to_s
+      end
+
+    end
+    
+    def set_sort
+      @sort = params[:sort].upcase if params[:sort].present?
+    end 
     
     # Use callbacks to share common setup or constraints between actions.
     def set_comprobante
