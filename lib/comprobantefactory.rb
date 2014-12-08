@@ -7,8 +7,8 @@ module COMPROBANTEFACTORY
   #require 'time'
   #require 'base64'
   
-  require 'cfdi32/Cfdi32'
-  require 'timbrefiscaldigital/Tfd1'
+  require 'cfdi32/cfdi32'
+  require 'timbrefiscaldigital/tfd1'
   
   class Emisor
     
