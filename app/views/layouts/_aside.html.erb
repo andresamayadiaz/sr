@@ -176,6 +176,7 @@
 				
 				var file = evt.dataTransfer.files[a];
 				//console.log(file);
+        var progress = 'progress' + a;
 				var formData = new FormData();
 	 			formData.append('file', file);
 				
@@ -183,16 +184,37 @@
 	 			var xhr = new XMLHttpRequest();
 	 			xhr.open('POST', '<%= upload_comprobante_url %>');
 	 			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-	 			xhr.onload = function () {
+        xhr.onloadstart = function() {
+					$("#nuevo_comprobante").append("<div class='progress'><div id="+progress+" class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'><span class='label bg-info' id=label-"+a+">"+file.name+"</span></div></div>");
+        }
+        
+        (function(xhr,progress) { 
+          xhr.upload.onprogress = function(e) 
+          {
+            current_progress = parseInt((e.loaded/e.total)*100);
+            $('#' + progress).attr('aria-valuenow', e.loaded);
+            $('#' + progress).attr('aria-valuemax', e.total);
+            $('#' + progress).attr('style', 'width:'+current_progress);
+          };
+        }(xhr,progress));
+	 			
+        (function(xhr,file,progress,a){
+        xhr.onload = function () {
+          $('#' + progress).attr('aria-valuenow', xhr.upload.onprogress);
+          $('#label-'+a).removeClass('bg-info');
 	 			  if (xhr.status === 200) {
-					$('#nuevo_comprobante').append('<br /><span class="label bg-info">' + file.name + ' Cargado</span>');
-	 				//alert('Comprobante Cargado Con Exito!');
+            $("#"+progress).attr('style', 'width:100%');
+            $("#"+progress).addClass('progress-bar-success');
+					  $('#label-'+a).addClass('bg-success').append(" Cargado");
+	 				  //alert('Comprobante Cargado Con Exito!');
 	 			  } else {
-					$('#nuevo_comprobante').append('<br /><span class="label bg-danger">' + file.name + ' ERROR</span>');
+            $("#"+progress).addClass('progress-bar-danger');
+					  $('#label-'+a).addClass('bg-danger').append(" ERROR");
 	 			    //alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
 	 			  }
-	 			};
-				
+	 			}
+        }(xhr,file,progress,a));
+	
 	 			xhr.send(formData);
 				
 	 		  }
