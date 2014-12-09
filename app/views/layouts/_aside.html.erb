@@ -171,8 +171,10 @@
 		    evt.preventDefault();
 			
 			//$('#nuevo_comprobante').append('<br /><i class="fa fa-spinner fa fa-spin fa fa-2x"></i>');
-			
-			for (a = 0; a < evt.dataTransfer.files.length; ++a){
+      if($('.nuevo_drop').length>0){
+        $(".nuevo_drop").remove(); // to avoid never finish progress bar
+      }	
+      for (a = 0; a < evt.dataTransfer.files.length; ++a){
 				
 				var file = evt.dataTransfer.files[a];
 				//console.log(file);
@@ -186,7 +188,7 @@
 	 			xhr.open('POST', '<%= upload_comprobante_url %>');
 	 			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
         xhr.onloadstart = function() {
-					$("#nuevo_comprobante").append("<div class='progress'><div id="+progress+" class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'><span class='label bg-info' id="+label+">"+file.name+"</span></div></div>");
+					$("#nuevo_comprobante").append("<div class='progress nuevo_drop'><div id="+progress+" class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'><span class='label bg-info' id="+label+">"+file.name+"</span></div></div>");
         }
         
         (function(xhr,progress) { 
@@ -231,7 +233,9 @@
   		    evt.preventDefault();
 			
 			//$('#nuevo_comprobante').append('<br /><i class="fa fa-spinner fa fa-spin fa fa-2x"></i>');
-			
+      if ($(".nuevo_old").length>0){
+        $(".nuevo_old").remove(); //to avoid never-ending progress bar
+      }
 			for (a = 0; a < evt.target.files.length; ++a){
 				
 				var file = evt.target.files[a];
@@ -246,7 +250,7 @@
 	 			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
 
         xhr.onloadstart = function() {
-					$("#nuevo_comprobante").append("<div class='progress'><div id="+progress+" class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'><span class='label bg-info' id="+label+">"+file.name+"</span></div></div>");
+					$("#nuevo_comprobante").append("<div class='progress nuevo_old'><div id="+progress+" class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'><span class='label bg-info' id="+label+">"+file.name+"</span></div></div>");
         }
         
         (function(xhr,progress) { 
