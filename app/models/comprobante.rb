@@ -147,6 +147,16 @@ class Comprobante < ActiveRecord::Base
           logger.debug self.emisor.to_json
           if self.emisor.rfc == self.user.rfc
             self.emitido = true
+          else
+            @notification = Notification.new(
+              :description=>"Sent invoice RFC not match",
+              :status=>false,
+              :email=>self.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>self.xml_file_name,
+              :validation=>"If Sent(Emitido). Check Emisor RFC",
+              :category=>"Error"
+            )
+            @notification.save!
           end
           
           # Receptor
@@ -154,6 +164,16 @@ class Comprobante < ActiveRecord::Base
           logger.debug self.receptor.to_json
           if self.receptor.rfc == self.user.rfc
             self.recibido = true
+          else
+            @notification = Notification.new(
+              :description=>"Received invoice RFC not match",
+              :status=>false,
+              :email=>self.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>self.xml_file_name,
+              :validation=>"If Received(Recibido). Check Receptor RFC",
+              :category=>"Error"
+            )
+            @notification.save
           end
           
           # Timbre Fiscal Digital
