@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140712172348) do
+ActiveRecord::Schema.define(version: 20141210051853) do
 
   create_table "comprobantes", force: true do |t|
     t.string   "version"
@@ -63,6 +63,20 @@ ActiveRecord::Schema.define(version: 20140712172348) do
   end
 
   add_index "emisors", ["comprobante_id"], name: "index_emisors_on_comprobante_id", using: :btree
+
+  create_table "notifications", force: true do |t|
+    t.string   "description"
+    t.boolean  "status"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "comprobante_id"
+    t.string   "invoice_file_name"
+    t.string   "validation"
+    t.string   "category"
+  end
+
+  add_index "notifications", ["comprobante_id"], name: "index_notifications_on_comprobante_id", using: :btree
 
   create_table "perfils", force: true do |t|
     t.integer "user_id"

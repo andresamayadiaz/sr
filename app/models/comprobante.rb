@@ -4,6 +4,7 @@ class Comprobante < ActiveRecord::Base
   has_one :emisor, :dependent => :destroy
   has_one :receptor, :dependent => :destroy
   has_one :TimbreFiscalDigital, :dependent => :destroy
+  has_many :notifications, :dependent => :destroy
   before_create :set_internal_uuid
   
   has_attached_file :xml,
@@ -115,7 +116,7 @@ class Comprobante < ActiveRecord::Base
       end
       
       logger.debug "=================== Comprobante.procesar ==================="
-      logger.debug self.xml.queued_for_write[:original].path
+      logger.debug self.xml.queued_for_write[:original].path rescue "Path didn't exist"
       logger.debug "=================== /Comprobante.procesar ==================="
       
       begin
@@ -166,8 +167,19 @@ class Comprobante < ActiveRecord::Base
           # version no soportada, nula o no es un CFD
           # TODO generar notificacion de comprobante erroneo
           logger.debug "============ Version No Soportada ============"
-          raise "Version #{@version} No Soportada"
-        
+          @notification = Notification.new(
+            :description=>"Version #{@version} No Soportada",
+            :status=>false,
+            :email=>self.user.perfil.try(:emailadicional1),
+            :invoice_file_name=>self.xml_file_name,
+            :validation=>"CFDi version not supported",
+            :category=>"Error"
+          )
+          if @notification.save!
+            logger.debug "Version #{@version} No Sportada - notification saved"
+          else
+            fail "Version #{@version} No Soportada - notification Not saved"
+          end
         end
     
     # Archivo No Compatible
