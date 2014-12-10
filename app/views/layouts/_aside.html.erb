@@ -170,13 +170,16 @@
 		    evt.stopPropagation();
 		    evt.preventDefault();
 			
-			$('#nuevo_comprobante').append('<br /><i class="fa fa-spinner fa fa-spin fa fa-2x"></i>');
-			
-			for (a = 0; a < evt.dataTransfer.files.length; ++a){
+			//$('#nuevo_comprobante').append('<br /><i class="fa fa-spinner fa fa-spin fa fa-2x"></i>');
+      if($('.nuevo_drop').length>0){
+        $(".nuevo_drop").remove(); // to avoid never finish progress bar
+      }	
+      for (a = 0; a < evt.dataTransfer.files.length; ++a){
 				
 				var file = evt.dataTransfer.files[a];
 				//console.log(file);
-        var progress = 'progress' + a;
+        var progress = 'nuevo_drop_progress' + a;
+        var label = 'nuevo_drop_label' + a;
 				var formData = new FormData();
 	 			formData.append('file', file);
 				
@@ -185,7 +188,7 @@
 	 			xhr.open('POST', '<%= upload_comprobante_url %>');
 	 			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
         xhr.onloadstart = function() {
-					$("#nuevo_comprobante").append("<div class='progress'><div id="+progress+" class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'><span class='label bg-info' id=label-"+a+">"+file.name+"</span></div></div>");
+					$("#nuevo_comprobante").append("<div class='progress nuevo_drop'><div id="+progress+" class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'><span class='label bg-info' id="+label+">"+file.name+"</span></div></div>");
         }
         
         (function(xhr,progress) { 
@@ -198,22 +201,22 @@
           };
         }(xhr,progress));
 	 			
-        (function(xhr,file,progress,a){
+        (function(xhr,file,progress,label){
         xhr.onload = function () {
           $('#' + progress).attr('aria-valuenow', xhr.upload.onprogress);
-          $('#label-'+a).removeClass('bg-info');
+          $('#' + label).removeClass('bg-info');
 	 			  if (xhr.status === 200) {
             $("#"+progress).attr('style', 'width:100%');
             $("#"+progress).addClass('progress-bar-success');
-					  $('#label-'+a).addClass('bg-success').append(" Cargado");
+					  $('#'+label).addClass('bg-success').append(" Cargado");
 	 				  //alert('Comprobante Cargado Con Exito!');
 	 			  } else {
             $("#"+progress).addClass('progress-bar-danger');
-					  $('#label-'+a).addClass('bg-danger').append(" ERROR");
+					  $('#'+label).addClass('bg-danger').append(" ERROR");
 	 			    //alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
 	 			  }
 	 			}
-        }(xhr,file,progress,a));
+        }(xhr,file,progress,label));
 	
 	 			xhr.send(formData);
 				
@@ -229,8 +232,10 @@
   		    evt.stopPropagation();
   		    evt.preventDefault();
 			
-			$('#nuevo_comprobante').append('<br /><i class="fa fa-spinner fa fa-spin fa fa-2x"></i>');
-			
+			//$('#nuevo_comprobante').append('<br /><i class="fa fa-spinner fa fa-spin fa fa-2x"></i>');
+      if ($(".nuevo_old").length>0){
+        $(".nuevo_old").remove(); //to avoid never-ending progress bar
+      }
 			for (a = 0; a < evt.target.files.length; ++a){
 				
 				var file = evt.target.files[a];
@@ -239,12 +244,13 @@
 				
 	 			// upload File
 	 			var xhr = new XMLHttpRequest();
-        var progress = 'progress' + a;
-	 			xhr.open('POST', '<%= upload_comprobante_url %>');
+        var progress = 'nuevo_old_progress' + a;
+	 			var label = 'nuevo_old_label' + a;
+        xhr.open('POST', '<%= upload_comprobante_url %>');
 	 			xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
 
         xhr.onloadstart = function() {
-					$("#nuevo_comprobante").append("<div class='progress'><div id="+progress+" class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'><span class='label bg-info' id=label-"+a+">"+file.name+"</span></div></div>");
+					$("#nuevo_comprobante").append("<div class='progress nuevo_old'><div id="+progress+" class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'><span class='label bg-info' id="+label+">"+file.name+"</span></div></div>");
         }
         
         (function(xhr,progress) { 
@@ -257,22 +263,22 @@
           };
         }(xhr,progress));
 	 			
-        (function(xhr,file,progress,a){
+        (function(xhr,file,progress,label){
         xhr.onload = function () {
           $('#' + progress).attr('aria-valuenow', xhr.upload.onprogress);
-          $('#label-'+a).removeClass('bg-info');
+          $('#'+label).removeClass('bg-info');
 	 			  if (xhr.status === 200) {
             $("#"+progress).attr('style', 'width:100%');
             $("#"+progress).addClass('progress-bar-success');
-					  $('#label-'+a).addClass('bg-success').append(" Cargado");
+					  $('#'+label).addClass('bg-success').append(" Cargado");
 	 				  //alert('Comprobante Cargado Con Exito!');
 	 			  } else {
             $("#"+progress).addClass('progress-bar-danger');
-					  $('#label-'+a).addClass('bg-danger').append(" ERROR");
+					  $('#'+label).addClass('bg-danger').append(" ERROR");
 	 			    //alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
 	 			  }
 	 			}
-        }(xhr,file,progress,a));
+        }(xhr,file,progress,label));
 	
 	 			xhr.send(formData);
 				

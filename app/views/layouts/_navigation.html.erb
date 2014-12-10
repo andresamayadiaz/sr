@@ -152,7 +152,7 @@
 		  <%= form_for(Comprobante.new, :url => upload_comprobante_path, :html => {:multipart => true, :class => 'bs-example form-horizontal', :id => 'new_comprobante'} ) do |f| %>
 		  	<% f.file_field :comprobante, {:id => 'files', :class => 'filestyle hide', :multiple => 'multiple'} %>
 		  <% end %>
-		  <button class="btn btn-primary" onClick='$("#files").click();' data-toggle="class:show inline" data-target="#spin" data-loading-text="Cargando...">Elegir Archivos</button> <i class="fa fa-spin fa-spinner hide" id="spin"></i>
+		  <button class="btn btn-primary" onClick='$("#files").click();'>Elegir Archivos</button>
 		  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
