@@ -98,6 +98,39 @@ class Comprobante < ActiveRecord::Base
       end
       
     end
+  
+    def self.generate_notifications_after_save
+      comprobantes = Comprobante.all
+      comprobantes.each do |c|
+        if c.recibido 
+          if c.receptor.rfc != c.user.rfc
+            @notification = Notification.new(
+              :description=>"Received invoice RFC not match",
+              :status=>false,
+              :email=>self.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>self.xml_file_name,
+              :validation=>"If Received(Recibido). Check Receptor RFC",
+              :category=>"Warning"
+            )
+            @notification.save!
+          end
+        end
+    
+        if c.emitido
+          if c.receptor.rfc != c.user.rfc
+            @notification = Notification.new(
+              :description=>"Sent invoice RFC not match",
+              :status=>false,
+              :email=>self.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>self.xml_file_name,
+              :validation=>"If Sent(Emitido). Check Receptor RFC",
+              :category=>"Warning"
+            )
+            @notification.save!
+          end
+        end    
+      end 
+    end
     
   private
     
@@ -173,7 +206,7 @@ class Comprobante < ActiveRecord::Base
               :validation=>"If Received(Recibido). Check Receptor RFC",
               :category=>"Error"
             )
-            @notification.save
+            @notification.save!
           end
           
           # Timbre Fiscal Digital
