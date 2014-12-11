@@ -14,6 +14,8 @@ gem 'devise'
 gem 'figaro', :github=>"laserlemon/figaro"
 gem 'mysql2'
 gem 'thin'
+gem 'delayed_job_active_record'
+gem 'daemons'
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 # gem "paperclip", "~> 4.1"
 gem 'nokogiri'

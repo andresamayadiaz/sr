@@ -4,6 +4,7 @@ class Comprobante < ActiveRecord::Base
   has_one :emisor, :dependent => :destroy
   has_one :receptor, :dependent => :destroy
   has_one :TimbreFiscalDigital, :dependent => :destroy
+  has_many :notifications, :dependent => :destroy
   before_create :set_internal_uuid
   
   has_attached_file :xml,
@@ -97,6 +98,93 @@ class Comprobante < ActiveRecord::Base
       end
       
     end
+  
+    def self.generate_notifications_after_save
+      comprobantes = Comprobante.all
+      comprobantes.each do |c|
+        
+        #check if it's already exists
+        user_invoices_name = c.user.comprobantes.map(&:xml_file_name)
+        dup_invoice = user_invoices_name.select{|i|i==c.xml_file_name}.length rescue 0
+        if dup_invoice>1
+            @notification = Notification.new(
+              :description=>"Already exists",
+              :status=>false,
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"Already exists",
+              :category=>"Warning",
+              :comprobante_id=>c.id
+            )
+            @notification.save!
+        end
+        
+        if c.recibido 
+          if c.receptor.rfc != c.user.rfc
+            @notification = Notification.new(
+              :description=>"Received invoice RFC not match",
+              :status=>false,
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"If the invoice uploaded is a received one, validate Receptor information against company profile",
+              :category=>"Warning",
+              :comprobante_id=>c.id
+            )
+            @notification.save!
+          end
+        end
+    
+        if c.emitido
+          if c.emisor.rfc != c.user.rfc
+            @notification = Notification.new(
+              :description=>"Sent invoice RFC not match",
+              :status=>false,
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"If the invoice uploaded is a Sent (Emitido), validate Emisor information against company profile.",
+              :category=>"Warning",
+              :comprobante_id=>c.id
+            )
+            @notification.save!
+          end
+        end 
+
+        file = c.xml_obj rescue nil
+        if file.present?
+          file_validate_schema = file.validate_schema
+          if file_validate_schema!=true and file_validate_schema.kind_of?(Array)
+            category = "Error" if file_validate_schema.first.error? and !file_validate_schema.first.warning?
+            category = "Warning" if !file_validate_schema.first.error? and file_validate_schema.first.warning?
+            @notification = Notification.new(
+              :description=>file_validate_schema.first.to_s,
+              :status=>false,
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"Validate XML against XSLT Schema Files",
+              :category=>category,
+              :comprobante_id=>c.id
+            )
+            @notification.save!
+          end
+        end
+       
+        #generate success notification and send email" 
+        if c.notifications.length==0
+            @notification = Notification.new(
+              :description=>"Success",
+              :status=>false,
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"Success notification",
+              :category=>"Success",
+              :comprobante_id=>c.id
+            )
+            if @notification.save! and c.user.perfil.notificarvalidos
+              UserMailer.success_notification_email(c.user.perfil.emailadicional1,c.xml_file_name).deliver
+            end
+        end 
+      end 
+    end
     
   private
     
@@ -115,7 +203,7 @@ class Comprobante < ActiveRecord::Base
       end
       
       logger.debug "=================== Comprobante.procesar ==================="
-      logger.debug self.xml.queued_for_write[:original].path
+      logger.debug self.xml.queued_for_write[:original].path rescue "Path didn't exist"
       logger.debug "=================== /Comprobante.procesar ==================="
       
       begin
@@ -146,6 +234,16 @@ class Comprobante < ActiveRecord::Base
           logger.debug self.emisor.to_json
           if self.emisor.rfc == self.user.rfc
             self.emitido = true
+          else
+            @notification = Notification.new(
+              :description=>"Sent invoice RFC not match",
+              :status=>false,
+              :email=>self.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>self.xml_file_name,
+              :validation=>"If Sent(Emitido). Check Emisor RFC",
+              :category=>"Error"
+            )
+            @notification.save!
           end
           
           # Receptor
@@ -153,6 +251,16 @@ class Comprobante < ActiveRecord::Base
           logger.debug self.receptor.to_json
           if self.receptor.rfc == self.user.rfc
             self.recibido = true
+          else
+            @notification = Notification.new(
+              :description=>"Received invoice RFC not match",
+              :status=>false,
+              :email=>self.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>self.xml_file_name,
+              :validation=>"If Received(Recibido). Check Receptor RFC",
+              :category=>"Error"
+            )
+            @notification.save!
           end
           
           # Timbre Fiscal Digital
@@ -166,8 +274,19 @@ class Comprobante < ActiveRecord::Base
           # version no soportada, nula o no es un CFD
           # TODO generar notificacion de comprobante erroneo
           logger.debug "============ Version No Soportada ============"
-          raise "Version #{@version} No Soportada"
-        
+          @notification = Notification.new(
+            :description=>"Version #{@version} No Soportada",
+            :status=>false,
+            :email=>self.user.perfil.try(:emailadicional1),
+            :invoice_file_name=>self.xml_file_name,
+            :validation=>"CFDi version not supported",
+            :category=>"Error"
+          )
+          if @notification.save!
+            logger.debug "Version #{@version} No Sportada - notification saved"
+          else
+            fail "Version #{@version} No Soportada - notification Not saved"
+          end
         end
     
     # Archivo No Compatible

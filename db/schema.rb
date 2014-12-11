@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140712172348) do
+ActiveRecord::Schema.define(version: 20141210125100) do
 
   create_table "comprobantes", force: true do |t|
     t.string   "version"
@@ -43,6 +43,22 @@ ActiveRecord::Schema.define(version: 20140712172348) do
   add_index "comprobantes", ["recibido"], name: "index_comprobantes_on_recibido", using: :btree
   add_index "comprobantes", ["user_id"], name: "index_comprobantes_on_user_id", using: :btree
 
+  create_table "delayed_jobs", force: true do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
   create_table "emisors", force: true do |t|
     t.string   "rfc"
     t.text     "regimenFiscal"
@@ -63,6 +79,20 @@ ActiveRecord::Schema.define(version: 20140712172348) do
   end
 
   add_index "emisors", ["comprobante_id"], name: "index_emisors_on_comprobante_id", using: :btree
+
+  create_table "notifications", force: true do |t|
+    t.string   "description"
+    t.boolean  "status"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "comprobante_id"
+    t.string   "invoice_file_name"
+    t.string   "validation"
+    t.string   "category"
+  end
+
+  add_index "notifications", ["comprobante_id"], name: "index_notifications_on_comprobante_id", using: :btree
 
   create_table "perfils", force: true do |t|
     t.integer "user_id"
