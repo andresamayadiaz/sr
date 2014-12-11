@@ -167,6 +167,22 @@ class Comprobante < ActiveRecord::Base
             @notification.save!
           end
         end
+       
+        #generate success notification and send email" 
+        if c.notifications.length==0
+            @notification = Notification.new(
+              :description=>"Success",
+              :status=>false,
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"Success notification",
+              :category=>"Success",
+              :comprobante_id=>c.id
+            )
+            if @notification.save! and c.user.perfil.notificarvalidos
+              #send email to user
+            end
+        end 
       end 
     end
     
