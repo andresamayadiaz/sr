@@ -180,7 +180,7 @@ class Comprobante < ActiveRecord::Base
               :comprobante_id=>c.id
             )
             if @notification.save! and c.user.perfil.notificarvalidos
-              #send email to user
+              UserMailer.success_notification_email(c.user.perfil.emailadicional1,c.xml_file_name).deliver
             end
         end 
       end 
