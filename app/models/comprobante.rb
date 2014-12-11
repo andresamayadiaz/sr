@@ -235,15 +235,17 @@ class Comprobante < ActiveRecord::Base
           if self.emisor.rfc == self.user.rfc
             self.emitido = true
           else
-            @notification = Notification.new(
-              :description=>"Sent invoice RFC not match",
-              :status=>false,
-              :email=>self.user.perfil.try(:emailadicional1),
-              :invoice_file_name=>self.xml_file_name,
-              :validation=>"If Sent(Emitido). Check Emisor RFC",
-              :category=>"Error"
-            )
-            @notification.save!
+            if self.receptor.rfc != self.user.rfc
+              @notification = Notification.new(
+                :description=>"Sent invoice RFC not match",
+                :status=>false,
+                :email=>self.user.perfil.try(:emailadicional1),
+                :invoice_file_name=>self.xml_file_name,
+                :validation=>"If Sent(Emitido). Check Emisor RFC",
+                :category=>"Error"
+              )
+              @notification.save!
+            end
           end
           
           # Receptor
@@ -252,15 +254,17 @@ class Comprobante < ActiveRecord::Base
           if self.receptor.rfc == self.user.rfc
             self.recibido = true
           else
-            @notification = Notification.new(
-              :description=>"Received invoice RFC not match",
-              :status=>false,
-              :email=>self.user.perfil.try(:emailadicional1),
-              :invoice_file_name=>self.xml_file_name,
-              :validation=>"If Received(Recibido). Check Receptor RFC",
-              :category=>"Error"
-            )
-            @notification.save!
+            if !self.emitido
+              @notification = Notification.new(
+                :description=>"Received invoice RFC not match",
+                :status=>false,
+                :email=>self.user.perfil.try(:emailadicional1),
+                :invoice_file_name=>self.xml_file_name,
+                :validation=>"If Received(Recibido). Check Receptor RFC",
+                :category=>"Error"
+              )
+              @notification.save!
+            end
           end
           
           # Timbre Fiscal Digital
