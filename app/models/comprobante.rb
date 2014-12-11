@@ -102,33 +102,71 @@ class Comprobante < ActiveRecord::Base
     def self.generate_notifications_after_save
       comprobantes = Comprobante.all
       comprobantes.each do |c|
+        
+        #check if it's already exists
+        user_invoices_name = c.user.comprobantes.map(&:xml_file_name)
+        dup_invoice = user_invoices_name.select{|i|i==c.xml_file_name}.length rescue 0
+        if dup_invoice>1
+            @notification = Notification.new(
+              :description=>"Already exists",
+              :status=>false,
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"Already exists",
+              :category=>"Warning",
+              :comprobante_id=>c.id
+            )
+            @notification.save!
+        end
+        
         if c.recibido 
           if c.receptor.rfc != c.user.rfc
             @notification = Notification.new(
               :description=>"Received invoice RFC not match",
               :status=>false,
-              :email=>self.user.perfil.try(:emailadicional1),
-              :invoice_file_name=>self.xml_file_name,
-              :validation=>"If Received(Recibido). Check Receptor RFC",
-              :category=>"Warning"
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"If the invoice uploaded is a received one, validate Receptor information against company profile",
+              :category=>"Warning",
+              :comprobante_id=>c.id
             )
             @notification.save!
           end
         end
     
         if c.emitido
-          if c.receptor.rfc != c.user.rfc
+          if c.emisor.rfc != c.user.rfc
             @notification = Notification.new(
               :description=>"Sent invoice RFC not match",
               :status=>false,
-              :email=>self.user.perfil.try(:emailadicional1),
-              :invoice_file_name=>self.xml_file_name,
-              :validation=>"If Sent(Emitido). Check Receptor RFC",
-              :category=>"Warning"
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"If the invoice uploaded is a Sent (Emitido), validate Emisor information against company profile.",
+              :category=>"Warning",
+              :comprobante_id=>c.id
             )
             @notification.save!
           end
-        end    
+        end 
+
+        file = c.xml_obj rescue nil
+        if file.present?
+          file_validate_schema = file.validate_schema
+          if file_validate_schema!=true and file_validate_schema.kind_of?(Array)
+            category = "Error" if file_validate_schema.first.error? and !file_validate_schema.first.warning?
+            category = "Warning" if !file_validate_schema.first.error? and file_validate_schema.first.warning?
+            @notification = Notification.new(
+              :description=>file_validate_schema.first.to_s,
+              :status=>false,
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"Validate XML against XSLT Schema Files",
+              :category=>category,
+              :comprobante_id=>c.id
+            )
+            @notification.save!
+          end
+        end
       end 
     end
     
