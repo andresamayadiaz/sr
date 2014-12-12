@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141210125100) do
+ActiveRecord::Schema.define(version: 20141212152154) do
 
   create_table "comprobantes", force: true do |t|
     t.string   "version"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20141210125100) do
     t.string   "invoice_file_name"
     t.string   "validation"
     t.string   "category"
+    t.integer  "user_id"
   end
 
   add_index "notifications", ["comprobante_id"], name: "index_notifications_on_comprobante_id", using: :btree

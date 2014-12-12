@@ -166,6 +166,7 @@ class HomeController < ApplicationController
   end
 
   def alertas
+    @alertas = current_user.notifications
   end
   
   private

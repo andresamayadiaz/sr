@@ -93,101 +93,35 @@
                       <button class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" data-title="Refresh"><i class="fa fa-refresh"></i></button>
                     </div>
                   </div>
-                </header>            
+                </header>
                 <section class="scrollable hover">
+                  <% if @alertas.present? %>            
                   <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-alt list-group-lg">
-                    <li class="list-group-item">
-                      <i class="fa fa-circle text-success pull-left m-t-xs"></i>
-                      <a href="#" class="clear">
-                        <small class="pull-right text-muted">3 minuts ago</small>
-                        <strong>550e8400-e29b-41d4-a716-446655440000, A-27</strong> <span>$258,276.00 MXN</span>
-						<br />
-						<span>2014-02-25T13:05:27</span> - <span>ingreso</span>
-						<br />
-						<span>EMISOR: CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</span>
-						<br />
-						<span>RECEPTOR: EMP1234567ZYX, Empresa Patito S.A. de C.V.</span>
-                      </a>
-                    </li>
-                    <li class="list-group-item animated fadeInRightBig">
-                      <i class="fa fa-circle text-warning pull-left m-t-xs"></i>
-                      <a href="#" class="clear">
-                        <small class="pull-right text-muted">3 minuts ago</small>
-                        <strong>550e8400-e29b-41d4-a716-446655440000, A-27</strong> <span>$258,276.00 MXN</span>
-						<br />
-						<span>2014-02-25T13:05:27</span> - <span>ingreso</span>
-						<br />
-						<span>EMISOR: CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</span>
-						<br />
-						<span>RECEPTOR: EMP1234567ZYX, Empresa Patito S.A. de C.V.</span>
-                      </a>
-                    </li>
-                    <li class="list-group-item animated fadeInRightBig">
-                      <i class="fa fa-circle text-danger pull-left m-t-xs"></i>
-                      <a href="#" class="clear">
-                        <small class="pull-right text-muted">3 minuts ago</small>
-                        <strong>550e8400-e29b-41d4-a716-446655440000, A-27</strong> <span>$258,276.00 MXN</span>
-						<br />
-						<span>2014-02-25T13:05:27</span> - <span>ingreso</span>
-						<br />
-						<span>EMISOR: CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</span>
-						<br />
-						<span>RECEPTOR: EMP1234567ZYX, Empresa Patito S.A. de C.V.</span>
-                      </a>
-                    </li>
-                    <li class="list-group-item animated fadeInRightBig">
-                      <i class="fa fa-circle text-danger pull-left m-t-xs"></i>
-                      <a href="#" class="clear">
-                        <small class="pull-right text-muted">3 minuts ago</small>
-                        <strong>550e8400-e29b-41d4-a716-446655440000, A-27</strong> <span>$258,276.00 MXN</span>
-						<br />
-						<span>2014-02-25T13:05:27</span> - <span>ingreso</span>
-						<br />
-						<span>EMISOR: CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</span>
-						<br />
-						<span>RECEPTOR: EMP1234567ZYX, Empresa Patito S.A. de C.V.</span>
-                      </a>
-                    </li>
-                    <li class="list-group-item animated fadeInRightBig">
-                      <i class="fa fa-circle text-warning pull-left m-t-xs"></i>
-                      <a href="#" class="clear">
-                        <small class="pull-right text-muted">3 minuts ago</small>
-                        <strong>550e8400-e29b-41d4-a716-446655440000, A-27</strong> <span>$258,276.00 MXN</span>
-						<br />
-						<span>2014-02-25T13:05:27</span> - <span>ingreso</span>
-						<br />
-						<span>EMISOR: CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</span>
-						<br />
-						<span>RECEPTOR: EMP1234567ZYX, Empresa Patito S.A. de C.V.</span>
-                      </a>
-                    </li>
-                    <li class="list-group-item">
-                      <i class="fa fa-circle text-success pull-left m-t-xs"></i>
-                      <a href="#" class="clear">
-                        <small class="pull-right text-muted">3 minuts ago</small>
-                        <strong>550e8400-e29b-41d4-a716-446655440000, A-27</strong> <span>$258,276.00 MXN</span>
-						<br />
-						<span>2014-02-25T13:05:27</span> - <span>ingreso</span>
-						<br />
-						<span>EMISOR: CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</span>
-						<br />
-						<span>RECEPTOR: EMP1234567ZYX, Empresa Patito S.A. de C.V.</span>
-                      </a>
-                    </li>
-                    <li class="list-group-item animated fadeInRightBig">
-                      <i class="fa fa-circle text-danger pull-left m-t-xs"></i>
-                      <a href="#" class="clear">
-                        <small class="pull-right text-muted">30 minuts ago</small>
-                        <strong>550e8400-e29b-41d4-a716-446655440000, A-27</strong> <span>$258,276.00 MXN</span>
-						<br />
-						<span>2014-02-25T13:05:27</span> - <span>ingreso</span>
-						<br />
-						<span>EMISOR: CTD030903I70, Captiva Tecnología Digital S.A. de C.V.</span>
-						<br />
-						<span>RECEPTOR: EMP1234567ZYX, Empresa Patito S.A. de C.V.</span>
-                      </a>
-                    </li>
+                    <% @alertas.each do |a| %>
+                      <li class="list-group-item">
+                        <% if a.category=='Success' %>  
+                          <i class="fa fa-circle text-success pull-left m-t-xs"></i>
+                        <% end %>
+                        <% if a.category=='Warning' %>
+                          <i class="fa fa-circle text-warning pull-left m-t-xs"></i>
+                        <% end %>
+                        <% if a.category=='Error' %>
+                          <i class="fa fa-circle text-danger pull-left m-t-xs"></i>
+                        <% end %>
+                        <a href="#" class="clear">
+                          <small class="pull-right text-muted">3 minuts ago</small>
+                          <strong><%= a.comprobante.to_s rescue '' %></strong> <span><%= number_to_currency(a.comprobante.try(:total))%> MXN</span>
+						              <br />
+						              <span><%= a.comprobante.try(:fecha) %></span> - <span><%= a.comprobante.try(:tipoDeComprobante) %></span>
+						              <br />
+						              <span>EMISOR: <%= a.comprobante.try(:emisor).try(:rfc) %>, <%= a.comprobante.try(:emisor).try(:nombre) %></span>
+						              <br />
+						              <span>RECEPTOR: <%= a.comprobante.try(:receptor).try(:rfc) %>, <%= a.comprobante.try(:receptor).try(:nombre)%></span>
+                        </a>
+                      </li>
+                    <% end %>
                   </ul>
+                  <% end %>
 				  <br />
 				  <br />
 				  <br />
