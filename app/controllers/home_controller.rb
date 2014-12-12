@@ -4,7 +4,7 @@
 class HomeController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb]
-  before_filter :set_vars, only: [:emitidos, :recibidos, :otros]
+  before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas]
   before_filter :set_sort
  
   def index
@@ -163,6 +163,9 @@ class HomeController < ApplicationController
     @buscar = @user.comprobantes.joins(:receptor,:emisor,:TimbreFiscalDigital).where("serie LIKE ? OR folio LIKE? OR receptors.rfc LIKE ? OR receptors.nombre LIKE ? OR emisors.rfc LIKE ? OR emisors.nombre LIKE ? OR timbre_fiscal_digitals.uuid LIKE ?", @q, @q, @q, @q, @q, @q, @q)
     @buscar = Sorter.sort_by_fecha(@sort,@buscar)
     @buscar = Kaminari.paginate_array(@buscar).page params[:page]
+  end
+
+  def alertas
   end
   
   private
