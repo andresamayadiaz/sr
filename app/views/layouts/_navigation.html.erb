@@ -121,8 +121,8 @@
 		  <%= link_to 'Perfil', perfil_user_path %>
         </li>
         <li>
-          <a href="#">
-            <span class="badge bg-danger pull-right">3</span>
+          <a href="/alertas">
+            <span class="badge bg-danger pull-right"><%= @alertas.length rescue 0 %></span>
             Alertas
           </a>
         </li>

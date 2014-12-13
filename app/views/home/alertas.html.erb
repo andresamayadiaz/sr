@@ -18,14 +18,14 @@
                     <section id="mail-nav" class="hidden-xs">
                       <ul class="nav nav-pills nav-stacked no-radius">
                         <li class="active">
-                          <a href="#">
+                          <a href="<%= alertas_url %>">
                             <span class="badge pull-right"><%= @alertas.length %></span> 
                             <i class="fa fa-fw fa-envelope-o"></i>
                             No Leídos
                           </a>
                         </li>
                         <li>
-                          <a href="<%= alertas_url %>">
+                          <a href="/alertas?filter=read">
                             <i class="fa fa-fw fa-inbox"></i>
                             Leidos
                           </a>
