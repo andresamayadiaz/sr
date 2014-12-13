@@ -177,7 +177,7 @@ class HomeController < ApplicationController
         @alertas = all_alertas.select{|a|a.category=='Success'}
       end
     else
-      @alertas = all_alertas
+      @alertas = all_alertas.select{|a|a.status==false}
     end
   end
   
