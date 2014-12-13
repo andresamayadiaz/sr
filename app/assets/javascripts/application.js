@@ -307,5 +307,9 @@ $(document).ready(function(){
 
     }
     window.location.href = sort_url;
-  })
+  });
+  
+  $("#alertas-refresh-button").click(function(){
+    location.reload();
+  });
 });
