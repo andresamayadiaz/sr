@@ -166,7 +166,19 @@ class HomeController < ApplicationController
   end
 
   def alertas
-    @alertas = current_user.notifications
+    all_alertas = current_user.notifications
+    if params[:filter].present?
+      case params[:filter]
+      when 'advertencias'
+        @alertas = all_alertas.select{|a|a.category=='Warning'}
+      when 'faltas'
+        @alertas = all_alertas.select{|a|a.category=='Error'}
+      when 'validos'
+        @alertas = all_alertas.select{|a|a.category=='Success'}
+      end
+    else
+      @alertas = all_alertas
+    end
   end
   
   private
