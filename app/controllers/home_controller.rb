@@ -4,6 +4,7 @@
 class HomeController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb]
+  before_filter :set_notifications
   before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas]
   before_filter :set_sort
  
@@ -166,23 +167,26 @@ class HomeController < ApplicationController
   end
 
   def alertas
-    all_alertas = current_user.notifications
-    if params[:filter].present?
-      case params[:filter]
-      when 'advertencias'
-        @alertas = all_alertas.select{|a|a.category=='Warning'}
-      when 'faltas'
-        @alertas = all_alertas.select{|a|a.category=='Error'}
-      when 'validos'
-        @alertas = all_alertas.select{|a|a.category=='Success'}
-      end
-    else
-      @alertas = all_alertas.select{|a|a.status==false}
-    end
   end
   
   private
-    
+    def set_notifications
+      all_alertas = current_user.notifications
+      if params[:filter].present?
+        case params[:filter]
+        when 'advertencias'
+          @alertas = all_alertas.select{|a|a.category=='Warning'}
+        when 'faltas'
+          @alertas = all_alertas.select{|a|a.category=='Error'}
+        when 'validos'
+          @alertas = all_alertas.select{|a|a.category=='Success'}
+        end
+      else
+        @alertas = all_alertas.select{|a|a.status==false}
+      end
+      @alertas = @alertas.sort_by{|a|a.created_at}
+    end
+
     def set_vars
       
       @user = current_user
