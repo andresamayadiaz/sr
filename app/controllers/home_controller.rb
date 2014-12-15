@@ -180,6 +180,10 @@ class HomeController < ApplicationController
           @alertas = all_alertas.select{|a|a.category=='Error'}
         when 'validos'
           @alertas = all_alertas.select{|a|a.category=='Success'}
+        when 'mes-actual'
+          @alertas = all_alertas.select{|a|a.created_at.month==Time.now.month}
+        when 'mes-anterior'
+          @alertas = all_alertas.select{|a|a.created_at.month==(Time.now-1.month).month}
         end
       else
         @alertas = all_alertas.select{|a|a.status==false}
