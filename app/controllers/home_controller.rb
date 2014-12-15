@@ -5,7 +5,7 @@ class HomeController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb]
   before_filter :set_notifications
-  before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas]
+  before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas, :view_single_notification]
   before_filter :set_sort
  
   def index
@@ -168,6 +168,13 @@ class HomeController < ApplicationController
 
   def alertas
   end
+
+  def view_single_notification
+    @notification = Notification.find(params[:id])
+    if @notification.present?
+      @notification.update_attributes!(:status=>true)
+    end
+  end
   
   private
     def set_notifications
@@ -184,6 +191,8 @@ class HomeController < ApplicationController
           @alertas = all_alertas.select{|a|a.created_at.month==Time.now.month}
         when 'mes-anterior'
           @alertas = all_alertas.select{|a|a.created_at.month==(Time.now-1.month).month}
+        when 'leidos'
+          @alertas = all_alertas.select{|a|a.status==true}
         end
       else
         @alertas = all_alertas.select{|a|a.status==false}

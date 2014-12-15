@@ -1,0 +1,39 @@
+<% content_for :breadcrumbs do %>
+<!-- Breadcrumbs -->
+<ul class="breadcrumb no-border no-radius b-b b-light pull-in">
+  <li><a href="<%= authenticated_root_url %>"><i class="fa fa-home"></i> Inicio</a></li>
+  <li><a href="<%= alertas_url %>">Alertas</a></li>
+  <li class="active">Vista de Alertas</li>
+</ul>
+<!-- /Breadcrumbs -->
+<% end %>
+
+<!-- Titulo Pagina -->
+<div class="m-b-md">
+  <h3 class="m-b-none">Vista de Alertas</h3>
+</div>
+<!-- /Titulo Pagina -->
+
+<!-- Lista de Emitidos -->
+<section class="panel panel-default">
+      <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-alt list-group-lg">
+        <li class="list-group-item">
+          <% if @notification.category=='Success' %>
+            <i class="fa fa-circle text-success pull-right m-t-xs"></i>
+          <% end %>
+          <% if @notification.category=='Warning' %>
+            <i class="fa fa-circle text-warning pull-right m-t-xs"></i>
+          <% end %>
+          <% if @notification.category=='Error' %>
+            <i class="fa fa-circle text-danger pull-right m-t-xs"></i>
+          <% end %>
+          <small class="pull-right text-muted">3 minuts ago</small>
+          <strong><%= @notification.comprobante.to_s rescue '' %></strong> <span><%= number_to_currency(@notification.comprobante.try(:total))%> MXN</span>
+				  <br />
+				  <span><%= @notification.comprobante.try(:fecha) %></span> - <span><%= @notification.comprobante.try(:tipoDeComprobante) %></span>
+				  <br />
+				  <span>EMISOR: <%= @notification.comprobante.try(:emisor).try(:rfc) %>, <%= @notification.comprobante.try(:emisor).try(:nombre) %></span>
+				  <br />
+				  <span>RECEPTOR: <%= @notification.comprobante.try(:receptor).try(:rfc) %>, <%= @notification.comprobante.try(:receptor).try(:nombre)%></span>
+      </ul>
+</section>
