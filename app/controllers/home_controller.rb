@@ -188,8 +188,8 @@ class HomeController < ApplicationController
       else
         @alertas = all_alertas.select{|a|a.status==false}
       end
-      @alertas = @alertas.sort_by{|a|a.created_at}
-      @alertas = Kaminari.paginate_array(@alertas).page(params[:page])
+        @alertas = @alertas.sort_by{|a|a.created_at} rescue []
+        @alertas = Kaminari.paginate_array(@alertas).page(params[:page])
     end
 
     def set_vars
