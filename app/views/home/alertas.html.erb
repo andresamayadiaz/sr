@@ -19,26 +19,28 @@
                       <ul class="nav nav-pills nav-stacked no-radius">
                         <li class="<%= params[:filter].blank? ? 'active' : '' %>">
                           <a href="<%= alertas_url %>">
-                            <span class="badge pull-right"><%= @alertas.length %></span> 
+                            <span class="badge pull-right"><%= @unreads_count %></span> 
                             <i class="fa fa-fw fa-envelope-o"></i>
                             No Leídos
                           </a>
                         </li>
                         <li class="<%= params[:filter]=='leidos' ? 'active' : '' %>">
                           <a href="/alertas?filter=leidos">
+                            <span class="badge pull-right"><%= @leidos_count %></span> 
                             <i class="fa fa-fw fa-inbox"></i>
                             Leidos
                           </a>
                         </li>
                         <li class="<%= params[:filter]=='mes-actual' ? 'active' : '' %>">
                           <a href="/alertas?filter=mes-actual">
-                            <span class="badge badge-hollow pull-right">4</span>
+                            <span class="badge pull-right"><%= @actual_count %></span> 
                             <i class="fa fa-fw fa-bookmark-o"></i>                            
                             Mes Actual
                           </a>
                         </li>
                         <li class="<%= params[:filter]=='mes-anterior' ? 'active' : '' %>">
                           <a href="/alertas?filter=mes-anterior">
+                            <span class="badge badge-hollow pull-right"><%= @anterior_count %></span>
                             <i class="fa fa-fw fa-pencil"></i>
                             Mes Anterior
                           </a>
@@ -50,18 +52,21 @@
                         </li>
                         <li class="<%= params[:filter]=='validos' ? 'active' : '' %>">
                           <a href="/alertas?filter=validos">
+                            <span class="badge badge-hollow pull-right"><%= @validos_count %></span>
                             <i class="fa fa-circle text-success pull-right m-t-xs"></i>
                             Válidos
                           </a>
                         </li>
                         <li class="<%= params[:filter]=='advertencias' ? 'active' : '' %>">
                           <a href="/alertas?filter=advertencias">
+                            <span class="badge badge-hollow pull-right"><%= @advertencias_count %></span>
                             <i class="fa fa-circle text-warning pull-right m-t-xs"></i>
                             Advertencias
                           </a>
                         </li>
                         <li class="<%= params[:filter]=='faltas' ? 'active' : '' %>">
                           <a href="/alertas?filter=faltas">
+                            <span class="badge badge-hollow pull-right"><%= @faltas_count %></span>
                             <i class="fa fa-circle text-danger pull-right m-t-xs"></i>
                             Faltas
                           </a>
