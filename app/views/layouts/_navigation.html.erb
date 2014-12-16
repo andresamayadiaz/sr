@@ -92,7 +92,7 @@
                       You have error notification
                     <% end %>
                     <br>
-                    <small class="text-muted">10 minutes ago</small>
+                    <small class="text-muted"><%= time_ago_in_words(a.created_at) %></small>
                   </span>
                 </a>
               <% end %>
