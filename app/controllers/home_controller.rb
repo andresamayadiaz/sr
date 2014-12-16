@@ -214,9 +214,9 @@ class HomeController < ApplicationController
       else
         @alertas = all_unread_alertas
       end
-      @alertas = @alertas.sort_by{|a|a.created_at} rescue []
+      @alertas = @alertas.sort_by{|a|a.created_at}.reverse! rescue []
       @alertas = Kaminari.paginate_array(@alertas).page(params[:page])
-
+      @ten_most_recent_alertas = @alertas.first(10)
     end
 
     def set_vars
