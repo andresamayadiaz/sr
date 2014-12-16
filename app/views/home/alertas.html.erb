@@ -106,7 +106,7 @@
                           <i class="fa fa-circle text-danger pull-left m-t-xs"></i>
                         <% end %>
                         <a href="/vistadealertas?id=<%= a.id %>" class="clear">
-                          <small class="pull-right text-muted">3 minuts ago</small>
+                          <small class="pull-right text-muted"><%= time_ago_in_words(a.created_at) %></small>
                           <strong><%= a.comprobante.to_s rescue '' %></strong> <span><%= number_to_currency(a.comprobante.try(:total))%> MXN</span>
 						              <br />
 						              <span><%= a.comprobante.try(:fecha) %></span> - <span><%= a.comprobante.try(:tipoDeComprobante) %></span>
