@@ -124,9 +124,10 @@
 				  <br />
                 </section>
 				<footer class="footer b-t bg-white-only">
-                  <form class="m-t-sm">
+                  <form class="m-t-sm" action="/buscardealertas">
                     <div class="input-group">
-                      <input type="text" class="input-sm form-control input-s-sm" placeholder="Buscar">
+                      <input type="hidden" value="<%= params[:filter] rescue '' %>" name='filter'/>
+                      <input type="text" class="input-sm form-control input-s-sm" placeholder="Buscar" name='qa' value="<%= params[:qa] rescue '' %>">
                       <div class="input-group-btn">
                         <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
                       </div>

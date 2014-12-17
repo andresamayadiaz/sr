@@ -5,7 +5,7 @@ class HomeController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb]
   before_filter :set_notifications
-  before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas, :view_single_notification]
+  before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas, :view_single_notification, :buscar_de_alertas]
   before_filter :set_sort
  
   def index
@@ -167,6 +167,7 @@ class HomeController < ApplicationController
   end
 
   def alertas
+    @alertas = Kaminari.paginate_array(@alertas).page(params[:page])
   end
 
   def view_single_notification
@@ -176,6 +177,24 @@ class HomeController < ApplicationController
     end
   end
   
+  def buscar_de_alertas
+    if params[:qa].present?
+      qa = params[:qa]
+      @alertas = @alertas.select{|a|
+        a.comprobante.to_s.include? qa or
+        a.comprobante.total.to_s.include? qa or
+        a.comprobante.fecha.to_s.include? qa or
+        a.comprobante.tipoDeComprobante.include? qa or
+        a.comprobante.emisor.rfc.include? qa or
+        a.comprobante.emisor.nombre.include? qa or
+        a.comprobante.receptor.rfc.include? qa or
+        a.comprobante.receptor.nombre.include? qa
+      }
+    end
+     @alertas = Kaminari.paginate_array(@alertas).page(params[:page])
+    render 'alertas'
+  end 
+ 
   private
     def set_notifications
 
@@ -215,7 +234,6 @@ class HomeController < ApplicationController
         @alertas = all_unread_alertas
       end
       @alertas = @alertas.sort_by{|a|a.created_at}.reverse! rescue []
-      @alertas = Kaminari.paginate_array(@alertas).page(params[:page])
       @ten_most_recent_alertas = all_unread_alertas.first(10)
     end
 

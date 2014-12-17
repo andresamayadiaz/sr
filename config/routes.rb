@@ -13,6 +13,7 @@ Soyreceptor::Application.routes.draw do
       get 'alertas', to: 'home#alertas'
       get 'vistadealertas', to: 'home#view_single_notification'
       get 'buscar', to: 'home#buscar'
+      get 'buscardealertas', to: 'home#buscar_de_alertas'
       get 'tags', to: 'home#tags'
       get 'comprobante/:id', to: 'home#comprobante', as: :comprobante
       get 'cbb/:id', to: 'home#cbb', as: :cbb
