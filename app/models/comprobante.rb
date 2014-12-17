@@ -114,7 +114,8 @@ class Comprobante < ActiveRecord::Base
               :invoice_file_name=>c.xml_file_name,
               :validation=>"Already exists",
               :category=>"Warning",
-              :comprobante_id=>c.id
+              :comprobante_id=>c.id,
+              :user_id=>c.user.id
             )
             @notification.save!
         end
@@ -128,7 +129,8 @@ class Comprobante < ActiveRecord::Base
               :invoice_file_name=>c.xml_file_name,
               :validation=>"If the invoice uploaded is a received one, validate Receptor information against company profile",
               :category=>"Warning",
-              :comprobante_id=>c.id
+              :comprobante_id=>c.id,
+              :user_id=>c.user.id
             )
             @notification.save!
           end
@@ -143,7 +145,8 @@ class Comprobante < ActiveRecord::Base
               :invoice_file_name=>c.xml_file_name,
               :validation=>"If the invoice uploaded is a Sent (Emitido), validate Emisor information against company profile.",
               :category=>"Warning",
-              :comprobante_id=>c.id
+              :comprobante_id=>c.id,
+              :user_id=>c.user.id
             )
             @notification.save!
           end
@@ -162,7 +165,8 @@ class Comprobante < ActiveRecord::Base
               :invoice_file_name=>c.xml_file_name,
               :validation=>"Validate XML against XSLT Schema Files",
               :category=>category,
-              :comprobante_id=>c.id
+              :comprobante_id=>c.id,
+              :user_id=>c.user.id
             )
             @notification.save!
           end
@@ -177,7 +181,8 @@ class Comprobante < ActiveRecord::Base
               :invoice_file_name=>c.xml_file_name,
               :validation=>"Success notification",
               :category=>"Success",
-              :comprobante_id=>c.id
+              :comprobante_id=>c.id,
+              :user_id=>c.user.id
             )
             if @notification.save! and c.user.perfil.notificarvalidos
               UserMailer.success_notification_email(c.user.perfil.emailadicional1,c.xml_file_name).deliver
@@ -242,7 +247,8 @@ class Comprobante < ActiveRecord::Base
                 :email=>self.user.perfil.try(:emailadicional1),
                 :invoice_file_name=>self.xml_file_name,
                 :validation=>"If Sent(Emitido). Check Emisor RFC",
-                :category=>"Error"
+                :category=>"Error",
+                :user_id=>self.user.id
               )
               @notification.save!
             end
@@ -261,7 +267,8 @@ class Comprobante < ActiveRecord::Base
                 :email=>self.user.perfil.try(:emailadicional1),
                 :invoice_file_name=>self.xml_file_name,
                 :validation=>"If Received(Recibido). Check Receptor RFC",
-                :category=>"Error"
+                :category=>"Error",
+                :user_id=>self.user.id
               )
               @notification.save!
             end
@@ -284,7 +291,8 @@ class Comprobante < ActiveRecord::Base
             :email=>self.user.perfil.try(:emailadicional1),
             :invoice_file_name=>self.xml_file_name,
             :validation=>"CFDi version not supported",
-            :category=>"Error"
+            :category=>"Error",
+            :user_id=>self.user.id
           )
           if @notification.save!
             logger.debug "Version #{@version} No Sportada - notification saved"

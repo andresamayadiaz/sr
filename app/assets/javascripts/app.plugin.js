@@ -221,7 +221,7 @@
 	});
 	
 	// add notes
-	function addMsg($msg){
+	/*function addMsg($msg){
 		var $el = $('.nav-user'), $n = $('.count:first', $el), $v = parseInt($n.text());
 		$('.count', $el).fadeOut().fadeIn().text($v+1);
 		$($msg).hide().prependTo($el.find('.list-group')).slideDown().css('display','block');
@@ -235,7 +235,7 @@
                     '<small class="text-muted">1 minutes ago</small>'+
                   '</span>'+
                 '</a>';	
-  setTimeout(function(){addMsg($msg);}, 1500);
+  setTimeout(function(){addMsg($msg);}, 1500);*/
 
 	// select2 
  	if ($.fn.select2) {

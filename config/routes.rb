@@ -10,7 +10,10 @@ Soyreceptor::Application.routes.draw do
       get 'emitidos', to: 'home#emitidos'
       get 'recibidos', to: 'home#recibidos'
       get 'otros', to: 'home#otros'
+      get 'alertas', to: 'home#alertas'
+      get 'vistadealertas', to: 'home#view_single_notification'
       get 'buscar', to: 'home#buscar'
+      get 'buscardealertas', to: 'home#buscar_de_alertas'
       get 'tags', to: 'home#tags'
       get 'comprobante/:id', to: 'home#comprobante', as: :comprobante
       get 'cbb/:id', to: 'home#cbb', as: :cbb

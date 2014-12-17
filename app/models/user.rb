@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   validates :rfc, presence: true
   
   has_one :perfil
+  has_many :notifications
   
   after_create :build_perfil
   
