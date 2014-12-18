@@ -99,97 +99,6 @@ class Comprobante < ActiveRecord::Base
       
     end
   
-    def generate_notifications_after_save
-      comprobantes = [self]
-      comprobantes.each do |c|
-        
-        #check if it's already exists
-        user_invoices_name = c.user.comprobantes.map(&:xml_file_name)
-        dup_invoice = user_invoices_name.select{|i|i==c.xml_file_name}.length rescue 0
-        if dup_invoice>1
-            @notification = Notification.new(
-              :description=>"Already exists",
-              :status=>false,
-              :email=>c.user.perfil.try(:emailadicional1),
-              :invoice_file_name=>c.xml_file_name,
-              :validation=>"Already exists",
-              :category=>"Warning",
-              :comprobante_id=>c.id,
-              :user_id=>c.user.id
-            )
-            @notification.save!
-        end
-        
-        if c.recibido 
-          if c.receptor.rfc != c.user.rfc
-            @notification = Notification.new(
-              :description=>"Received invoice RFC not match",
-              :status=>false,
-              :email=>c.user.perfil.try(:emailadicional1),
-              :invoice_file_name=>c.xml_file_name,
-              :validation=>"If the invoice uploaded is a received one, validate Receptor information against company profile",
-              :category=>"Warning",
-              :comprobante_id=>c.id,
-              :user_id=>c.user.id
-            )
-            @notification.save!
-          end
-        end
-    
-        if c.emitido
-          if c.emisor.rfc != c.user.rfc
-            @notification = Notification.new(
-              :description=>"Sent invoice RFC not match",
-              :status=>false,
-              :email=>c.user.perfil.try(:emailadicional1),
-              :invoice_file_name=>c.xml_file_name,
-              :validation=>"If the invoice uploaded is a Sent (Emitido), validate Emisor information against company profile.",
-              :category=>"Warning",
-              :comprobante_id=>c.id,
-              :user_id=>c.user.id
-            )
-            @notification.save!
-          end
-        end 
-
-        file = c.xml_obj rescue nil
-        if file.present?
-          file_validate_schema = file.validate_schema
-          if file_validate_schema!=true and file_validate_schema.kind_of?(Array)
-            category = "Error" if file_validate_schema.first.error? and !file_validate_schema.first.warning?
-            category = "Warning" if !file_validate_schema.first.error? and file_validate_schema.first.warning?
-            @notification = Notification.new(
-              :description=>file_validate_schema.first.to_s,
-              :status=>false,
-              :email=>c.user.perfil.try(:emailadicional1),
-              :invoice_file_name=>c.xml_file_name,
-              :validation=>"Validate XML against XSLT Schema Files",
-              :category=>category,
-              :comprobante_id=>c.id,
-              :user_id=>c.user.id
-            )
-            @notification.save!
-          end
-        end
-       
-        #generate success notification and send email" 
-        if c.notifications.length==0
-            @notification = Notification.new(
-              :description=>"Success",
-              :status=>false,
-              :email=>c.user.perfil.try(:emailadicional1),
-              :invoice_file_name=>c.xml_file_name,
-              :validation=>"Success notification",
-              :category=>"Success",
-              :comprobante_id=>c.id,
-              :user_id=>c.user.id
-            )
-            if @notification.save! and c.user.perfil.notificarvalidos
-              UserMailer.success_notification_email(c.user.perfil.emailadicional1,c.xml_file_name).deliver
-            end
-        end 
-      end 
-    end
     
   private
     
@@ -315,4 +224,98 @@ class Comprobante < ActiveRecord::Base
       
     end
   
+    def generate_notifications_after_save
+        c = self
+        
+        #check if it's already exists
+        user_invoices_name = c.user.comprobantes.map(&:xml_file_name)
+        dup_invoice = user_invoices_name.select{|i|i==c.xml_file_name}.length rescue 0
+        same_notifications = Notification.where(:comprobante_id=>c.id,:description=>"Already exists")
+        if dup_invoice>1 && same_notifications.blank?
+            Notification.create!(
+              :description=>"Already exists",
+              :status=>false,
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"Already exists",
+              :category=>"Warning",
+              :comprobante_id=>c.id,
+              :user_id=>c.user.id
+            )
+        end
+        
+        if c.recibido 
+          same_notifications = Notification.where(:comprobante_id=>c.id,:description=>"Received invoice RFC not match")
+          if c.receptor.rfc != c.user.rfc && same_notifications.blank?
+            Notification.create!(
+              :description=>"Received invoice RFC not match",
+              :status=>false,
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"If the invoice uploaded is a received one, validate Receptor information against company profile",
+              :category=>"Warning",
+              :comprobante_id=>c.id,
+              :user_id=>c.user.id
+            )
+          end
+        end
+    
+        if c.emitido
+          same_notifications = Notification.where(:comprobante_id=>c.id,:description=>"Sent invoice RFC not match")
+          if c.emisor.rfc != c.user.rfc && same_notifications.blank?
+            Notification.create!(
+              :description=>"Sent invoice RFC not match",
+              :status=>false,
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"If the invoice uploaded is a Sent (Emitido), validate Emisor information against company profile.",
+              :category=>"Warning",
+              :comprobante_id=>c.id,
+              :user_id=>c.user.id
+            )
+          end
+        end 
+
+        file = c.xml_obj rescue nil
+        if file.present?
+          file_validate_schema = file.validate_schema
+          if file_validate_schema!=true and file_validate_schema.kind_of?(Array)
+            category = "Error" if file_validate_schema.first.error? and !file_validate_schema.first.warning?
+            category = "Warning" if !file_validate_schema.first.error? and file_validate_schema.first.warning?
+            same_notifications = Notification.where(:comprobante_id=>c.id,:description=>file_validate_schema.first.to_s)
+            if same_notifications.blank?
+              Notification.create!(
+                :description=>file_validate_schema.first.to_s,
+                :status=>false,
+                :email=>c.user.perfil.try(:emailadicional1),
+                :invoice_file_name=>c.xml_file_name,
+                :validation=>"Validate XML against XSLT Schema Files",
+                :category=>category,
+                :comprobante_id=>c.id,
+                :user_id=>c.user.id
+              )
+            end
+          end
+        end
+       
+        #generate success notification and send email"
+        other_notifications = Notification.where(:comprobante_id=>c.id)
+        if other_notifications.blank?
+            Notification.create!(
+              :description=>"Success",
+              :status=>false,
+              :email=>c.user.perfil.try(:emailadicional1),
+              :invoice_file_name=>c.xml_file_name,
+              :validation=>"Success notification",
+              :category=>"Success",
+              :comprobante_id=>c.id,
+              :user_id=>c.user.id
+            )
+            #if c.user.perfil.notificarvalidos
+            #  UserMailer.success_notification_email(c.user.perfil.emailadicional1,c.xml_file_name).deliver
+            #end
+        end
+  
+        
+    end
 end
