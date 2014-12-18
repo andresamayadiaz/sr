@@ -309,7 +309,7 @@ $(document).ready(function(){
     window.location.href = sort_url;
   });
   
-  $("#alertas-refresh-button").click(function(){
+  $("#alertas-refresh-buttoni, #cerrar").click(function(){
     location.reload();
   });
 });
