@@ -18,7 +18,8 @@ class HomeController < ApplicationController
   def comprobante
     
     @user = current_user
-    
+    @warnings = @comprobante.notifications.warnings
+    @errors = @comprobante.notifications.errors
     render layout: "comprobante"
     
   end

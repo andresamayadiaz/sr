@@ -15,25 +15,33 @@
 
 <section class="scrollable wrapper">
 
+  <% if @warnings.present? %>
   <!-- Tiene Advertencias -->
   <div class="alert alert-warning alert-block text-left">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <h4><i class="fa fa-bell-alt"></i>Advertencias</h4>
     <ul>
-		<li>La moneda MXN ....</li>
-	</ul>
+		  <% @warnings.each do |w| %>
+        <li><%= link_to w.description, vistadealertas_url(:id=>w.id)  %></li>
+      <% end %>
+	  </ul>
   </div>
   <!-- /Tiene Advertencias -->
+  <% end %>
   
+  <% if @errors.present? %>
   <!-- Tiene Faltas -->
   <div class="alert alert-danger alert-block text-left">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <h4><i class="fa fa-bell-alt"></i>Faltas</h4>
     <ul>
-		<li>La moneda MXN ....</li>
-	</ul>
+		  <% @errors.each do |er| %>
+        <li><%= link_to er.description, vistadealertas_url(:id=>er.id)  %></li>
+      <% end %>
+	  </ul>
   </div>
   <!-- /Tiene Faltas -->
+  <% end %>
   
   <i class="fa fa-file-text fa fa-3x"></i>
   <div class="row">
