@@ -28,12 +28,14 @@
             <i class="fa fa-circle text-danger pull-right m-t-xs"></i>
           <% end %>
           <small class="pull-right text-muted">3 minutes ago</small>
-          <strong><%= @notification.comprobante.to_s rescue '' %></strong> <span><%= number_to_currency(@notification.comprobante.try(:total))%> MXN</span>
+          <strong><%= link_to @notification.comprobante.to_s, comprobante_url(@notification.comprobante)  %></strong> <span><%= number_to_currency(@notification.comprobante.try(:total))%> MXN</span>
 				  <br />
 				  <span><%= @notification.comprobante.try(:fecha) %></span> - <span><%= @notification.comprobante.try(:tipoDeComprobante) %></span>
 				  <br />
 				  <span>EMISOR: <%= @notification.comprobante.try(:emisor).try(:rfc) %>, <%= @notification.comprobante.try(:emisor).try(:nombre) %></span>
 				  <br />
 				  <span>RECEPTOR: <%= @notification.comprobante.try(:receptor).try(:rfc) %>, <%= @notification.comprobante.try(:receptor).try(:nombre)%></span>
+          <br />
+          <span>DESCRIPTION: <%= @notification.description rescue '' %></span>
       </ul>
 </section>
