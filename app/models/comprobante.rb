@@ -99,7 +99,24 @@ class Comprobante < ActiveRecord::Base
       
     end
   
+  def self.top_10_clients
+    top_10 = []
+    clients = Receptor.joins(:comprobante).where('comprobantes.emitido=?',true).group('rfc').count rescue nil
+    if clients.present?
+      top_10 = clients.sort_by{|k, v| -v}.first(10).map{|k, v| v}.join(', ')
+    end
+    top_10
+  end
     
+  def self.top_10_suppliers
+    top_10 = []
+    clients = Emisor.joins(:comprobante).where('comprobantes.recibido=?',true).group('rfc').count rescue nil
+    if clients.present?
+      top_10 = clients.sort_by{|k, v| -v}.first(10).map{|k, v| v}.join(', ')
+    end
+    top_10
+  end
+
   private
     
     # Generar un UUID interno al comprobante para uso futuro
