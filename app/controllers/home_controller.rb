@@ -12,8 +12,8 @@ class HomeController < ApplicationController
     
     @user = current_user
     @perfil = @user.perfil
-    @top_10_clients = Comprobante.top_10_clients.to_json
-    @top_10_suppliers = Comprobante.top_10_suppliers.to_json
+    @top_10_clients = Comprobante.top_10_clients
+    @top_10_suppliers = Comprobante.top_10_suppliers
   end
   
   def comprobante

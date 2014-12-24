@@ -41,6 +41,252 @@
 	  </section>
 	<%= javascript_include_tag 'application' %>
 	<%= yield :specific_js %>
+  <script type='text/javascript'>
+   $(function(){
+
+  // 
+  var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var d1 = [];
+  for (var i = 0; i <= 11; i += 1) {
+    d1.push([i, parseInt((Math.floor(Math.random() * (1 + 20 - 10))) + 10)]);
+  }
+  var d2 = [];
+  for (var i = 0; i <= 6; i += 1) {
+    d2.push([i, parseInt((Math.floor(Math.random() * (1 + 30 - 10))) + 10)]);
+  }
+  var d3 = [];
+  for (var i = 0; i <= 6; i += 1) {
+    d3.push([i, parseInt((Math.floor(Math.random() * (1 + 30 - 10))) + 10)]);
+  }
+  $("#flot-chart-1").length && $.plot($("#flot-chart-1"), [{
+          data: d2,
+          label: "Unique Visits"
+      }, {
+          data: d3,
+          label: "Page Views"
+      }], 
+      {
+        series: {
+            lines: {
+                show: true,
+                lineWidth: 1,
+                fill: true,
+                fillColor: {
+                    colors: [{
+                        opacity: 0.2
+                    }, {
+                        opacity: 0.1
+                    }]
+                }
+            },
+            points: {
+                show: true
+            },
+            shadowSize: 2
+        },
+        grid: {
+            hoverable: true,
+            clickable: true,
+            tickColor: "#f0f0f0",
+            borderWidth: 0
+        },
+        colors: ["#dddddd","#89cb4e"],
+        xaxis: {
+            ticks: 15,
+            tickDecimals: 0
+        },
+        yaxis: {
+            ticks: 10,
+            tickDecimals: 0
+        },
+        tooltip: true,
+        tooltipOpts: {
+          content: "'%s' of %x.1 is %y.4",
+          defaultTheme: false,
+          shifts: {
+            x: 0,
+            y: 20
+          }
+        }
+      }
+  );
+
+
+  $("#flot-chart-2").length && $.plot($("#flot-chart-2"), [{
+          data: d2,
+          label: "Unique Visits"
+      }, {
+          data: d3,
+          label: "Page Views"
+      }], 
+      {
+        series: {
+            lines: {
+                show: true,
+                lineWidth: 1,
+                fill: true,
+                fillColor: {
+                    colors: [{
+                        opacity: 0.2
+                    }, {
+                        opacity: 0.1
+                    }]
+                }
+            },
+            points: {
+                show: true
+            },
+            shadowSize: 2
+        },
+        grid: {
+            hoverable: true,
+            clickable: true,
+            tickColor: "#f0f0f0",
+            borderWidth: 0
+        },
+        colors: ["#dddddd","#89cb4e"],
+        xaxis: {
+            ticks: 15,
+            tickDecimals: 0
+        },
+        yaxis: {
+            ticks: 10,
+            tickDecimals: 0
+        },
+        tooltip: true,
+        tooltipOpts: {
+          content: "'%s' of %x.1 is %y.4",
+          defaultTheme: false,
+          shifts: {
+            x: 0,
+            y: 20
+          }
+        }
+      }
+  );
+
+  // bar
+  var client_data = <%= raw @top_10_clients %>;
+  var supplier_data = <%= raw @top_10_suppliers %>;
+  var d1_1 = [
+    [10, 120],
+    [20, 70],
+    [30, 100],
+    [40, 60],
+    [50, 35]
+  ];
+
+  var d1_2 = [
+    [10, 80],
+    [20, 60],
+    [30, 30],
+    [40, 35],
+    [50, 30]
+  ];
+
+  var d1_3 = [
+    [10, 80],
+    [20, 40],
+    [30, 30],
+    [40, 20],
+    [50, 10]
+  ];
+
+  var data1 = [
+    {
+        label: "Top 10 clients of the year",
+        data: client_data,
+        bars: {
+            show: true,
+            fill: true,
+            lineWidth: 1,
+            order: 1,
+            fillColor:  "#6783b7"
+        },
+        color: "#6783b7"
+    }
+  ];
+
+  var d2_1 = [
+    [90, 10],
+    [70, 20],
+    [50, 30]
+  ];
+
+  var d2_2 = [
+    [80, 10],
+    [60, 20],
+    [40, 30]
+  ];
+
+  var d2_3 = [
+    [120, 10],
+    [50, 20],
+    [30, 30]
+  ];
+
+  var data2 = [
+    {
+        label: "Top 10 suppliers of the year",
+        data: supplier_data,
+        bars: {
+            show: true,
+            fill: true,
+            lineWidth: 1,
+            order: 1,
+            fillColor:  "#6783b7"
+        },
+        color: "#6783b7"
+    }
+  ];
+
+  $("#client-bar").length && $.plot($("#client-bar"), data1, {
+      xaxis: {
+          
+      },
+      yaxis: {
+          
+      },
+      grid: {
+          hoverable: true,
+          clickable: false,
+          borderWidth: 0
+      },
+      legend: {
+          labelBoxBorderColor: "none",
+          position: "left"
+      },
+      series: {
+          shadowSize: 1
+      },
+      tooltip: true,
+  });
+
+  $("#supplier-bar").length && $.plot($("#supplier-bar"), data2, {
+      xaxis: {
+          
+      },
+      yaxis: {
+          
+      },
+      grid: {
+          hoverable: true,
+          clickable: false,
+          borderWidth: 0
+      },
+      legend: {
+          labelBoxBorderColor: "none",
+          position: "left"
+      },
+      series: {
+          shadowSize: 1
+      },
+      tooltip: true,
+  });
+
+});
+
+  </script>
   </body>
   
 </html>
