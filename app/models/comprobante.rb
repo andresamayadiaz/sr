@@ -103,7 +103,7 @@ class Comprobante < ActiveRecord::Base
     top_10 = []
     clients = Receptor.joins(:comprobante).where('comprobantes.emitido=?',true).group('rfc').count rescue nil
     if clients.present?
-      top_10 = clients.sort_by{|k, v| -v}.first(10).map{|k, v| v}.join(', ')
+      top_10 = clients.sort_by{|k, v| -v}.first(10).map{|k, v| k=0,v=v}
     end
     top_10
   end
@@ -112,7 +112,7 @@ class Comprobante < ActiveRecord::Base
     top_10 = []
     clients = Emisor.joins(:comprobante).where('comprobantes.recibido=?',true).group('rfc').count rescue nil
     if clients.present?
-      top_10 = clients.sort_by{|k, v| -v}.first(10).map{|k, v| v}.join(', ')
+      top_10 = clients.sort_by{|k, v| -v}.first(10).map{|k, v| k=0,v=v}
     end
     top_10
   end

@@ -320,12 +320,5 @@ $(document).ready(function(){
   $("#alertas-refresh-buttoni, #cerrar").click(function(){
     location.reload();
   });
-
-  /*dashboard chart
-  top_10_clients = $("#top_10_clients_data").val().split(',').map(function(strVale){return Number(strVale);});
-  top_10_suppliers = $("#top_10_suppliers_data").val().split(',').map(function(strVale){return Number(strVale);});
-  $('#top_10_clients').sparkline(top_10_clients,{type: 'bar', height:80, barWidth:20} );
-  $('#top_10_suppliers').sparkline(top_10_suppliers,{type: 'bar', height:80, barWidth:20} );
-  end of dashboard chart*/
 });
 
