@@ -166,32 +166,26 @@
   );
 
   // bar
-  var client_data = <%= raw @top_10_clients %>;
-  var supplier_data = <%= raw @top_10_suppliers %>;
-  var d1_1 = [
-    [10, 120],
-    [20, 70],
-    [30, 100],
-    [40, 60],
-    [50, 35]
-  ];
-
-  var d1_2 = [
-    [10, 80],
-    [20, 60],
-    [30, 30],
-    [40, 35],
-    [50, 30]
-  ];
-
-  var d1_3 = [
-    [10, 80],
-    [20, 40],
-    [30, 30],
-    [40, 20],
-    [50, 10]
-  ];
-
+  var top_10_clients = <%= raw @top_10_clients %>;
+  var client_x_axis = [];
+  var client_data = [];
+  $.map(top_10_clients,function(val,i) {
+    ind = parseInt((i+1)*5);
+    company_name = val[0];
+    client_x_axis.push([ind,company_name]);
+    client_data.push([ind,val[1]]);
+  });
+  
+  var top_10_suppliers = <%= raw @top_10_suppliers %>;
+  var supplier_x_axis = [];
+  var supplier_data = [];
+  $.map(top_10_suppliers,function(val,i) {
+    ind = parseInt((i+1)*5);
+    company_name = val[0];
+    supplier_x_axis.push([ind,company_name]);
+    supplier_data.push([ind,val[1]]);
+  });
+  
   var data1 = [
     {
         label: "Top 10 clients of the year",
@@ -206,25 +200,7 @@
         color: "#6783b7"
     }
   ];
-
-  var d2_1 = [
-    [90, 10],
-    [70, 20],
-    [50, 30]
-  ];
-
-  var d2_2 = [
-    [80, 10],
-    [60, 20],
-    [40, 30]
-  ];
-
-  var d2_3 = [
-    [120, 10],
-    [50, 20],
-    [30, 30]
-  ];
-
+  
   var data2 = [
     {
         label: "Top 10 suppliers of the year",
@@ -242,7 +218,7 @@
 
   $("#client-bar").length && $.plot($("#client-bar"), data1, {
       xaxis: {
-          
+         ticks: client_x_axis
       },
       yaxis: {
           
@@ -264,7 +240,7 @@
 
   $("#supplier-bar").length && $.plot($("#supplier-bar"), data2, {
       xaxis: {
-          
+         ticks: supplier_x_axis 
       },
       yaxis: {
           

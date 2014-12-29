@@ -101,18 +101,20 @@ class Comprobante < ActiveRecord::Base
   
   def self.top_10_clients
     top_10 = []
-    clients = Receptor.joins(:comprobante).where('comprobantes.emitido=?',true).group('rfc').count rescue nil
+    clients = Receptor.joins(:comprobante).where('comprobantes.emitido=?',true).group('rfc') rescue nil
     if clients.present?
-      top_10 = clients.sort_by{|k, v| -v}.first(10).each_with_index.map{|val,ind| val[0]=(ind+1),val[1]=val[1]}
+      clients_data = clients.count
+      top_10 = clients_data.sort_by{|k, v| -v}.first(10).each_with_index.map{|val,ind| val[0]=clients[ind].nombre,val[1]=val[1]}
     end
     top_10
   end
     
   def self.top_10_suppliers
     top_10 = []
-    clients = Emisor.joins(:comprobante).where('comprobantes.recibido=?',true).group('rfc').count rescue nil
+    clients = Emisor.joins(:comprobante).where('comprobantes.recibido=?',true).group('rfc') rescue nil
     if clients.present?
-      top_10 = clients.sort_by{|k, v| -v}.first(10).each_with_index.map{|val,ind| val[0]=(ind+1),val[1]=val[1]}
+      clients_data = clients.count
+      top_10 = clients_data.sort_by{|k, v| -v}.first(10).each_with_index.map{|val,ind| val[0]=clients[ind].nombre,val[1]=val[1]}
     end
     top_10
   end
