@@ -14,6 +14,8 @@ class HomeController < ApplicationController
     @perfil = @user.perfil
     @top_10_clients = Comprobante.top_10_clients
     @top_10_suppliers = Comprobante.top_10_suppliers
+    @sent_invoices = Comprobante.sent_invoices
+    @rec_invoices = Comprobante.received_invoices
   end
   
   def comprobante

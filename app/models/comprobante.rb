@@ -119,6 +119,28 @@ class Comprobante < ActiveRecord::Base
     top_10
   end
 
+  def self.sent_invoices
+    invoices = Comprobante.where("emitido=? AND recibido=? AND created_at between ? AND ?",true,false,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.created_at.month}
+    sent_invoices = []
+    (1..12).each do |i|
+      mo = i
+      val = invoices[i].length rescue 0
+      sent_invoices << [mo,val]
+    end
+    sent_invoices
+  end
+
+  def self.received_invoices
+    invoices = Comprobante.where("emitido=? AND recibido=? AND created_at between ? AND ?",false,true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.created_at.month}
+    rec_invoices = []
+    (1..12).each do |i|
+      mo = i
+      val = invoices[i].length rescue 0
+      rec_invoices << [mo,val]
+    end
+    rec_invoices
+  end
+
   private
     
     # Generar un UUID interno al comprobante para uso futuro

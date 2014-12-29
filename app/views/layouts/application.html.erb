@@ -58,11 +58,15 @@
   for (var i = 0; i <= 6; i += 1) {
     d3.push([i, parseInt((Math.floor(Math.random() * (1 + 30 - 10))) + 10)]);
   }
+
+  var sent_invoices = <%= raw @sent_invoices %>;
+  var rec_invoices = <%= raw @rec_invoices %>;
+
   $("#flot-chart-1").length && $.plot($("#flot-chart-1"), [{
-          data: d2,
+          data: rec_invoices,
           label: "Received Invoices"
       }, {
-          data: d3,
+          data: sent_invoices,
           label: "Sent Invoices"
       }], 
       {
@@ -70,7 +74,7 @@
             lines: {
                 show: true,
                 lineWidth: 1,
-                fill: true,
+                fill: false,
                 fillColor: {
                     colors: [{
                         opacity: 0.2
@@ -111,13 +115,12 @@
       }
   );
 
-
   $("#flot-chart-2").length && $.plot($("#flot-chart-2"), [{
           data: d2,
-          label: "Received Invoices"
+          label: "Received Amount"
       }, {
           data: d3,
-          label: "Sent Invoices"
+          label: "Sent Amount"
       }], 
       {
         series: {
