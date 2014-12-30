@@ -101,26 +101,24 @@ class Comprobante < ActiveRecord::Base
   
   def self.top_10_clients
     top_10 = []
-    clients = Receptor.joins(:comprobante).where('comprobantes.emitido=?',true).group('rfc') rescue nil
+    clients = Receptor.joins(:comprobante).where('comprobantes.emitido=? AND comprobantes.fecha between ? AND ?',true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group('nombre').sum('comprobantes.total') rescue nil
     if clients.present?
-      clients_data = clients.count
-      top_10 = clients_data.sort_by{|k, v| -v}.first(10).each_with_index.map{|val,ind| val[0]=clients[ind].nombre,val[1]=val[1]}
+      top_10 = clients.sort_by{|k,v|-v}.first(10).map{|x| x[0]=x[0],x[1]=x[1].to_i}
     end
     top_10
   end
     
   def self.top_10_suppliers
     top_10 = []
-    clients = Emisor.joins(:comprobante).where('comprobantes.recibido=?',true).group('rfc') rescue nil
+    clients = Emisor.joins(:comprobante).where('comprobantes.recibido=? AND comprobantes.fecha between ? AND ?',true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group('nombre').sum('comprobantes.total') rescue nil
     if clients.present?
-      clients_data = clients.count
-      top_10 = clients_data.sort_by{|k, v| -v}.first(10).each_with_index.map{|val,ind| val[0]=clients[ind].nombre,val[1]=val[1]}
+      top_10 = clients.sort_by{|k,v|-v}.first(10).map{|x| x[0]=x[0],x[1]=x[1].to_i}
     end
     top_10
   end
 
   def self.sent_invoices
-    invoices = Comprobante.where("emitido=? AND recibido=? AND created_at between ? AND ?",true,false,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.created_at.month}
+    invoices = Comprobante.where("emitido=? AND recibido=? AND fecha between ? AND ?",true,false,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.created_at.month}
     sent_invoices = []
     (1..12).each do |i|
       mo = i
@@ -131,7 +129,7 @@ class Comprobante < ActiveRecord::Base
   end
 
   def self.received_invoices
-    invoices = Comprobante.where("emitido=? AND recibido=? AND created_at between ? AND ?",false,true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.created_at.month}
+    invoices = Comprobante.where("emitido=? AND recibido=? AND fecha between ? AND ?",false,true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.created_at.month}
     rec_invoices = []
     (1..12).each do |i|
       mo = i
@@ -183,9 +181,10 @@ class Comprobante < ActiveRecord::Base
           self.lugarExpedicion = file.lugarExpedicion
           self.serie = file.serie
           self.folio = file.folio
+          self.emisor = Emisor.new(file.emisor.instance_values)
+          self.receptor = Receptor.new(file.receptor.instance_values)
           
           # Emisor
-          self.emisor = Emisor.new(file.emisor.instance_values)
           logger.debug self.emisor.to_json
           if self.emisor.rfc == self.user.rfc
             self.emitido = true
@@ -205,7 +204,6 @@ class Comprobante < ActiveRecord::Base
           end
           
           # Receptor
-          self.receptor = Receptor.new(file.receptor.instance_values)
           logger.debug self.receptor.to_json
           if self.receptor.rfc == self.user.rfc
             self.recibido = true
