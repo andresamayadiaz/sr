@@ -93,12 +93,8 @@
         },
         tooltip: true,
         tooltipOpts: {
-          content: "'%s' of %x.1 is %y.4",
-          defaultTheme: false,
-          shifts: {
-            x: 0,
-            y: 20
-          }
+          content: "%y",
+          defaultTheme: false
         }
       }
   );
@@ -146,12 +142,11 @@
         },
         tooltip: true,
         tooltipOpts: {
-          content: "'%s' of %x.1 is %y.4",
-          defaultTheme: false,
-          shifts: {
-            x: 0,
-            y: 20
-          }
+            content: function(label, xval, yval) {
+              var content = yval.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+              return content;
+            },
+            defaultTheme: false
         }
       }
   );
@@ -227,6 +222,13 @@
           shadowSize: 1
       },
       tooltip: true,
+      tooltipOpts: {
+          content: function(label, xval, yval) {
+            var content = yval.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            return content;
+          },
+          defaultTheme: false
+      }
   });
 
   $("#supplier-bar").length && $.plot($("#supplier-bar"), data2, {
@@ -249,6 +251,13 @@
           shadowSize: 1
       },
       tooltip: true,
+      tooltipOpts: {
+          content: function(label, xval, yval) {
+            var content = yval.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            return content;
+          },
+          defaultTheme: false
+      }
   });
 
 });
