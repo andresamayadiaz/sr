@@ -99,7 +99,68 @@ class Comprobante < ActiveRecord::Base
       
     end
   
+  def self.top_10_clients
+    top_10 = []
+    clients = Receptor.joins(:comprobante).where('comprobantes.emitido=? AND comprobantes.fecha between ? AND ?',true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group('nombre').sum('comprobantes.total') rescue nil
+    if clients.present?
+      top_10 = clients.sort_by{|k,v|-v}.first(10).map{|x| x[0]=x[0],x[1]=x[1].to_i}
+    end
+    top_10
+  end
     
+  def self.top_10_suppliers
+    top_10 = []
+    clients = Emisor.joins(:comprobante).where('comprobantes.recibido=? AND comprobantes.fecha between ? AND ?',true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group('nombre').sum('comprobantes.total') rescue nil
+    if clients.present?
+      top_10 = clients.sort_by{|k,v|-v}.first(10).map{|x| x[0]=x[0],x[1]=x[1].to_i}
+    end
+    top_10
+  end
+
+  def self.sent_invoices
+    invoices = Comprobante.where("emitido=? AND recibido=? AND fecha between ? AND ?",true,false,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.fecha.month}
+    sent_invoices = []
+    (1..12).each do |i|
+      mo = i
+      val = invoices[i].length rescue 0
+      sent_invoices << [mo,val]
+    end
+    sent_invoices
+  end
+
+  def self.received_invoices
+    invoices = Comprobante.where("emitido=? AND recibido=? AND fecha between ? AND ?",false,true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.fecha.month}
+    rec_invoices = []
+    (1..12).each do |i|
+      mo = i
+      val = invoices[i].length rescue 0
+      rec_invoices << [mo,val]
+    end
+    rec_invoices
+  end
+
+  def self.sent_amount
+    invoices = Comprobante.where("emitido=? AND recibido=? AND fecha between ? AND ?",true,false,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.fecha.month}
+    sent_amount = []
+    (1..12).each do |i|
+      mo = i
+      val = invoices[i].sum(&:total).to_i rescue 0
+      sent_amount << [mo,val]
+    end
+    sent_amount
+  end
+  
+  def self.received_amount
+    invoices = Comprobante.where("emitido=? AND recibido=? AND fecha between ? AND ?",false,true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.fecha.month}
+    rec_amount = []
+    (1..12).each do |i|
+      mo = i
+      val = invoices[i].sum(&:total).to_i rescue 0
+      rec_amount << [mo,val]
+    end
+    rec_amount
+  end
+
   private
     
     # Generar un UUID interno al comprobante para uso futuro
@@ -142,9 +203,10 @@ class Comprobante < ActiveRecord::Base
           self.lugarExpedicion = file.lugarExpedicion
           self.serie = file.serie
           self.folio = file.folio
+          self.emisor = Emisor.new(file.emisor.instance_values)
+          self.receptor = Receptor.new(file.receptor.instance_values)
           
           # Emisor
-          self.emisor = Emisor.new(file.emisor.instance_values)
           logger.debug self.emisor.to_json
           if self.emisor.rfc == self.user.rfc
             self.emitido = true
@@ -164,7 +226,6 @@ class Comprobante < ActiveRecord::Base
           end
           
           # Receptor
-          self.receptor = Receptor.new(file.receptor.instance_values)
           logger.debug self.receptor.to_json
           if self.receptor.rfc == self.user.rfc
             self.recibido = true

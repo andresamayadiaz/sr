@@ -1,2 +1,42 @@
-<p class="h4">This is a blank page</p>
-    
+              <ul class="breadcrumb no-border no-radius b-b b-light pull-in">
+                <li><a href="<%= authenticated_root_url %>"><i class="fa fa-home"></i> Home</a></li>
+                <li class="active">Dashboard</li>
+              </ul>
+              <div class="row">
+                <div class="col-md-12">
+                  <section class="panel panel-default">
+                    <header class="panel-heading font-bold">Top 10 clients of the year</header>
+                    <input type="hidden" id="top_10_clients_data" value="<%= @top_10_clients %>"/>
+                    <div class="panel-body">
+                      <div id="client-bar"  style="height:240px"></div>
+                    </div>                  
+                  </section>
+                </div>
+                <div class="col-md-12">
+                  <section class="panel panel-default">
+                    <header class="panel-heading font-bold">Top 10 suppliers of the year</header>
+                    <input type="hidden" id="top_10_suppliers_data" value="<%= @top_10_suppliers %>"/>
+                    <div class="panel-body">
+                      <div id="supplier-bar"  style="height:240px"></div>
+                    </div>                  
+                  </section>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <section class="panel panel-default">
+                    <header class="panel-heading font-bold">Invoices Sent Per Month / Invoices Received Per Month of the Year</header>
+                    <div class="panel-body">
+                      <div id="flot-chart-1"  style="height:240px"></div>
+                    </div>                  
+                  </section>
+                </div>
+                <div class="col-md-12">
+                  <section class="panel panel-default">
+                    <header class="panel-heading font-bold">Amount Sent Per Month / Amount Received Per Month of the Year</header>
+                    <div class="panel-body">
+                      <div id="flot-chart-2"  style="height:240px"></div>
+                    </div>                  
+                  </section>
+                </div>
+              </div>
