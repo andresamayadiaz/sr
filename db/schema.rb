@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141212152154) do
+ActiveRecord::Schema.define(version: 20150105154933) do
 
   create_table "comprobantes", force: true do |t|
     t.string   "version"
@@ -109,6 +109,14 @@ ActiveRecord::Schema.define(version: 20141212152154) do
     t.string  "emailadicional1"
     t.string  "emailadicional2"
     t.string  "cp"
+  end
+
+  create_table "plans", force: true do |t|
+    t.string   "name"
+    t.integer  "max_uploaded"
+    t.decimal  "price",        precision: 10, scale: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "receptors", force: true do |t|
