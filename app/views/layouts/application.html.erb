@@ -49,8 +49,9 @@
   
   var sent_amount = <%= raw @sent_amount %>;
   var rec_amount = <%= raw @rec_amount %>;
-
-  $("#flot-chart-1").length && $.plot($("#flot-chart-1"), [{
+  
+  if(rec_invoices.length>0) {
+    $("#flot-chart-1").length && $.plot($("#flot-chart-1"), [{
           data: rec_invoices,
           label: "Received Invoices"
       }, {
@@ -97,9 +98,11 @@
           defaultTheme: false
         }
       }
-  );
+    );
+  }
 
-  $("#flot-chart-2").length && $.plot($("#flot-chart-2"), [{
+  if(rec_amount.length>0){
+    $("#flot-chart-2").length && $.plot($("#flot-chart-2"), [{
           data: rec_amount,
           label: "Received Amount"
       }, {
@@ -149,7 +152,8 @@
             defaultTheme: false
         }
       }
-  );
+    );
+  }
 
   // bar
   var top_10_clients = <%= raw @top_10_clients %>;
@@ -202,7 +206,8 @@
     }
   ];
 
-  $("#client-bar").length && $.plot($("#client-bar"), data1, {
+  if(client_data.length>0){
+    $("#client-bar").length && $.plot($("#client-bar"), data1, {
       xaxis: {
          ticks: client_x_axis
       },
@@ -229,9 +234,11 @@
           },
           defaultTheme: false
       }
-  });
+    });
+  }
 
-  $("#supplier-bar").length && $.plot($("#supplier-bar"), data2, {
+  if(supplier_data.length>0){
+    $("#supplier-bar").length && $.plot($("#supplier-bar"), data2, {
       xaxis: {
          ticks: supplier_x_axis 
       },
@@ -258,7 +265,8 @@
           },
           defaultTheme: false
       }
-  });
+    });
+  }
 
 });
 
