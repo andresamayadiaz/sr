@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   
   has_one :perfil
   has_many :notifications
+  belongs_to :plan
   
   after_create :build_perfil
   
