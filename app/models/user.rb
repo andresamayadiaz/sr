@@ -1,5 +1,5 @@
 require "conekta"
-Conekta.api_key = "key_eYvWV7gSDkNYXsmr"
+Conekta.api_key = "key_NMzQNVDdYYzvDPrExSXFrA"
 
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
@@ -36,10 +36,9 @@ class User < ActiveRecord::Base
       name: self.name,
       email: self.unconfirmed_email,
       phone: "55-5555-5555",
-      card: self.conektaTokenId
+      card: "tok_test_visa_1881"#self.conektaTokenId
     })
-    byebug
-    plan =  Conekta::Plan.find(self.plan.id) rescue false
+    plan = Conekta::Plan.find(self.plan.id)
     plan = Conekta::Plan.create({
       id: self.plan.id,
       name: self.plan.name,
@@ -51,7 +50,6 @@ class User < ActiveRecord::Base
     subscription = customer.create_subscription({
       plan_id: plan.id
     })
-    byebug
   end
   
   def tag_cloud
