@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150105160109) do
+ActiveRecord::Schema.define(version: 20150107001711) do
 
   create_table "comprobantes", force: true do |t|
     t.string   "version"
@@ -197,6 +197,7 @@ ActiveRecord::Schema.define(version: 20150105160109) do
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
     t.integer  "plan_id"
+    t.string   "conektaTokenId"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

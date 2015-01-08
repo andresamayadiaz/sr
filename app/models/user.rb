@@ -1,3 +1,6 @@
+require "conekta"
+Conekta.api_key = "key_eYvWV7gSDkNYXsmr"
+
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -20,12 +23,35 @@ class User < ActiveRecord::Base
   belongs_to :plan
   
   after_create :build_perfil
+  after_create :process_conekta
   
   acts_as_tagger
   
   def build_perfil
-    
     Perfil.create(user: self, notificarfaltas: true, notificaradvertencias: true, notificarvalidos: true)
+  end
+
+  def process_conekta
+    customer = Conekta::Customer.create({
+      name: self.name,
+      email: self.unconfirmed_email,
+      phone: "55-5555-5555",
+      card: self.conektaTokenId
+    })
+    byebug
+    plan =  Conekta::Plan.find(self.plan.id) rescue false
+    plan = Conekta::Plan.create({
+      id: self.plan.id,
+      name: self.plan.name,
+      amount: (self.plan.price*100).to_i,
+      currency: "MXN",
+      interval: "month"
+    }) if !plan
+    byebug
+    subscription = customer.create_subscription({
+      plan_id: plan.id
+    })
+    byebug
   end
   
   def tag_cloud
