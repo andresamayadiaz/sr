@@ -32,23 +32,30 @@ class User < ActiveRecord::Base
   end
 
   def process_conekta
-    customer = Conekta::Customer.create({
-      name: self.name,
-      email: self.unconfirmed_email,
-      phone: "55-5555-5555",
-      cards: [self.conektaTokenId]
-    })
-    plan = Conekta::Plan.find(self.plan.id)
-    plan = Conekta::Plan.create({
-      id: self.plan.id,
-      name: self.plan.name,
-      amount: (self.plan.price*100).to_i,
-      currency: "MXN",
-      interval: "month"
-    }) if !plan
-    subscription = customer.create_subscription({
-      plan_id: plan.id
-    })
+    if self.plan.price.to_i > 0
+      customer = Conekta::Customer.create({
+        name: self.name,
+        email: self.unconfirmed_email,
+        phone: "55-5555-5555",
+        cards: [self.conektaTokenId]
+      })
+      plan = Conekta::Plan.find(self.plan.id)
+      plan = Conekta::Plan.create({
+        id: self.plan.id,
+        name: self.plan.name,
+        amount: (self.plan.price*100).to_i,
+        currency: "MXN",
+        interval: "month"
+      }) if !plan
+      subscription = customer.create_subscription({
+        plan_id: plan.id
+      })
+      if subscription.status == 'active'
+    
+      elsif subscription.status == 'past_due'
+    
+      end
+    end
   end
   
   def tag_cloud
