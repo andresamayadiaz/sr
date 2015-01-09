@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
       name: self.name,
       email: self.unconfirmed_email,
       phone: "55-5555-5555",
-      card: "tok_test_visa_1881"#self.conektaTokenId
+      cards: [self.conektaTokenId]
     })
     plan = Conekta::Plan.find(self.plan.id)
     plan = Conekta::Plan.create({
@@ -46,7 +46,6 @@ class User < ActiveRecord::Base
       currency: "MXN",
       interval: "month"
     }) if !plan
-    byebug
     subscription = customer.create_subscription({
       plan_id: plan.id
     })
