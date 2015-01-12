@@ -81,6 +81,8 @@ es:
       display_entries: "Mostrando %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
   activerecord:
     errors:
+      messages:
+        record_invalid: "Record inválido."
       models:
         user:
           attributes:

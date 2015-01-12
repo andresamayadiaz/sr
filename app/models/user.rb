@@ -50,11 +50,7 @@ class User < ActiveRecord::Base
       subscription = customer.create_subscription({
         plan_id: plan.id
       })
-      if subscription.status == 'active'
-    
-      elsif subscription.status == 'past_due'
-    
-      end
+      self.update_attribute(:subscription_status,subscription.status)
     end
   end
   
