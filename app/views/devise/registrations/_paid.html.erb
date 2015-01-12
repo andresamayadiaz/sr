@@ -3,11 +3,11 @@
     <%= devise_error_messages! %>
     <%= f.hidden_field :plan_id,:value=>params[:plan] %>      
         <div class="form-group">
-            <label class='control-label'>Customer's Name</label>
+            <label class='control-label'>Nombre del Tarjetahabiente</label>
             <input type="text" size="20" data-conekta="card[name]" class='form-control input-lg'/>
         </div>
         <div class="form-group">
-            <label class='control-label'>Credit Card Number</label>
+            <label class='control-label'>Número de TarjetaExpiration</label>
             <input type="text" size="20" data-conekta="card[number]" class='form-control input-lg'/>
         </div>
         <div class="form-group">
@@ -18,7 +18,7 @@
         </div>
         <div class="form-group">
             <label>
-              <span>Expiration Date (MM/AAAA)</span>
+              <span>Fecha de Vencimiento</span>
               <input type="text" size="2" data-conekta="card[exp_month]"/>
             </label>
             <span>/</span>
