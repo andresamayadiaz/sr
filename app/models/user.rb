@@ -40,13 +40,6 @@ class User < ActiveRecord::Base
         cards: [self.conektaTokenId]
       })
       plan = Conekta::Plan.find(self.plan.id)
-      plan = Conekta::Plan.create({
-        id: self.plan.id,
-        name: self.plan.name,
-        amount: (self.plan.price*100).to_i,
-        currency: "MXN",
-        interval: "month"
-      }) if !plan
       subscription = customer.create_subscription({
         plan_id: plan.id
       })
