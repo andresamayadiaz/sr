@@ -212,7 +212,7 @@
 	 				  //alert('Comprobante Cargado Con Exito!');
 	 			  } else {
             $("#"+progress).addClass('progress-bar-danger');
-					  $('#'+label).addClass('bg-danger').append(" ERROR");
+					  $('#'+label).addClass('bg-danger').append(" "+JSON.parse(xhr.response).error);
 	 			    //alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
 	 			  }
 	 			}
@@ -274,7 +274,7 @@
 	 				  //alert('Comprobante Cargado Con Exito!');
 	 			  } else {
             $("#"+progress).addClass('progress-bar-danger');
-					  $('#'+label).addClass('bg-danger').append(" ERROR");
+					  $('#'+label).addClass('bg-danger').append(" "+JSON.parse(xhr.response).error);
 	 			    //alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
 	 			  }
 	 			}

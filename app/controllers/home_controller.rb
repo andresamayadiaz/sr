@@ -131,30 +131,31 @@ class HomeController < ApplicationController
     
   end
   
-  def upload_comprobante
+  def upload_comprobante  
+    if current_user.comprobantes.count<current_user.plan.max_uploaded
+      @user = current_user
+      @comprobante = Comprobante.new
+      @comprobante.xml = params[:file]
+      @comprobante.user = @user
     
-    @user = current_user
-    
-    @comprobante = Comprobante.new
-    @comprobante.xml = params[:file]
-    @comprobante.user = @user
-    
-    if @comprobante.save
+      if @comprobante.save
       
-      # Save Default Tags
-      @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.tipoDeComprobante), :on => :tags)
-      if !@comprobante.xml_obj.moneda.blank?
-        @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.xml_obj.moneda), :on => :tags)
+        # Save Default Tags
+        @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.tipoDeComprobante), :on => :tags)
+        if !@comprobante.xml_obj.moneda.blank?
+          @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.xml_obj.moneda), :on => :tags)
+        end
+      
+        render :json => @comprobante.xml.url
+      
+      else
+      
+        render :json => {:error => "Not Acceptable"}.to_json, :status => 406
+      
       end
-      
-      render :json => @comprobante.xml.url
-      
     else
-      
-      render :json => {:error => "Not Acceptable"}.to_json, :status => 406
-      
+      render :json => {:error => "You exceed your plan. <a href='#' style='text-decoration: underline;'>Upgrade?</a>".html_safe}.to_json, :status => 422
     end
-  
   end
 
   def buscar
@@ -202,6 +203,9 @@ class HomeController < ApplicationController
   end 
  
   private
+    def check_plan
+    end
+  
     def set_notifications
 
       all_alertas = current_user.notifications
