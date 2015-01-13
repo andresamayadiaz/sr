@@ -28,6 +28,7 @@ group :development do
   gem 'rails_layout'
   gem 'byebug'
 end
+gem 'ultrahook'
 
 # Paginado
 gem 'kaminari'

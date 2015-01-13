@@ -1,6 +1,8 @@
 Soyreceptor::Application.routes.draw do
   devise_for :users, :controllers => {:registrations => "registrations"}
-  
+
+  match 'webhook' => 'webhook#conekta', :via => [:post] 
+ 
   devise_scope :user do
     authenticated :user do
       root 'home#index', as: :authenticated_root
