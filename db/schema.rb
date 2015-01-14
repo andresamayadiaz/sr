@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150109110323) do
+ActiveRecord::Schema.define(version: 20150114014020) do
 
   create_table "comprobantes", force: true do |t|
     t.string   "version"
@@ -199,6 +199,7 @@ ActiveRecord::Schema.define(version: 20150109110323) do
     t.integer  "plan_id"
     t.string   "conektaTokenId"
     t.string   "subscription_status"
+    t.string   "customer_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

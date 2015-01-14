@@ -30,6 +30,15 @@ class User < ActiveRecord::Base
   def build_perfil
     Perfil.create(user: self, notificarfaltas: true, notificaradvertencias: true, notificarvalidos: true)
   end
+  
+  def change_conekta_plan(new_plan_id)
+      if self.update_attribute(:plan_id,new_plan_id)
+        customer = Conekta::Customer.find(self.customer_id)
+        subscription = customer.subscription.update({
+          plan_id: new_plan_id
+        })
+      end
+  end
 
   def process_conekta
     if self.plan.price.to_i > 0
@@ -44,6 +53,7 @@ class User < ActiveRecord::Base
         plan_id: plan.id
       })
       self.update_attribute(:subscription_status,subscription.status)
+      self.update_attribute(:customer_id,customer.id)
     end
   end
   
