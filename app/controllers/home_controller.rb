@@ -5,7 +5,7 @@ class HomeController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb]
   before_filter :set_notifications
-  before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas, :view_single_notification, :buscar_de_alertas]
+  before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas, :view_single_notification, :buscar_de_alertas, :upgrade, :downgrade]
   before_filter :set_sort
  
   def index
@@ -154,7 +154,7 @@ class HomeController < ApplicationController
       
       end
     else
-      render :json => {:error => "You exceed your plan. <a href='#' style='text-decoration: underline;'>Upgrade?</a>".html_safe}.to_json, :status => 422
+      render :json => {:error => "You exceed your plan. <a href='/upgrade' style='text-decoration: underline;'>Upgrade?</a>".html_safe}.to_json, :status => 422
     end
   end
 
@@ -201,10 +201,18 @@ class HomeController < ApplicationController
      @alertas = Kaminari.paginate_array(@alertas).page(params[:page])
     render 'alertas'
   end 
+
+  def upgrade
+    @plans = Plan.where('price>?',current_user.plan.price) rescue nil
+    render 'plans_list'
+  end
+
+  def downgrade
+    @plans = Plan.where('price<?',current_user.plan.price) rescue nil
+    render 'plans_list'
+  end
  
   private
-    def check_plan
-    end
   
     def set_notifications
 

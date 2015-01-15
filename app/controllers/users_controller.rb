@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
   
+  def register_conekta
+    byebug
+  end
+  
   def perfil
       
     @user = User.find(current_user.id)
