@@ -154,7 +154,7 @@ class HomeController < ApplicationController
       
       end
     else
-      render :json => {:error => "You exceed your plan. <a href='/upgrade' style='text-decoration: underline;'>Upgrade?</a>".html_safe}.to_json, :status => 422
+      render :json => {:error => "Upload failed! You have exceeded your plan limit. Consider to <a href='/upgrade' style='text-decoration: underline;font-weight:bold;'>upgrade</a> your plan".html_safe}.to_json, :status => 422
     end
   end
 
