@@ -41,6 +41,44 @@
 	  </section>
 	<%= javascript_include_tag 'application' %>
 	<%= yield :specific_js %>
+    <% if @new_plan.present? and @new_plan.price>0 %>
+        <script type="text/javascript" src="https://conektaapi.s3.amazonaws.com/v0.3.2/js/conekta.js"></script>
+        <script type="text/javascript">
+            // Conekta Public Key
+            Conekta.setPublishableKey('key_E3SBoGDap3183gtzjwXxPGQ');
+            
+            $(function(){
+              $("#new_payment").submit(function(event) {
+                event.preventDefault();
+                var $form;
+                $form = $(this);
+                /* Prevent the button from submitting multiple times */
+                $form.find("button").prop("disabled", true);
+                Conekta.token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler);
+                /* Prevent form information from being sent to the server */
+                return false;
+              });
+            }); 
+
+            var conektaSuccessResponseHandler;
+            conektaSuccessResponseHandler = function(token) {
+              var $form;
+              $form = $("#new_payment");
+              /* Insert the token_id into the form so it gets submitted to the server */
+              $form.append($("<input type=\"hidden\" name=\"user[conektaTokenId]\" />").val(token.id));
+              $form.get(0).submit();
+            };
+
+            var conektaErrorResponseHandler;
+            conektaErrorResponseHandler = function(response) {
+              var $form;
+              $form = $("#new_payment");
+              $form.find(".card-errors").text(response.message);
+              $form.find("button").prop("disabled", false);
+            };
+            // ...
+        </script>
+    <% end %>
   <script type='text/javascript'>
    $(function(){
 

@@ -1,4 +1,5 @@
 module ApplicationHelper
+
   
   def flash_class(level)
     case level
@@ -15,5 +16,5 @@ module ApplicationHelper
   
   def is_active
   end
-  
+
 end

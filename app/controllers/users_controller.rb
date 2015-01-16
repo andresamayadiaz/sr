@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
   
-  def register_conekta
-    byebug
+  def register_payment
+    current_user.change_conekta_plan(params[:user])
+    redirect_to authenticated_root_url, notice: "Plan is changed to #{current_user.plan.name} with $#{current_user.plan.price} per month"
   end
   
   def perfil

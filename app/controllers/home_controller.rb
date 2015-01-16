@@ -211,6 +211,23 @@ class HomeController < ApplicationController
     @plans = Plan.where('price<?',current_user.plan.price) rescue nil
     render 'plans_list'
   end
+
+  def new_payment
+    @user = current_user
+    @new_plan = Plan.find(params[:plan_id])
+    if @new_plan.price==0
+      current_user.update_attribute('plan_id',params[:plan_id])
+      redirect_to authenticated_root_url, notice: "You are now on Free plan"
+    else
+      if current_user.customer_id.blank?
+        render 'new_payment'
+      else
+        current_user.change_conekta_plan(params)
+        redirect_to authenticated_root_url, notice: "Plan is changed to #{@new_plan.name} with $#{@new_plan.price} per month"
+      end
+    end
+  end
+
  
   private
   

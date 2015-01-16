@@ -31,13 +31,28 @@ class User < ActiveRecord::Base
     Perfil.create(user: self, notificarfaltas: true, notificaradvertencias: true, notificarvalidos: true)
   end
   
-  def change_conekta_plan(new_plan_id)
-      if self.update_attribute(:plan_id,new_plan_id)
-        customer = Conekta::Customer.find(self.customer_id)
-        subscription = customer.subscription.update({
-          plan_id: new_plan_id
-        })
-      end
+  def change_conekta_plan(params)
+    plan = Conekta::Plan.find(params[:plan_id])
+    if self.customer_id.blank? #create new Conekta objects
+      customer = Conekta::Customer.create({
+        name: self.name,
+        email: self.email,
+        phone: "55-5555-5555",
+        cards: [params[:conektaTokenId]]
+      })
+      subscription = customer.create_subscription({
+        plan_id: plan.id
+      })
+      self.update_attribute(:conektaTokenId,params[:conektaTokenId])
+      self.update_attribute(:customer_id,customer.id)
+    else #update plan on Conekta only
+      customer = Conekta::Customer.find(self.customer_id)
+      subscription = customer.subscription.update({
+        plan_id: plan.id
+      })
+    end
+    self.update_attribute(:plan_id,params[:plan_id])
+    self.update_attribute(:subscription_status,subscription.status)
   end
 
   def process_conekta
