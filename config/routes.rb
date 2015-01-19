@@ -21,6 +21,7 @@ Soyreceptor::Application.routes.draw do
       get 'cbb/:id', to: 'home#cbb', as: :cbb
       get 'upgrade', to: 'home#upgrade'
       get 'downgrade', to: 'home#downgrade'
+      get 'new_payment', to: 'home#new_payment'
     end
     
     unauthenticated do
@@ -36,7 +37,7 @@ Soyreceptor::Application.routes.draw do
       patch 'update_generales', to: 'users#update_generales'
       patch 'update_notificaciones', to: 'users#update_notificaciones'
       post 'update_logo', to: 'users#update_logo'
-      patch 'register_conekta', to: 'users#register_conekta'
+      patch 'register_payment', to: 'users#register_payment'
     end
   end
   
