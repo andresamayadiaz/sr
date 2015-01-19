@@ -1,0 +1,40 @@
+<% if @plans.present? %>
+<% @plans.each do |p| %>
+<div class="col-sm-4 animated fadeInUp">
+            <section class="panel b-primary text-center">
+              <header class="panel-heading bg-primary">
+                <h3 class="m-t-sm"><%= p.name %></h3>
+                <p>empresas y organizaciones</p>
+              </header>
+              <ul class="list-group">
+                <li class="list-group-item text-center bg-light lt">
+                  <div class="padder-v">
+                    <span class="text-danger font-bold h1"><%= "$#{p.price}" %></span> / mes
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  Validaciones Ilimitadas
+                </li>
+                <li class="list-group-item">
+                  Almacenamiento de <%= p.max_uploaded %> Comprobantes
+                </li>
+                <li class="list-group-item">
+                  Notificaciones por e-mail
+                </li>
+                <li class="list-group-item">
+                  Estadísticas y Gráficas
+                </li>
+              </ul>
+              <footer class="panel-footer">
+                <a href="<%= new_payment_path(:plan_id=>p.id) %>" class="btn btn-primary m-t m-b">Regístrate</a>
+              </footer>
+            </section>
+          </div>
+<% end %>
+<% else %>
+  <% if current_user.plan.price==0 %>
+    You can't downgrade since you're already on free plan.
+  <% else %>
+    You can't upgrade since you're already on highest plan.
+  <% end %>
+<% end %>

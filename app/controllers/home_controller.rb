@@ -5,7 +5,7 @@ class HomeController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb]
   before_filter :set_notifications
-  before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas, :view_single_notification, :buscar_de_alertas]
+  before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas, :view_single_notification, :buscar_de_alertas, :upgrade, :downgrade]
   before_filter :set_sort
  
   def index
@@ -131,30 +131,31 @@ class HomeController < ApplicationController
     
   end
   
-  def upload_comprobante
+  def upload_comprobante  
+    if current_user.comprobantes.count<current_user.plan.max_uploaded
+      @user = current_user
+      @comprobante = Comprobante.new
+      @comprobante.xml = params[:file]
+      @comprobante.user = @user
     
-    @user = current_user
-    
-    @comprobante = Comprobante.new
-    @comprobante.xml = params[:file]
-    @comprobante.user = @user
-    
-    if @comprobante.save
+      if @comprobante.save
       
-      # Save Default Tags
-      @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.tipoDeComprobante), :on => :tags)
-      if !@comprobante.xml_obj.moneda.blank?
-        @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.xml_obj.moneda), :on => :tags)
+        # Save Default Tags
+        @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.tipoDeComprobante), :on => :tags)
+        if !@comprobante.xml_obj.moneda.blank?
+          @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.xml_obj.moneda), :on => :tags)
+        end
+      
+        render :json => @comprobante.xml.url
+      
+      else
+      
+        render :json => {:error => "Not Acceptable"}.to_json, :status => 406
+      
       end
-      
-      render :json => @comprobante.xml.url
-      
     else
-      
-      render :json => {:error => "Not Acceptable"}.to_json, :status => 406
-      
+      render :json => {:error => "Upload failed! You have exceeded your plan limit. Consider to <a href='/upgrade' style='text-decoration: underline;font-weight:bold;'>upgrade</a> your plan".html_safe}.to_json, :status => 422
     end
-  
   end
 
   def buscar
@@ -200,8 +201,36 @@ class HomeController < ApplicationController
      @alertas = Kaminari.paginate_array(@alertas).page(params[:page])
     render 'alertas'
   end 
+
+  def upgrade
+    @plans = Plan.where('price>?',current_user.plan.price) rescue nil
+    render 'plans_list'
+  end
+
+  def downgrade
+    @plans = Plan.where('price<?',current_user.plan.price) rescue nil
+    render 'plans_list'
+  end
+
+  def new_payment
+    @user = current_user
+    @new_plan = Plan.find(params[:plan_id])
+    if @new_plan.price==0
+      current_user.update_attribute('plan_id',params[:plan_id])
+      redirect_to authenticated_root_url, notice: "You are now on Free plan"
+    else
+      if current_user.customer_id.blank?
+        render 'new_payment'
+      else
+        current_user.change_conekta_plan(params)
+        redirect_to authenticated_root_url, notice: "Plan is changed to #{@new_plan.name} with $#{@new_plan.price} per month"
+      end
+    end
+  end
+
  
   private
+  
     def set_notifications
 
       all_alertas = current_user.notifications

@@ -1,6 +1,8 @@
 Soyreceptor::Application.routes.draw do
   devise_for :users, :controllers => {:registrations => "registrations"}
-  
+
+  match 'webhook' => 'webhook#conekta', :via => [:post] 
+ 
   devise_scope :user do
     authenticated :user do
       root 'home#index', as: :authenticated_root
@@ -17,6 +19,8 @@ Soyreceptor::Application.routes.draw do
       get 'tags', to: 'home#tags'
       get 'comprobante/:id', to: 'home#comprobante', as: :comprobante
       get 'cbb/:id', to: 'home#cbb', as: :cbb
+      get 'upgrade', to: 'home#upgrade'
+      get 'downgrade', to: 'home#downgrade'
     end
     
     unauthenticated do
@@ -32,6 +36,7 @@ Soyreceptor::Application.routes.draw do
       patch 'update_generales', to: 'users#update_generales'
       patch 'update_notificaciones', to: 'users#update_notificaciones'
       post 'update_logo', to: 'users#update_logo'
+      patch 'register_conekta', to: 'users#register_conekta'
     end
   end
   

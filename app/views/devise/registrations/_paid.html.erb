@@ -1,0 +1,54 @@
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :role => 'form', :class => 'panel-body wrapper-lg'}) do |f| %>
+		<span class="card-errors"></span>
+    <%= devise_error_messages! %>
+    <%= f.hidden_field :plan_id,:value=>params[:plan] %>      
+        <div class="form-group">
+            <label class='control-label'>Nombre del Tarjetahabiente</label>
+            <input type="text" size="20" data-conekta="card[name]" class='form-control input-lg' placeholder="Nombre del Tarjetahabiente"/>
+        </div>
+        <div class="form-group">
+            <label class='control-label'>Número de Tarjeta</label>
+            <input type="text" size="20" data-conekta="card[number]" class='form-control input-lg' placeholder="Número de Tarjeta"/>
+        </div>
+        <div class="form-group">
+            <label>
+              <span>CVC</span>
+              <input type="text" size="4" data-conekta="card[cvc]" placeholder="CVC"/>
+            </label>
+            <label>
+              <span>Fecha de Vencimiento</span>
+              <input type="text" size="2" data-conekta="card[exp_month]" placeholder="Mo"/>
+            </label>
+            <span>/</span>
+            <input type="text" size="4" data-conekta="card[exp_year]" placeholder="Year"/>
+        </div>
+	      <div class="form-group">
+	        <%= f.label :name, 'Razon Social', :class => 'control-label' %>
+	        <%= f.text_field :name, :autofocus => true, class: 'form-control input-lg', :placeholder => 'Razon Social' %>
+	      </div>
+	      <div class="form-group">
+	        <%= f.label :rfc, 'R.F.C. (sin guiones ni espacios)', :class => 'control-label' %>
+	        <%= f.text_field :rfc, class: 'form-control input-lg', :placeholder => 'RFC de tu Empresa' %>
+	      </div>
+	      <div class="form-group">
+	        <%= f.label :email, 'E-mail', :class => "control-label" %>
+	        <%= f.email_field :email, class: 'form-control input-lg', :placeholder => 'usuario@miempresa.com' %>
+	      </div>
+	      <div class="form-group">
+		      <%= f.label :password, 'Password', :class => 'control-label' %>
+		      <%= f.password_field :password, class: 'form-control input-lg', :placeholder => 'Password' %>
+	      </div>
+	      <div class="form-group">
+		      <%= f.label :password_confirmation, 'Confirmar Password', :class => 'control-label' %>
+		      <%= f.password_field :password_confirmation, class: 'form-control input-lg', :placeholder => 'Password' %>
+	      </div>
+	      <div class="checkbox">
+	        <label>
+	          <input type="checkbox"> Acepto los <a href="javascript:void(0);" data-toggle="modal" data-target="#tos">terminos y condiciones</a>
+	        </label>
+	      </div>
+		  <%= f.submit 'Crear Cuenta', :class => 'btn btn-primary' %>
+	      <div class="line line-dashed"></div>
+	      <p class="text-muted text-center"><small>¿Ya tienes una Cuenta?</small></p>
+		  <%= link_to 'Ingresar a mi Cuenta', new_session_path(resource_name), :class => 'btn btn-default btn-block' %>
+<% end %>
