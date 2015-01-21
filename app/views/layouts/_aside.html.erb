@@ -212,8 +212,10 @@
 	 				  //alert('Comprobante Cargado Con Exito!');
 	 			  } else {
             $("#"+progress).addClass('progress-bar-danger');
-					  $('#'+label).addClass('bg-danger');
-            $("#uploadModal .modal-header").append("<div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+JSON.parse(xhr.response).error+"</div>");
+					  $('#'+label).addClass('bg-danger').append("  Error: "+JSON.parse(xhr.response).error);
+            if( (xhr.status===422) ) {
+              $("#uploadModal .modal-header").append("<div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+JSON.parse(xhr.response).error+"</div>");
+            }
 	 			    //alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
 	 			  }
 	 			}
@@ -275,8 +277,10 @@
 	 				  //alert('Comprobante Cargado Con Exito!');
 	 			  } else {
             $("#"+progress).addClass('progress-bar-danger');
-					  $('#'+label).addClass('bg-danger');
-            $("#uploadModal .modal-header").append("<div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+JSON.parse(xhr.response).error+"</div>");
+					  $('#'+label).addClass('bg-danger').append("  Error: "+JSON.parse(xhr.response).error);
+            if( (xhr.status===422) ) {
+              $("#uploadModal .modal-header").append("<div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+JSON.parse(xhr.response).error+"</div>");
+            }
 	 			    //alert('Error al Cargar Comprobante, Favor de Intentar Nuevamente.');
 	 			  }
 	 			}
