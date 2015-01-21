@@ -69,6 +69,9 @@ class User < ActiveRecord::Base
       })
       self.update_attribute(:subscription_status,subscription.status)
       self.update_attribute(:customer_id,customer.id)
+    else
+      plan = Plan.where(:price=>0).try(:first)
+      self.update_attribute(:plan_id,plan.id)
     end
   end
   
