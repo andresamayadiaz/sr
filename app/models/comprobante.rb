@@ -14,7 +14,7 @@ class Comprobante < ActiveRecord::Base
   acts_as_taggable
   
   before_save :procesar
-  after_save :generate_notifications_after_save 
+  after_create :generate_notifications
   validates_attachment :xml, :presence => true,
     :content_type => { :content_type => ["text/plain", "text/xml"] },
     :size => { :in => 0..900.kilobytes }
@@ -285,7 +285,7 @@ class Comprobante < ActiveRecord::Base
       
     end
   
-    def generate_notifications_after_save
+    def generate_notifications
         c = self
         
         #check if it's already exists
