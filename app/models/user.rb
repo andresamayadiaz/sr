@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   end
 
   def process_conekta
-    if self.plan.price.to_i > 0
+    if self.plan.present? and self.plan.price.to_i > 0
       customer = Conekta::Customer.create({
         name: self.name,
         email: self.unconfirmed_email,
