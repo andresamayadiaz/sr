@@ -12,12 +12,12 @@ class HomeController < ApplicationController
     
     @user = current_user
     @perfil = @user.perfil
-    @top_10_clients = Comprobante.top_10_clients
-    @top_10_suppliers = Comprobante.top_10_suppliers
-    @sent_invoices = Comprobante.sent_invoices
-    @rec_invoices = Comprobante.received_invoices
-    @sent_amount = Comprobante.sent_amount
-    @rec_amount = Comprobante.received_amount
+    @top_10_clients = Comprobante.top_10_clients(current_user.rfc)
+    @top_10_suppliers = Comprobante.top_10_suppliers(current_user.rfc)
+    @sent_invoices = Comprobante.sent_invoices(current_user.id)
+    @rec_invoices = Comprobante.received_invoices(current_user.id)
+    @sent_amount = Comprobante.sent_amount(current_user.id)
+    @rec_amount = Comprobante.received_amount(current_user.id)
   end
   
   def comprobante
