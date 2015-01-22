@@ -137,21 +137,25 @@ class HomeController < ApplicationController
       @comprobante = Comprobante.new
       @comprobante.xml = params[:file]
       @comprobante.user = @user
-    
-      if @comprobante.save
       
-        # Save Default Tags
-        @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.tipoDeComprobante), :on => :tags)
-        if !@comprobante.xml_obj.moneda.blank?
-          @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.xml_obj.moneda), :on => :tags)
+      begin
+        if @comprobante.save
+      
+          # Save Default Tags
+          @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.tipoDeComprobante), :on => :tags)
+          if !@comprobante.xml_obj.moneda.blank?
+            @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.xml_obj.moneda), :on => :tags)
+          end
+      
+          render :json => @comprobante.xml.url
+      
+        else
+      
+          render :json => {:error => "Not Acceptable"}.to_json, :status => 406
+      
         end
-      
-        render :json => @comprobante.xml.url
-      
-      else
-      
-        render :json => {:error => "Not Acceptable"}.to_json, :status => 406
-      
+      rescue => e
+          render :json=> {:error => e.message}.to_json, :status => 406
       end
     else
       render :json => {:error => "Upload failed! You have exceeded your plan limit. Consider to <a href='/upgrade' style='text-decoration: underline;font-weight:bold;'>upgrade</a> your plan".html_safe}.to_json, :status => 422
