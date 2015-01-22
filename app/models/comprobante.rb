@@ -99,26 +99,26 @@ class Comprobante < ActiveRecord::Base
       
     end
   
-  def self.top_10_clients
+  def self.top_10_clients(current_user_rfc)
     top_10 = []
-    clients = Receptor.joins(:comprobante).where('comprobantes.emitido=? AND comprobantes.fecha between ? AND ?',true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group('nombre').sum('comprobantes.total') rescue nil
+    clients = Receptor.joins(:comprobante).where('comprobantes.emitido=? AND rfc=? AND comprobantes.fecha between ? AND ?',true,current_user_rfc,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group('nombre').sum('comprobantes.total') rescue nil
     if clients.present?
       top_10 = clients.sort_by{|k,v|-v}.first(10).map{|x| x[0]=x[0],x[1]=x[1].to_i}
     end
     top_10
   end
     
-  def self.top_10_suppliers
+  def self.top_10_suppliers(current_user_rfc)
     top_10 = []
-    clients = Emisor.joins(:comprobante).where('comprobantes.recibido=? AND comprobantes.fecha between ? AND ?',true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group('nombre').sum('comprobantes.total') rescue nil
+    clients = Emisor.joins(:comprobante).where('comprobantes.recibido=? AND rfc=? AND comprobantes.fecha between ? AND ?',true,current_user_rfc,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group('nombre').sum('comprobantes.total') rescue nil
     if clients.present?
       top_10 = clients.sort_by{|k,v|-v}.first(10).map{|x| x[0]=x[0],x[1]=x[1].to_i}
     end
     top_10
   end
 
-  def self.sent_invoices
-    invoices = Comprobante.where("emitido=? AND recibido=? AND fecha between ? AND ?",true,false,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.fecha.month}
+  def self.sent_invoices(current_user_id)
+    invoices = Comprobante.where("user_id=? AND emitido=? AND recibido=? AND fecha between ? AND ?",current_user_id,true,false,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.fecha.month}
     sent_invoices = []
     (1..12).each do |i|
       mo = i
@@ -128,8 +128,8 @@ class Comprobante < ActiveRecord::Base
     sent_invoices
   end
 
-  def self.received_invoices
-    invoices = Comprobante.where("emitido=? AND recibido=? AND fecha between ? AND ?",false,true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.fecha.month}
+  def self.received_invoices(current_user_id)
+    invoices = Comprobante.where("user_id=? AND emitido=? AND recibido=? AND fecha between ? AND ?",current_user_id,false,true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.fecha.month}
     rec_invoices = []
     (1..12).each do |i|
       mo = i
@@ -139,8 +139,8 @@ class Comprobante < ActiveRecord::Base
     rec_invoices
   end
 
-  def self.sent_amount
-    invoices = Comprobante.where("emitido=? AND recibido=? AND fecha between ? AND ?",true,false,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.fecha.month}
+  def self.sent_amount(current_user_id)
+    invoices = Comprobante.where("user_id=? AND emitido=? AND recibido=? AND fecha between ? AND ?",current_user_id,true,false,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.fecha.month}
     sent_amount = []
     (1..12).each do |i|
       mo = i
@@ -150,8 +150,8 @@ class Comprobante < ActiveRecord::Base
     sent_amount
   end
   
-  def self.received_amount
-    invoices = Comprobante.where("emitido=? AND recibido=? AND fecha between ? AND ?",false,true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.fecha.month}
+  def self.received_amount(current_user_id)
+    invoices = Comprobante.where("user_id=? AND emitido=? AND recibido=? AND fecha between ? AND ?",current_user_id,false,true,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group_by{|i|i.fecha.month}
     rec_amount = []
     (1..12).each do |i|
       mo = i

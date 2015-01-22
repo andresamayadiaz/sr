@@ -1,6 +1,6 @@
 <%= form_for(@user,:url => register_payment_user_path, :html => { :role => 'form', :class => 'panel-body wrapper-lg', :id=>'new_payment'}) do |f| %>
 		<span class="card-errors"></span>
-        <%= f.hidden_field :plan_id,:value=>params[:new_plan] %>      
+        <%= f.hidden_field :plan_id,:value=>params[:plan_id] %>      
         <div class="form-group">
             <label class='control-label'>Nombre del Tarjetahabiente</label>
             <input type="text" size="20" data-conekta="card[name]" class='form-control input-lg' placeholder="Nombre del Tarjetahabiente"/>
