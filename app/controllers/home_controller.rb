@@ -4,7 +4,6 @@
 class HomeController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb]
-  before_filter :set_notifications
   before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas, :view_single_notification, :buscar_de_alertas, :upgrade, :downgrade]
   before_filter :set_sort
  
@@ -234,48 +233,6 @@ class HomeController < ApplicationController
 
  
   private
-  
-    def set_notifications
-
-      all_alertas = current_user.notifications
-      all_unread_alertas = all_alertas.select{|a|a.status==false}
-      all_advertencias = all_alertas.select{|a|a.category=='Warning'}
-      all_faltas = all_alertas.select{|a|a.category=='Error'}
-      all_validos = all_alertas.select{|a|a.category=='Success'}
-      all_actual = all_alertas.select{|a|a.created_at.month==Time.now.month}
-      all_anterior = all_alertas.select{|a|a.created_at.month==(Time.now-1.month).month}
-      all_leidos = all_alertas.select{|a|a.status==true}
-      
-      @unreads_count = all_unread_alertas.length
-      @advertencias_count = all_advertencias.length
-      @faltas_count = all_faltas.length
-      @validos_count = all_validos.length
-      @actual_count = all_actual.length
-      @anterior_count = all_anterior.length
-      @leidos_count = all_leidos.length
-      
-      if params[:filter].present?
-        case params[:filter]
-        when 'advertencias'
-          @alertas = all_advertencias
-        when 'faltas'
-          @alertas = all_faltas
-        when 'validos'
-          @alertas = all_validos
-        when 'mes-actual'
-          @alertas = all_actual
-        when 'mes-anterior'
-          @alertas = all_anterior
-        when 'leidos'
-          @alertas = all_leidos
-        end
-      else
-        @alertas = all_unread_alertas
-      end
-      @alertas = @alertas.sort_by{|a|a.created_at}.reverse! rescue []
-      @ten_most_recent_alertas = all_unread_alertas.first(10)
-    end
-
     def set_vars
       
       @user = current_user
