@@ -99,18 +99,18 @@ class Comprobante < ActiveRecord::Base
       
     end
   
-  def self.top_10_clients(current_user_rfc)
+  def self.top_10_clients(current_user_id)
     top_10 = []
-    clients = Receptor.joins(:comprobante).where('comprobantes.emitido=? AND rfc=? AND comprobantes.fecha between ? AND ?',true,current_user_rfc,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group('nombre').sum('comprobantes.total') rescue nil
+    clients = Receptor.joins(:comprobante).where('comprobantes.emitido=? AND comprobantes.user_id=? AND comprobantes.fecha between ? AND ?',true,current_user_id,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group('nombre').sum('comprobantes.total') rescue nil
     if clients.present?
       top_10 = clients.sort_by{|k,v|-v}.first(10).map{|x| x[0]=x[0],x[1]=x[1].to_i}
     end
     top_10
   end
     
-  def self.top_10_suppliers(current_user_rfc)
+  def self.top_10_suppliers(current_user_id)
     top_10 = []
-    clients = Emisor.joins(:comprobante).where('comprobantes.recibido=? AND rfc=? AND comprobantes.fecha between ? AND ?',true,current_user_rfc,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group('nombre').sum('comprobantes.total') rescue nil
+    clients = Emisor.joins(:comprobante).where('comprobantes.recibido=? AND comprobantes.user_id=? AND comprobantes.fecha between ? AND ?',true,current_user_id,Time.zone.now.beginning_of_year,Time.zone.now.end_of_year).group('nombre').sum('comprobantes.total') rescue nil
     if clients.present?
       top_10 = clients.sort_by{|k,v|-v}.first(10).map{|x| x[0]=x[0],x[1]=x[1].to_i}
     end

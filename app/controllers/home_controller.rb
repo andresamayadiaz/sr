@@ -11,8 +11,8 @@ class HomeController < ApplicationController
     
     @user = current_user
     @perfil = @user.perfil
-    @top_10_clients = Comprobante.top_10_clients(current_user.rfc)
-    @top_10_suppliers = Comprobante.top_10_suppliers(current_user.rfc)
+    @top_10_clients = Comprobante.top_10_clients(current_user.id)
+    @top_10_suppliers = Comprobante.top_10_suppliers(current_user.id)
     @sent_invoices = Comprobante.sent_invoices(current_user.id)
     @rec_invoices = Comprobante.received_invoices(current_user.id)
     @sent_amount = Comprobante.sent_amount(current_user.id)
