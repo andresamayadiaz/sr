@@ -316,7 +316,7 @@ $(document).ready(function(){
     window.location.href = sort_url;
   });
   
-  $("#alertas-refresh-buttoni, #cerrar").click(function(){
+  $("#cerrar").click(function(){
     location.reload();
   });
 });
