@@ -17,11 +17,13 @@
       <section class="dropdown-menu aside-xl on animated fadeInLeft no-borders lt">
         <div class="wrapper lter m-t-n-xs">
           <a href="#" class="thumb pull-left m-r">
-			<%= image_tag @user.logo.url(:thumb), {:class => "img-circle"} %>
+			      <%= image_tag @user.logo.url(:thumb), {:class => "img-circle"} %>
           </a>
           <div class="clear">
             <a href="#"><span class="text-white font-bold"><%= current_user.name %></a></span>
             <small class="block"><%= current_user.rfc %></small>
+            <small class="block"><%= "Current plan: #{current_user.plan.name}"%></small>
+            <small class="block"><%= "Permitted uploaded invoices: #{current_user.plan.max_uploaded}"%></small>
             <a href="/upgrade" class="btn btn-xs btn-success m-t-xs">Upgrade</a>
             <a href="/downgrade" class="btn btn-xs btn-warning m-t-xs">Downgrade</a>
           </div>
