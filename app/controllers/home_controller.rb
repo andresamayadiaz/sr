@@ -3,7 +3,7 @@
 
 class HomeController < ApplicationController
   before_filter :authenticate_user!
-  before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb]
+  before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb, :eliminar]
   before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas, :view_single_notification, :buscar_de_alertas, :upgrade, :downgrade]
   before_filter :set_sort
  
@@ -26,6 +26,14 @@ class HomeController < ApplicationController
     @errors = @comprobante.notifications.errors
     render layout: "comprobante"
     
+  end
+
+  def eliminar
+    if @comprobante.destroy
+      redirect_to authenticated_root_url, notice: "Invoice and all of its related info have been deleted"
+    else
+      redirect_to authenticated_root_url, error: "Failed to delete invoice"
+    end
   end
   
   def cbb

@@ -22,6 +22,7 @@ Soyreceptor::Application.routes.draw do
       get 'upgrade', to: 'home#upgrade'
       get 'downgrade', to: 'home#downgrade'
       get 'new_payment', to: 'home#new_payment'
+      get 'eliminar', to: 'home#eliminar'
     end
     
     unauthenticated do
