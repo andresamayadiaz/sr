@@ -776,6 +776,9 @@ body.container {
   .vbox > footer {
     position: relative;
   }
+  .alert{
+    display:none;
+  }
 }
 .slimScrollBar {
   border-radius: 0 !important;

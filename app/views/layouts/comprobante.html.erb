@@ -5,13 +5,9 @@
   <title><%= content_for?(:title) ? yield(:title) : "SoyReceptor" %></title>
   <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Soyreceptor" %>">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
-  <%= stylesheet_link_tag 'application', media: 'screen' %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= yield :specific_css %>
   <%= csrf_meta_tags %>
-  <style>
-    @media print {
-    }
-  </style>
 </head>
   
   <body class="">
