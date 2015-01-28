@@ -16,12 +16,12 @@ class Receptor < ActiveRecord::Base
     
     dir = "#{self.domicilio_calle}"
     dir += " #{self.domicilio_noExterior}" if self.domicilio_noExterior
-    dir += " #{self.domicilio_noInterior}<br />" if self.domicilio_noInterior
-    dir += " #{self.domicilio_colonia}" if self.domicilio_colonia
-    dir += " #{self.domicilio_municipio}<br />" if self.domicilio_municipio
+    dir += " #{self.domicilio_noInterior}" if self.domicilio_noInterior
+    dir += " #{self.domicilio_colonia}," if self.domicilio_colonia
+    dir += " #{self.domicilio_codigoPostal}" if self.domicilio_codigoPostal
+    dir += " #{self.domicilio_municipio}," if self.domicilio_municipio
     dir += " #{self.domicilio_estado}" if self.domicilio_estado
     dir += " #{self.domicilio_pais}" if self.domicilio_pais
-    dir += " <br/>C.P. #{self.domicilio_codigoPostal}" if self.domicilio_codigoPostal
     
     return dir
     
