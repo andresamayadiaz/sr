@@ -2,10 +2,10 @@
 <header class="header b-b b-light hidden-print">
   <button class="btn btn-sm btn-info dropdown-toggle pull-right" data-toggle="dropdown">Acciones <span class="caret"></span></button>
   <ul class="dropdown-menu pull-right">
-    <li><a onClick="window.print();" href="javascript:void(0);">Imprimir</a></li>
+    <li><a onClick="window.print();">Imprimir</a></li>
     <li><%= link_to 'Descargar XML', @comprobante.xml.url(:original, false) %></li>
-    <li><a onClick="window.print();" href="javascript:void(0);">Generar PDF</a></li>
-	  <li><a href="<%= eliminar_url(:id=>@comprobante.id) %>" class='btn-warning' data-confirm="Are you sure?">Eliminar</a></li>
+    <li><a href="#">Generar PDF</a></li>
+  <li><a href="#" class='btn-warning'>Eliminar</a></li>
   </ul>
   <p>Comprobante <%= @comprobante.to_s %></p>
 </header>
@@ -21,10 +21,10 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <h4><i class="fa fa-bell-alt"></i>Advertencias</h4>
     <ul>
-		  <% @warnings.each do |w| %>
+      <% @warnings.each do |w| %>
         <li><%= link_to w.description, vistadealertas_url(:id=>w.id)  %></li>
       <% end %>
-	  </ul>
+    </ul>
   </div>
   <!-- /Tiene Advertencias -->
   <% end %>
@@ -35,62 +35,73 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <h4><i class="fa fa-bell-alt"></i>Faltas</h4>
     <ul>
-		  <% @errors.each do |er| %>
+      <% @errors.each do |er| %>
         <li><%= link_to er.description, vistadealertas_url(:id=>er.id)  %></li>
       <% end %>
-	  </ul>
+    </ul>
   </div>
   <!-- /Tiene Faltas -->
   <% end %>
- 
+  
+  <i class="fa fa-file-text fa fa-3x"></i>
   <div class="row">
-    <div class="col-xs-2">
-      <%= image_tag @user.logo.url(:medium) %> 
-    </div>
     <div class="col-xs-6">
-      <h4><strong><%= @comprobante.emisor.nombre %></strong></h4>
+      <h4><%= @comprobante.emisor.nombre %></h4>
       <h4><%= @comprobante.emisor.rfc %></h4>
-	  <p>
-		  <%= raw @comprobante.emisor.direccion_html %>
-		  <br />
-	      <% if !@comprobante.lugarExpedicion.blank? %>
-		  	<strong>Expedido En:</strong> <%= @comprobante.lugarExpedicion %>
-		 <% end %>
+    <p>
+      <%= raw @comprobante.emisor.direccion_html %>
+      <br />
+        <% if !@comprobante.lugarExpedicion.blank? %>
+        <strong>Expedido En:</strong> <%= @comprobante.lugarExpedicion %>
+     <% end %>
       </p>
-	  
+    
     </div>
-    <div class="col-xs-4 text-right">
-        <table class="table text-center" style="font-size:9px;" id="comprobante_table_detail">
-          <tr><td>FACTURA</td></tr>
-          <tr><td><%= @comprobante.serie + " " + @comprobante.folio %></td></tr>
-          <tr><td>METODO DE PAGO / N. DE CUENTA</td></tr>
-          <tr><td><%= @comprobante.metodoDePago %></td></tr>
-          <tr><td>CONDICIONES DE PAGO</td></tr>
-          <tr><td><%= @comprobante.tipoDeComprobante %></td></tr>
-          <tr><td>FECHA CREACION / FECHA CERTIFICACION</td></tr>
-          <tr><td><%= "#{@comprobante.fecha} / #{@comprobante.TimbreFiscalDigital.fechaTimbrado}"%></td></tr>
-          <tr><td>FOLIO FISCAL</td></tr>
-          <tr><td><%= @comprobante.TimbreFiscalDigital.uuid%></td></tr>
-          <tr><td>NUMERO CERTIFICADO</td></tr>
-          <tr><td><%= @comprobante.noCertificado %></td></tr>
-          <tr><td>NUMERO CERTIFICADO DEL SAT</td></tr>
-          <tr><td><%= @comprobante.TimbreFiscalDigital.noCertificadoSAT %></td></tr>
-          <tr><td>LUGAR DE EXPEDICION</td></tr>
-          <tr><td><%= @comprobante.lugarExpedicion %></td></tr>
-        </table>
+    <div class="col-xs-6 text-right">
+    
+      <p class="h4">UUID: <strong><%= @comprobante.TimbreFiscalDigital.uuid %></strong></p>
+    <p class="h4">Serie-Folio: <strong><%= @comprobante.serie + " " + @comprobante.folio %></strong></p>
+      <h5><%= @comprobante.fecha %></h5><br>
+    
     </div>
   </div>
+  <p class="">
+      <strong>Etiquetas</strong><br>
+      <div id="MyPillbox" class="pillbox clearfix">
+        <ul>
+      <% @comprobante.tags_from(@comprobante.user).each do |tag| %>
+      
+          <li class="label bg-dark"><%= tag %></li>
+      
+      <% end %>
+          <input type="text" placeHolder="agregar etiqueta">
+        </ul>
+      </div>
+  </p>
   <div class="well m-t">
     <div class="row">
-      <div class="col-xs-12">
-        <table border="0">
-          <tr><td><strong>Nombre:</strong></td><td>&nbsp;<%= @comprobante.receptor.nombre %></td></tr>
-		      <tr><td><strong>RFC:</strong></td><td>&nbsp;<%= @comprobante.receptor.rfc %></td></tr>
-          <tr>
-            <td><strong>Dirección:</strong></td>
-            <td>&nbsp;<%= @comprobante.receptor.direccion_html %></td>
-          </tr>
-        </table>
+      <div class="col-xs-6">
+        <strong>RECEPTOR:</strong>
+        <h4><%= @comprobante.receptor.nombre %></h4>
+    <h4><%= @comprobante.receptor.rfc %></h4>
+        <p>
+          <%= raw @comprobante.receptor.direccion_html %>
+        </p>
+      </div>
+      <div class="col-xs-6">
+      
+    Tipo de Comprobante: <strong><%= @comprobante.tipoDeComprobante %></strong><br>
+    <% if !@comprobante.xml_obj.moneda.blank? %>
+      Moneda: <strong><%= @comprobante.xml_obj.moneda %></strong><br>
+    <% end %>
+    <% if !@comprobante.xml_obj.tipoCambio.blank? %>
+      Tipo de Cambio: <strong><%= @comprobante.xml_obj.tipoCambio %></strong><br>
+    <% end %>
+    No. Serie CSD: <strong><%= @comprobante.noCertificado %></strong><br>
+    No. Serie CSD SAT: <strong><%= @comprobante.TimbreFiscalDigital.noCertificadoSAT %></strong><br>
+    Forma de Pago: <strong><%= @comprobante.formaDePago %></strong><br>
+    Método de Pago: <strong><%= @comprobante.metodoDePago %></strong>
+    
       </div>
     </div>
   </div>
@@ -99,93 +110,82 @@
   <table class="table">
     <thead>
       <tr>
-        <th width="20">CANT.</th>
-		    <th>UNIDAD DE MEDIA</th>
+        <th width="60">CANTIDAD</th>
+    <th width="60">UNIDAD</th>
         <th>DESCRIPCION</th>
-        <th width="140" class='align_right'>PRECIO</th>
-        <th width="90" class='align_right'>TOTAL</th>
+        <th width="140">PRECIO UNITARIO</th>
+        <th width="90">IMPORTE</th>
       </tr>
     </thead>
     <tbody>
-	  
-	  <% @comprobante.xml_obj.conceptos.each do |concepto| %>
-	  
+    
+    <% @comprobante.xml_obj.conceptos.each do |concepto| %>
+    
         <tr>
-          <td><%= concepto.cantidad %></td>
-  		    <td><%= concepto.unidad %></td>
+          <td align="right"><%= concepto.cantidad %></td>
+        <td align="right"><%= concepto.unidad %></td>
           <td><%= concepto.descripcion %></td>
           <td align="right"><%= number_to_currency(concepto.valorUnitario) %></td>
           <td align="right"><%= number_to_currency(concepto.importe) %></td>
         </tr>
-	  
-	  <% end %>
+    
+    <% end %>
       
-	  <tr>
-        <td width="400">CIENTO SETENTA Y CUATRO PESOS MEXICANOS 00/100 MXN</td>
-        <td colspan="2" class="text-right">Subtotal:</td>
-        <td align="right" colspan="2"><%= number_to_currency(@comprobante.subTotal) %></td>
+    <tr>
+        <td colspan="4" class="text-right"><strong>Subtotal</strong></td>
+        <td align="right"><%= number_to_currency(@comprobante.subTotal) %></td>
       </tr>
       <tr>
-        <td colspan="3" class="text-right no-border">Descuento:</td>
-        <td align="right" colspan="2"><%= number_to_currency(@comprobante.xml_obj.descuento) %></td>
+        <td colspan="4" class="text-right no-border"><strong>Descuento</strong></td>
+        <td align="right"><%= number_to_currency(@comprobante.xml_obj.descuento) %></td>
       </tr>
       <tr>
-        <td colspan="3" class="text-right no-border">IVA:</td>
-        <td align="right" colspan="2"><%= number_to_currency(@comprobante.xml_obj.totalImpuestosTrasladados) %></td>
+        <td colspan="4" class="text-right no-border"><strong>Impuestos Trasladados</strong></td>
+        <td align="right"><%= number_to_currency(@comprobante.xml_obj.totalImpuestosTrasladados) %></td>
       </tr>
       <!--
-	  <tr>
+    <tr>
         <td colspan="4" class="text-right no-border"><strong>IEPS</strong></td>
         <td align="right">???</td>
       </tr>
-	  -->
+    -->
       <tr>
-        <td colspan="3" class="text-right no-border">Retención IVA:</td>
-        <td align="right" colspan="2"><%= number_to_currency(@comprobante.xml_obj.totalImpuestosRetenidos) %></td>
+        <td colspan="4" class="text-right no-border"><strong>Impuestos Retenidos</strong></td>
+        <td align="right"><%= number_to_currency(@comprobante.xml_obj.totalImpuestosRetenidos) %></td>
       </tr>
-	  <!--
+    <!--
       <tr>
         <td colspan="4" class="text-right no-border"><strong>ISR</strong></td>
         <td align="right">???</td>
       </tr>
-	  -->
+    -->
       <tr>
-        <td colspan="3" class="text-right no-border">Total:</td>
-        <td align="right" colspan="2"><strong><%= number_to_currency(@comprobante.total) %></strong></td>
+        <td colspan="4" class="text-right no-border"><strong>Total</strong></td>
+        <td align="right"><strong><%= number_to_currency(@comprobante.total) %></strong></td>
       </tr>
     </tbody>
   </table>
-	<div class="well m-t">
-		<div class="row">
-			<div class="col-xs-8">
-        <p>
-          TIPO DE CAMBIO: <%= number_to_currency(@comprobante.xml_obj.tipoCambio) %>
+  <div class="well m-t">
+    <div class="row">
+      <div class="col-xs-12">
+        <%= image_tag cbb_url(format: :png, id: @comprobante.id), height: '200', width: '200' %>
+        <br><br>
+        <strong>Cadena Original del Complemento de Certificacion:</strong>
+        <p style="word-wrap: break-word;">
+          <%= @comprobante.xml_obj.timbre.cadena_original %>
         </p>
-        <strong>FORMA DE PAGO</strong><br>
-        <p>
-          <%= @comprobante.formaDePago %><br>
-          ESTE COMPROBANTE ES UNA REPRESENTACION IMPRESA DE UN CFDI
+        <strong>Sello Digital del CFDi:</strong><br>
+        <p style="word-wrap: break-word;">
+          <%= @comprobante.sello %>
         </p>
-				<strong>Sello Digital del CFDi:</strong><br>
-				<p style="word-wrap: break-word;">
-					<%= @comprobante.sello %>
-				</p>
-				<strong>Sello Digital del SAT:</strong><br>
-				<p  style="word-wrap: break-word;">
-					<%= @comprobante.TimbreFiscalDigital.selloSAT %>
-				</p>
-				<br>
-				<strong>Cadena Original del Complemento de Certificacion:</strong>
-				<p style="word-wrap: break-word;">
-					<%= @comprobante.xml_obj.timbre.cadena_original %>
-				</p>
-			</div>
-      <div clas="col-xs-4">
-				<%= image_tag cbb_url(format: :png, id: @comprobante.id), height: '200', width: '200', style: 'float:right;' %>
+        <strong>Sello Digital del SAT:</strong><br>
+        <p  style="word-wrap: break-word;">
+          <%= @comprobante.TimbreFiscalDigital.selloSAT %>
+        </p>
       </div>
-		</div>
-	</div>
-	<strong>NOTA: Esta vista no substituye la representación impresa original del comprobante.</strong>
+    </div>
+  </div>
+  <strong>NOTA: Esta vista no substituye la representación impresa original del comprobante.</strong>
 </section>
 
 <!-- /Comprobante -->
@@ -193,45 +193,45 @@
 <% content_for :specific_js do %>
 
 <script type="text/javascript" charset="utf-8">
-	
-	$('#MyPillbox').on('added', function( event, data ) {
-		
-		var formData = new FormData();
-		formData.append('tag', data);
-		formData.append('id', '<%= @comprobante.id %>');
-		var xhr = new XMLHttpRequest();
-		xhr.open('POST', '<%= add_tag_url %>');
-		xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-		xhr.onload = function () {
-		  if (xhr.status === 200) {
-			  // do nothing
-		  } else {
-		    alert('Error al agregar tag.');
-		  }
-		};
-		
-		xhr.send(formData);
-	});
-	
-	$('#MyPillbox').on('removed', function( event, data ) {
-		
-		var formData = new FormData();
-		formData.append('tag', data.text);
-		formData.append('id', '<%= @comprobante.id %>');
-		var xhr = new XMLHttpRequest();
-		xhr.open('POST', '<%= remove_tag_url %>');
-		xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-		xhr.onload = function () {
-		  if (xhr.status === 200) {
-			  // do nothing
-		  } else {
-		    alert('Error al eliminar tag.');
-		  }
-		};
-		
-		xhr.send(formData);
-	});
-	
+  
+  $('#MyPillbox').on('added', function( event, data ) {
+    
+    var formData = new FormData();
+    formData.append('tag', data);
+    formData.append('id', '<%= @comprobante.id %>');
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '<%= add_tag_url %>');
+    xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        // do nothing
+      } else {
+        alert('Error al agregar tag.');
+      }
+    };
+    
+    xhr.send(formData);
+  });
+  
+  $('#MyPillbox').on('removed', function( event, data ) {
+    
+    var formData = new FormData();
+    formData.append('tag', data.text);
+    formData.append('id', '<%= @comprobante.id %>');
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '<%= remove_tag_url %>');
+    xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        // do nothing
+      } else {
+        alert('Error al eliminar tag.');
+      }
+    };
+    
+    xhr.send(formData);
+  });
+  
 </script>
 
 <% end %>
