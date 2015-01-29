@@ -2,10 +2,10 @@
 <header class="header b-b b-light hidden-print">
   <button class="btn btn-sm btn-info dropdown-toggle pull-right" data-toggle="dropdown">Acciones <span class="caret"></span></button>
   <ul class="dropdown-menu pull-right">
-    <li><a onClick="window.print();">Imprimir</a></li>
+    <li><a onClick="window.print();" href="javascript:void(0);">Imprimir</a></li>
     <li><%= link_to 'Descargar XML', @comprobante.xml.url(:original, false) %></li>
-    <li><a href="#">Generar PDF</a></li>
-  <li><a href="#" class='btn-warning'>Eliminar</a></li>
+    <li><a id="gpdf" href="javascript:void(0);">Generar PDF</a></li>
+    <li><a href="<%= eliminar_url(:id=>@comprobante.id) %>" class='btn-warning' data-confirm="Are you sure?">Eliminar</a></li>
   </ul>
   <p>Comprobante <%= @comprobante.to_s %></p>
 </header>
@@ -13,7 +13,7 @@
 
 <!-- Comprobante -->
 
-<section class="scrollable wrapper">
+<section class="scrollable wrapper" id="html_print">
 
   <% if @warnings.present? %>
   <!-- Tiene Advertencias -->
@@ -190,10 +190,21 @@
 
 <!-- /Comprobante -->
 
+<%= render 'pdf' %>
 <% content_for :specific_js do %>
 
 <script type="text/javascript" charset="utf-8">
-  
+  $(document).ready(function(){
+    $("#html_pdf").hide();
+    $("#html_print").show();
+    $("#gpdf").click(function(){
+      $("#html_print").hide();
+      $("#html_pdf").show();
+      window.print();
+      $("#html_pdf").hide();
+      $("#html_print").show();
+    });  
+  });
   $('#MyPillbox').on('added', function( event, data ) {
     
     var formData = new FormData();
