@@ -1,5 +1,5 @@
 <!-- Comprobante -->
-<section class="scrollable wrapper" id="html_pdf">
+<section class="scrollable wrapper" id="html_pdf" style="display:none;top:0;padding-top:0;">
   <div class="row">
     <div class="col-xs-2">
       <%= image_tag @user.logo.url(:medium) %> 
@@ -56,8 +56,8 @@
   <table class="table">
     <thead>
       <tr>
-        <th width="20">CANT.</th>
-		    <th>UNIDAD DE MEDIA</th>
+        <th width="60">CANT.</th>
+		    <th width="60">UNIDAD DE MEDIA</th>
         <th>DESCRIPCION</th>
         <th width="140" class='align_right'>PRECIO</th>
         <th width="90" class='align_right'>TOTAL</th>
