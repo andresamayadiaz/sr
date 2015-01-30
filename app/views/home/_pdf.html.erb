@@ -1,5 +1,5 @@
 <!-- Comprobante -->
-<section class="scrollable wrapper" id="html_pdf" style="display:none;top:0;padding-top:0;">
+<section class="scrollable wrapper" id="html_pdf">
   <div class="row">
     <div class="col-xs-2">
       <%= image_tag @user.logo.url(:medium) %> 
@@ -17,7 +17,7 @@
 	  
     </div>
     <div class="col-xs-4 text-right">
-        <table class="table text-center" style="font-size:9px;" id="comprobante_table_detail">
+        <table class="table text-center" style="font-size:7px;" id="comprobante_table_detail">
           <tr><td>FACTURA</td></tr>
           <tr><td><%= @comprobante.serie + " " + @comprobante.folio %></td></tr>
           <tr><td>METODO DE PAGO / N. DE CUENTA</td></tr>
@@ -51,13 +51,12 @@
       </div>
     </div>
   </div>
-  
-  <div class="line"></div>
-  <table class="table">
+
+  <table class="table" id="comprobante_table_bottom">
     <thead>
       <tr>
-        <th width="60">CANT.</th>
-		    <th width="60">UNIDAD DE MEDIA</th>
+        <th width="5%">CANT.</th>
+		    <th width="20%">UNIDAD DE MEDIA</th>
         <th>DESCRIPCION</th>
         <th width="140" class='align_right'>PRECIO</th>
         <th width="90" class='align_right'>TOTAL</th>
@@ -78,8 +77,7 @@
 	  <% end %>
       
 	  <tr>
-        <td width="400">CIENTO SETENTA Y CUATRO PESOS MEXICANOS 00/100 MXN</td>
-        <td colspan="2" class="text-right">Subtotal:</td>
+        <td colspan="3" class="">CIENTO SETENTA Y CUATRO PESOS MEXICANOS 00/100 MXN <span style="float:right;">Subtotal:</span></td>
         <td align="right" colspan="2"><%= number_to_currency(@comprobante.subTotal) %></td>
       </tr>
       <tr>
@@ -130,6 +128,5 @@
       </div>
 		</div>
 	</div>
-	<strong>NOTA: Esta vista no substituye la representación impresa original del comprobante.</strong>
 </section>
 <!-- /Comprobante -->
