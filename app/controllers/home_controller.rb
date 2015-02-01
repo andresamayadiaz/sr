@@ -3,9 +3,14 @@
 
 class HomeController < ApplicationController
   before_filter :authenticate_user!
-  before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb, :eliminar]
+  before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb, :eliminar, :download_xml]
   before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas, :view_single_notification, :buscar_de_alertas, :upgrade, :downgrade]
   before_filter :set_sort
+
+  def download_xml
+    send_file @comprobante.xml.path,
+            :type => 'text/xml; charset=UTF-8;' 
+  end
  
   def index
     
