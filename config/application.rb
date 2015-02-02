@@ -23,6 +23,9 @@ module Soyreceptor
     # Add Fonts Folder to Assets
     config.assets.paths << "#{Rails.root}/app/assets/fonts"
     config.assets.precompile += %w(.svg .eot .woff .ttf)
+
+    config.assets.paths << "#{Rails.root}/public"
+    config.assets.precompile += [/.*\.png/]
     
     config.autoload_paths += %W(#{config.root}/lib)
     

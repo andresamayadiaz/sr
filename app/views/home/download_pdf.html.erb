@@ -124,7 +124,7 @@
 				</p>
 			</div>
       <div clas="col-xs-4">
-				<%#= wicked_pdf_image_tag cbb_url(format: :png, id: @comprobante.id), height: '200', width: '200', style: 'float:right;' %>
+				<%= wicked_pdf_image_tag "/#{@comprobante.id.to_s}.png", height: '200', width: '200', style: 'float:right;' %>
       </div>
 		</div>
 	</div>

@@ -37,6 +37,14 @@ class HomeController < ApplicationController
     @user = current_user
     @warnings = @comprobante.notifications.warnings
     @errors = @comprobante.notifications.errors
+    
+    txt = @comprobante.xml_obj.timbre.cadena_original
+    qrcode = RQRCode::QRCode.new(txt, :size => 10, :level => :l, :unit => 10)
+    svg    = RQRCode::Renderers::SVG::render(qrcode)
+    image = MiniMagick::Image.read(svg) { |i| i.format "svg" }
+    image.format "png"
+    image.write(Rails.root.join('public',"#{@comprobante.id.to_s}.png"))
+
     render layout: "comprobante"
     
   end
