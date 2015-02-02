@@ -3,13 +3,21 @@
 
 class HomeController < ApplicationController
   before_filter :authenticate_user!
-  before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb, :eliminar, :download_xml]
+  before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb, :eliminar, :download_xml, :download_pdf]
   before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas, :view_single_notification, :buscar_de_alertas, :upgrade, :downgrade]
   before_filter :set_sort
 
   def download_xml
     send_file @comprobante.xml.path,
             :type => 'text/xml; charset=UTF-8;' 
+  end
+
+  def download_pdf
+    @user = current_user
+    @warnings = @comprobante.notifications.warnings
+    @errors = @comprobante.notifications.errors
+    pdf = render_to_string :pdf => "PDF_SoyReceptor", :template => "home/download_pdf.html.erb", :encoding => "UTF-8", :layout=>'pdf'
+    send_data pdf
   end
  
   def index
@@ -42,15 +50,13 @@ class HomeController < ApplicationController
   end
   
   def cbb
-    
     txt = @comprobante.xml_obj.timbre.cadena_original
-    
     respond_to do |format|
       format.png  { render :qrcode => txt, :size => 10, :level => :l, :unit => 10 }
     end
     
   end
-  
+ 
   def tags
     
     @user = current_user

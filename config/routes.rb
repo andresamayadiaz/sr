@@ -24,6 +24,7 @@ Soyreceptor::Application.routes.draw do
       get 'new_payment', to: 'home#new_payment'
       get 'eliminar', to: 'home#eliminar'
       get 'comprobante/xml/:id', to: 'home#download_xml'
+      get 'comprobante/pdf/:id', to: 'home#download_pdf'
     end
     
     unauthenticated do
