@@ -2,7 +2,7 @@ Soyreceptor::Application.routes.draw do
   devise_for :users, :controllers => {:registrations => "registrations"}
 
   match 'webhook' => 'webhook#conekta', :via => [:post] 
- 
+   
   devise_scope :user do
     authenticated :user do
       root 'home#index', as: :authenticated_root
@@ -22,6 +22,9 @@ Soyreceptor::Application.routes.draw do
       get 'upgrade', to: 'home#upgrade'
       get 'downgrade', to: 'home#downgrade'
       get 'new_payment', to: 'home#new_payment'
+      get 'eliminar', to: 'home#eliminar'
+      get 'comprobante/xml/:id', to: 'home#download_xml'
+      get 'comprobante/pdf/:id', to: 'home#download_pdf'
     end
     
     unauthenticated do

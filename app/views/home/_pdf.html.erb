@@ -1,0 +1,132 @@
+<!-- Comprobante -->
+<section class="scrollable wrapper" id="html_pdf">
+  <div class="row">
+    <div class="col-xs-2">
+      <%= image_tag @user.logo.url(:medium) %> 
+    </div>
+    <div class="col-xs-6">
+      <h4><strong><%= @comprobante.emisor.nombre %></strong></h4>
+      <h4><%= @comprobante.emisor.rfc %></h4>
+	  <p>
+		  <%= raw @comprobante.emisor.direccion_html %>
+		  <br />
+	      <% if !@comprobante.lugarExpedicion.blank? %>
+		  	<strong>Expedido En:</strong> <%= @comprobante.lugarExpedicion %>
+		 <% end %>
+      </p>
+	  
+    </div>
+    <div class="col-xs-4 text-right">
+        <table class="table text-center" style="font-size:7px;" id="comprobante_table_detail">
+          <tr><td>FACTURA</td></tr>
+          <tr><td><%= @comprobante.serie + " " + @comprobante.folio %></td></tr>
+          <tr><td>METODO DE PAGO / N. DE CUENTA</td></tr>
+          <tr><td><%= @comprobante.metodoDePago %></td></tr>
+          <tr><td>CONDICIONES DE PAGO</td></tr>
+          <tr><td><%= @comprobante.tipoDeComprobante %></td></tr>
+          <tr><td>FECHA CREACION / FECHA CERTIFICACION</td></tr>
+          <tr><td><%= "#{@comprobante.fecha} / #{@comprobante.TimbreFiscalDigital.fechaTimbrado}"%></td></tr>
+          <tr><td>FOLIO FISCAL</td></tr>
+          <tr><td><%= @comprobante.TimbreFiscalDigital.uuid%></td></tr>
+          <tr><td>NUMERO CERTIFICADO</td></tr>
+          <tr><td><%= @comprobante.noCertificado %></td></tr>
+          <tr><td>NUMERO CERTIFICADO DEL SAT</td></tr>
+          <tr><td><%= @comprobante.TimbreFiscalDigital.noCertificadoSAT %></td></tr>
+          <tr><td>LUGAR DE EXPEDICION</td></tr>
+          <tr><td><%= @comprobante.lugarExpedicion %></td></tr>
+        </table>
+    </div>
+  </div>
+  <div class="well m-t">
+    <div class="row">
+      <div class="col-xs-12">
+        <table border="0">
+          <tr><td><strong>Nombre:</strong></td><td>&nbsp;<%= @comprobante.receptor.nombre %></td></tr>
+		      <tr><td><strong>RFC:</strong></td><td>&nbsp;<%= @comprobante.receptor.rfc %></td></tr>
+          <tr>
+            <td><strong>Dirección:</strong></td>
+            <td>&nbsp;<%= @comprobante.receptor.direccion_html %></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <table class="table" id="comprobante_table_bottom">
+    <thead>
+      <tr>
+        <th width="5%">CANT.</th>
+		    <th width="20%">UNIDAD DE MEDIA</th>
+        <th>DESCRIPCION</th>
+        <th width="140" class='align_right'>PRECIO</th>
+        <th width="90" class='align_right'>TOTAL</th>
+      </tr>
+    </thead>
+    <tbody>
+	  
+	  <% @comprobante.xml_obj.conceptos.each do |concepto| %>
+	  
+        <tr>
+          <td><%= concepto.cantidad %></td>
+  		    <td><%= concepto.unidad %></td>
+          <td><%= concepto.descripcion %></td>
+          <td align="right"><%= number_to_currency(concepto.valorUnitario) %></td>
+          <td align="right"><%= number_to_currency(concepto.importe) %></td>
+        </tr>
+	  
+	  <% end %>
+      
+	  <tr>
+        <td colspan="3" class="">CIENTO SETENTA Y CUATRO PESOS MEXICANOS 00/100 MXN <span style="float:right;">Subtotal:</span></td>
+        <td align="right" colspan="2"><%= number_to_currency(@comprobante.subTotal) %></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="text-right no-border">Descuento:</td>
+        <td align="right" colspan="2"><%= number_to_currency(@comprobante.xml_obj.descuento) %></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="text-right no-border">IVA:</td>
+        <td align="right" colspan="2"><%= number_to_currency(@comprobante.xml_obj.totalImpuestosTrasladados) %></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="text-right no-border">Retención IVA:</td>
+        <td align="right" colspan="2"><%= number_to_currency(@comprobante.xml_obj.totalImpuestosRetenidos) %></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="text-right no-border">Total:</td>
+        <td align="right" colspan="2"><strong><%= number_to_currency(@comprobante.total) %></strong></td>
+      </tr>
+    </tbody>
+  </table>
+	<div class="well m-t">
+		<div class="row">
+			<div class="col-xs-8">
+        <p>
+          TIPO DE CAMBIO: <%= number_to_currency(@comprobante.xml_obj.tipoCambio) %>
+        </p>
+        <strong>FORMA DE PAGO</strong><br>
+        <p>
+          <%= @comprobante.formaDePago %><br>
+          ESTE COMPROBANTE ES UNA REPRESENTACION IMPRESA DE UN CFDI
+        </p>
+				<strong>Sello Digital del CFDi:</strong><br>
+				<p style="word-wrap: break-word;">
+					<%= @comprobante.sello %>
+				</p>
+				<strong>Sello Digital del SAT:</strong><br>
+				<p  style="word-wrap: break-word;">
+					<%= @comprobante.TimbreFiscalDigital.selloSAT %>
+				</p>
+				<br>
+				<strong>Cadena Original del Complemento de Certificacion:</strong>
+				<p style="word-wrap: break-word;">
+					<%= @comprobante.xml_obj.timbre.cadena_original %>
+				</p>
+			</div>
+      <div clas="col-xs-4">
+				<%= image_tag cbb_url(format: :png, id: @comprobante.id), height: '200', width: '200', style: 'float:right;' %>
+      </div>
+		</div>
+	</div>
+</section>
+<!-- /Comprobante -->

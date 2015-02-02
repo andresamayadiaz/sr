@@ -14,7 +14,4 @@ module ApplicationHelper
     "<img src='data:image/png;base64,#{image_data}' />".html_safe
   end
   
-  def is_active
-  end
-
 end
