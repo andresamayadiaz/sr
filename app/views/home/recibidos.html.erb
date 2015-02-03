@@ -20,33 +20,36 @@
     Listado de Comprobantes Recibidos por la Empresa
   </header>
   <div class="row wrapper">
+	<%= form_tag recibidos_path, :method => 'get' do |f| %>
+		<%= hidden_field_tag 'page', params[:page]  %>
     <div class="col-sm-5 m-b-xs">
       <span class="help-block m-b-none">Desde</span>
-	  <input class="input-sm input-s datepicker-input form-control" size="10" type="text" value="<%= @from %>" data-date-format="yyyy-mm-dd" id="date_from" >
+	  <input class="input-sm input-s datepicker-input form-control" name="from" size="10" type="text" value="<%= @from %>" data-date-format="yyyy-mm-dd" id="date_from" >
 	  <span class="help-block m-b-none">Hasta</span>
-	  <input class="input-sm input-s datepicker-input form-control" size="10" type="text" value="<%= @to %>" data-date-format="yyyy-mm-dd"  id="date_to" >
+	  <input class="input-sm input-s datepicker-input form-control" name="to" size="10" type="text" value="<%= @to %>" data-date-format="yyyy-mm-dd"  id="date_to" >
     </div>
     <div class="col-sm-4 m-b-xs">
       <div class="btn-group" data-toggle="buttons">
-        <label class="btn btn-sm btn-default">
+        <label class="btn btn-sm btn-default <%= 'active' if params[:options]=='0' %>">
           <input type="radio" name="options" id="option_dia" onChange="set_dia();"> Dia
         </label>
-        <label class="btn btn-sm btn-default">
+        <label class="btn btn-sm btn-default <%= 'active' if params[:options]=='1' %>">
           <input type="radio" name="options" id="option_semana" onChange="set_semana();"> Semana
         </label>
-        <label class="btn btn-sm btn-default active">
+        <label class="btn btn-sm btn-default <%= 'active' if params[:options]=='2' %>">
           <input type="radio" name="options" id="option_mes" onChange="set_mes();"> Mes
         </label>
       </div>
     </div>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="input-sm form-control" placeholder="Buscar" data-toggle="tooltip" data-placement="top" title="RFC, Razon Social, UUID, ...">
+        <input type="text" class="input-sm form-control" placeholder="Buscar" data-toggle="tooltip" data-placement="top" title="RFC, Razon Social, UUID, ..." name="q" value="<%= params[:q] %>">
         <span class="input-group-btn">
-          <button class="btn btn-sm btn-default" type="button">Buscar</button>
+          <%= button_tag "Buscar", class: 'btn btn-sm btn-default' %>
         </span>
       </div>
     </div>
+	<% end %>
   </div>
   <div class="table-responsive">
     <table class="table table-striped b-t b-light">
