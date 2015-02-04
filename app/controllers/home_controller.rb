@@ -13,7 +13,6 @@ class HomeController < ApplicationController
   end
 
   def download_pdf
-    @user = current_user
     @warnings = @comprobante.notifications.warnings
     @errors = @comprobante.notifications.errors
     pdf = render_to_string :pdf => "PDF_SoyReceptor", :template => "home/download_pdf.html.erb", :encoding => "UTF-8", :layout=>'pdf'
@@ -25,9 +24,7 @@ class HomeController < ApplicationController
   end
  
   def index
-    
-    @user = current_user
-    @perfil = @user.perfil
+    @perfil = current_user.perfil
     @top_10_clients = Comprobante.top_10_clients(current_user.id)
     @top_10_suppliers = Comprobante.top_10_suppliers(current_user.id)
     @sent_invoices = Comprobante.sent_invoices(current_user.id)
@@ -37,8 +34,6 @@ class HomeController < ApplicationController
   end
   
   def comprobante
-    
-    @user = current_user
     @warnings = @comprobante.notifications.warnings
     @errors = @comprobante.notifications.errors
     
@@ -70,9 +65,6 @@ class HomeController < ApplicationController
   end
  
   def tags
-    
-    @user = current_user
-    
     logger.debug "TAGS: "
     logger.debug params[:tags]
     
@@ -102,7 +94,7 @@ class HomeController < ApplicationController
       @q = '%%'
     end
     
-    @emitidos = @user.comprobantes.joins(:receptor).where("emitido = ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q)
+    @emitidos = current_user.comprobantes.joins(:receptor).where("emitido = ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q)
     @emitidos = Sorter.sort_by_fecha(@sort,@emitidos)
     @emitidos = Kaminari.paginate_array(@emitidos).page params[:page]
   end
@@ -115,7 +107,7 @@ class HomeController < ApplicationController
       @q = '%%'
     end
     
-    @recibidos = @user.comprobantes.joins(:emisor).where("recibido = ? AND fecha BETWEEN ? AND ? AND (emisors.rfc LIKE ? OR emisors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q)
+    @recibidos = current_user.comprobantes.joins(:emisor).where("recibido = ? AND fecha BETWEEN ? AND ? AND (emisors.rfc LIKE ? OR emisors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q)
     @recibidos = Sorter.sort_by_fecha(@sort,@recibidos)
     @recibidos = Kaminari.paginate_array(@recibidos).page params[:page]
   end
@@ -128,7 +120,7 @@ class HomeController < ApplicationController
       @q = '%%'
     end
     
-    @otros = @user.comprobantes.joins(:receptor).where("emitido = ? AND recibido= ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", false, false, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q) 
+    @otros = current_user.comprobantes.joins(:receptor).where("emitido = ? AND recibido= ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", false, false, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q) 
     @otros = Sorter.sort_by_fecha(@sort,@otros)
     @otros = Kaminari.paginate_array(@otros).page params[:page]
   end
@@ -163,10 +155,9 @@ class HomeController < ApplicationController
   
   def upload_comprobante  
     if current_user.comprobantes.count<current_user.plan.max_uploaded
-      @user = current_user
       @comprobante = Comprobante.new
       @comprobante.xml = params[:file]
-      @comprobante.user = @user
+      @comprobante.user = current_user
       
       begin
         if @comprobante.save
@@ -193,16 +184,13 @@ class HomeController < ApplicationController
   end
 
   def buscar
-        
-    @user = current_user
-    
     if params[:q]
       @q = '%' + params[:q] + '%'
     else
       @q = '%%'
     end
     
-    @buscar = @user.comprobantes.joins(:receptor,:emisor,:TimbreFiscalDigital).where("serie LIKE ? OR folio LIKE? OR receptors.rfc LIKE ? OR receptors.nombre LIKE ? OR emisors.rfc LIKE ? OR emisors.nombre LIKE ? OR timbre_fiscal_digitals.uuid LIKE ?", @q, @q, @q, @q, @q, @q, @q)
+    @buscar = current_user.comprobantes.joins(:receptor,:emisor,:TimbreFiscalDigital).where("serie LIKE ? OR folio LIKE? OR receptors.rfc LIKE ? OR receptors.nombre LIKE ? OR emisors.rfc LIKE ? OR emisors.nombre LIKE ? OR timbre_fiscal_digitals.uuid LIKE ?", @q, @q, @q, @q, @q, @q, @q)
     @buscar = Sorter.sort_by_fecha(@sort,@buscar)
     @buscar = Kaminari.paginate_array(@buscar).page params[:page]
   end
@@ -247,7 +235,6 @@ class HomeController < ApplicationController
   end
 
   def new_payment
-    @user = current_user
     @new_plan = Plan.find(params[:plan_id])
     if @new_plan.price==0
       current_user.update_attribute('plan_id',params[:plan_id])
@@ -265,9 +252,6 @@ class HomeController < ApplicationController
  
   private
     def set_vars
-      
-      @user = current_user
-    
       if params[:from] and params[:to]
         @from = params[:from]
         @to = params[:to]

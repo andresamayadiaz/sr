@@ -24,14 +24,14 @@
         <div class="form-group">
           <label class="col-lg-2 control-label">R.F.C.</label>
           <div class="col-lg-10">
-            <input type="text" class="form-control" disabled="disabled" placeholder="RFC" value="<%= @user.rfc %>">
+            <input type="text" class="form-control" disabled="disabled" placeholder="RFC" value="<%= current_user.rfc %>">
             <span class="help-block m-b-none">Si desea modificar su R.F.C. favor de contactarnos.</span>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label">Usuario</label>
           <div class="col-lg-10">
-            <input type="text" class="form-control" disabled="disabled" placeholder="RFC" value="<%= @user.email %>">
+            <input type="text" class="form-control" disabled="disabled" placeholder="RFC" value="<%= current_user.email %>">
             <span class="help-block m-b-none">Si desea modificar su usuario favor de contactarnos.</span>
           </div>
         </div>
@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="col-sm-4">
-			<%= image_tag @user.logo.url(:medium), :id => "logo" %>
+			<%= image_tag current_user.logo.url(:medium), :id => "logo" %>
           </div>
         </div>
 	</form>
@@ -166,7 +166,7 @@
   <section class="panel panel-default">
     <header class="panel-heading font-bold">Modificar Password</header>
     <div class="panel-body">
-      <%= form_for(@user, :url => update_password_user_path, :html => {:class => 'bs-example form-horizontal'} ) do |f| %>
+      <%= form_for(current_user, :url => update_password_user_path, :html => {:class => 'bs-example form-horizontal'} ) do |f| %>
         <div class="form-group">
           <label class="col-lg-2 control-label">Password Actual</label>
           <div class="col-lg-10">

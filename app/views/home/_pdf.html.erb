@@ -2,7 +2,7 @@
 <section class="scrollable wrapper" id="html_pdf">
   <div class="row">
     <div class="col-xs-2">
-      <%= image_tag @user.logo.url(:medium) %> 
+      <%= image_tag current_user.logo.url(:medium) %> 
     </div>
     <div class="col-xs-6">
       <h4><strong><%= @comprobante.emisor.nombre %></strong></h4>

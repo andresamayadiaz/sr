@@ -1,4 +1,4 @@
-<%= form_for(@user,:url => register_payment_user_path, :html => { :role => 'form', :class => 'panel-body wrapper-lg', :id=>'new_payment'}) do |f| %>
+<%= form_for(current_user,:url => register_payment_user_path, :html => { :role => 'form', :class => 'panel-body wrapper-lg', :id=>'new_payment'}) do |f| %>
 		<span class="card-errors"></span>
         <%= f.hidden_field :plan_id,:value=>params[:plan_id] %>      
         <div class="form-group">

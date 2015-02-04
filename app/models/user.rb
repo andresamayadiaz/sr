@@ -32,7 +32,6 @@ class User < ActiveRecord::Base
   end
   
   def change_conekta_plan(params)
-    byebug
     plan = Conekta::Plan.find(params[:plan_id])
     if self.customer_id.blank? #create new Conekta objects
       customer = Conekta::Customer.create({
