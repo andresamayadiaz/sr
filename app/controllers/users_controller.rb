@@ -8,15 +8,13 @@ class UsersController < ApplicationController
   
   def perfil
       
-    @user = User.find(current_user.id)
-    @perfil = @user.perfil
+    @perfil = current_user.perfil
 
   end
   
   def update_notificaciones
     
-    @user = User.find(current_user.id)
-    @perfil = @user.perfil
+    @perfil = current_user.perfil
     
     if @perfil.update(notificaciones_params)
       flash[:success] = "Notificaciones Actualizadas Exitosamente."
@@ -29,9 +27,7 @@ class UsersController < ApplicationController
   end
   
   def update_generales
-    
-    @user = User.find(current_user.id)
-    @perfil = @user.perfil
+    @perfil = current_user.perfil
     
     if @perfil.update(generales_params)
       flash[:success] = "Perfil Actualizado Exitosamente."
@@ -45,7 +41,7 @@ class UsersController < ApplicationController
   
   def update_password
     
-    @user = User.find(current_user.id)
+    @user = current_user
     
     if @user.update_with_password(user_params)
       # Sign in the user by passing validation in case his password changed
@@ -61,7 +57,7 @@ class UsersController < ApplicationController
   
   def update_logo
     
-    @user = User.find(current_user.id)
+    @user = current_user
     
     @user.logo = params[:file]
     @user.save
