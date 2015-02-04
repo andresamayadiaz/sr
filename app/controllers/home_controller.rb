@@ -67,7 +67,7 @@ class HomeController < ApplicationController
   def tags
     logger.debug "TAGS: "
     logger.debug params[:tags]
-    
+      
     if params[:tags].blank?
       @tags = []
     else
@@ -75,6 +75,7 @@ class HomeController < ApplicationController
     end
     
     @comprobantes = Comprobante.tagged_with(@tags, :wild => true)
+    @comprobantes = @comprobantes.select{|c|c.user_id==current_user.id}
     @comprobantes = Sorter.sort_by_fecha(@sort,@comprobantes)
     @comprobantes = Kaminari.paginate_array(@comprobantes).page params[:page]
     # :match_all => true, 
