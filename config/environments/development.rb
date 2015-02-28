@@ -11,7 +11,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
-
+  
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
@@ -45,8 +45,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
   # Send email in development mode?
   config.action_mailer.perform_deliveries = false
-
-
+  
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.

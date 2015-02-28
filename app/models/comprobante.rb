@@ -8,7 +8,7 @@ class Comprobante < ActiveRecord::Base
   before_create :set_internal_uuid
   
   has_attached_file :xml,
-  :path => ":rails_root/public/system/:class/:attachment/:id_partition/:filename",
+  :path => ":class/:attachment/:id_partition/:filename",
   :url => "/comprobante/xml/:id"  
   #:url => "/system/:class/:attachment/:id_partition/:filename"
   # Tags

@@ -1,6 +1,21 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
+  
+  # PaperClip
+  config.paperclip_defaults {
+       :path => ":class/:attachment/:id_partition/:filename",
+       :storage => :fog,
+       :fog_credentials => {
+          :provider           => 'Rackspace',
+          :rackspace_username => ENV["RACKSPACE_USERNAME"],
+          :rackspace_api_key  => ENV["RACKSPACE_APIKEY"],
+          :persistent => false
+       },
+       :fog_directory => '',
+       :fog_public => true,
+       :fog_host => ENV["RACKSPACE_HOST"],
+  }
+  
   # Code is not reloaded between requests.
   config.cache_classes = true
 
