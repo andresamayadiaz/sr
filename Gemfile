@@ -32,6 +32,9 @@ group :development do
 end
 gem 'ultrahook'
 
+# Fog Cloud Files Rackspace
+gem 'fog'
+
 # Paginado
 gem 'kaminari'
 
