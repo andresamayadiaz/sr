@@ -12,9 +12,9 @@ Rails.application.configure do
           :rackspace_api_key  => ENV["RACKSPACE_APIKEY"],
           :persistent => false
        },
-       :fog_directory => '',
+       :fog_directory => 'soyreceptor',
        :fog_public => true,
-       #:fog_host => ENV["RACKSPACE_HOST"]
+       :fog_host => ENV["RACKSPACE_HOST"]
   })
   
   # Code is not reloaded between requests.
