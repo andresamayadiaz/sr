@@ -180,10 +180,12 @@ class Comprobante < ActiveRecord::Base
       
       logger.debug "=================== Comprobante.procesar ==================="
       logger.debug self.xml.queued_for_write[:original].path rescue "Path didn't exist"
+      logger.debug self.xml.to_json
       logger.debug "=================== /Comprobante.procesar ==================="
       
       begin
-        doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
+        #doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
+        doc = Nokogiri::XML( File.read(self.xml.path) )
         @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
         
         if @version == '3.2'
