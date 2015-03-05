@@ -90,7 +90,7 @@ class Comprobante < ActiveRecord::Base
       
       # TODO validar si ya cargo el objeto no volverlo a cargar cada que se mande llamar
       
-      doc = Nokogiri::XML( File.open(self.xml.url) )
+      doc = Nokogiri::XML( File.read(open(self.xml.url)) )
       @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
       
       if @version == '3.2'
@@ -186,13 +186,13 @@ class Comprobante < ActiveRecord::Base
       logger.debug "=================== Comprobante.procesar ==================="
       #logger.debug self.xml.queued_for_write[:original].path rescue "Path didn't exist"
       logger.debug "XML PATH: " + self.xml.path.to_s
-      logger.debug "XML URL: " + URI.parse(self.xml.url)
+      logger.debug "XML URL: " + self.xml.url
       logger.debug "=================== /Comprobante.procesar ==================="
       
       begin
         #doc = Nokogiri::XML( File.read(URI.parse(self.xml.url)) )
         #doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
-        doc = Nokogiri::XML( File.open(self.xml.url) )
+        doc = Nokogiri::XML( File.read(open(self.xml.url)) )
         @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
         
         if @version == '3.2'
