@@ -13,7 +13,7 @@ class Comprobante < ActiveRecord::Base
   # Tags
   acts_as_taggable
   
-  before_post_process :procesar
+  after_post_process :procesar
   after_create :generate_notifications
   validates_attachment :xml, :presence => true,
     :content_type => { :content_type => ["text/plain", "text/xml"] },
@@ -179,12 +179,13 @@ class Comprobante < ActiveRecord::Base
       
       logger.debug "=================== Comprobante.procesar ==================="
       logger.debug self.xml.queued_for_write[:original].path rescue "Path didn't exist"
-      logger.debug "XML FILE NAME: " + self.xml_file_name.to_s
+      logger.debug "XML PATH: " + self.xml.path.to_s
+      logger.debug "XML URL: " + self.xml.url.to_s
       logger.debug "=================== /Comprobante.procesar ==================="
       
       begin
+        doc = Nokogiri::XML( File.read(self.xml.path) )
         #doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
-        doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
         @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
         
         if @version == '3.2'
