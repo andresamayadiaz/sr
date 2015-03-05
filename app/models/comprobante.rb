@@ -90,7 +90,7 @@ class Comprobante < ActiveRecord::Base
       
       # TODO validar si ya cargo el objeto no volverlo a cargar cada que se mande llamar
       
-      doc = Nokogiri::XML( File.read(open(self.xml.url)) )
+      doc = Nokogiri::XML( File.read(open(self.xml.url).read()) )
       @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
       
       if @version == '3.2'
@@ -192,7 +192,7 @@ class Comprobante < ActiveRecord::Base
       begin
         #doc = Nokogiri::XML( File.read(URI.parse(self.xml.url)) )
         #doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
-        doc = Nokogiri::XML( File.read(open(self.xml.url)) )
+        doc = Nokogiri::XML( File.read(open(self.xml.url).read()) )
         @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
         
         if @version == '3.2'
