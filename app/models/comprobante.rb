@@ -14,7 +14,7 @@ class Comprobante < ActiveRecord::Base
   # Tags
   acts_as_taggable
   
-  after_post_process :procesar
+  before_post_process :procesar
   after_create :generate_notifications
   validates_attachment :xml, :presence => true,
     :content_type => { :content_type => ["text/plain", "text/xml"] },
