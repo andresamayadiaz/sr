@@ -163,9 +163,9 @@ class HomeController < ApplicationController
       
       begin
         if @comprobante.save
-      
+          
           # Procesar
-          #@comprobante.procesar
+          @comprobante.procesar
           
           # Save Default Tags
           @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.tipoDeComprobante), :on => :tags)
