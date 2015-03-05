@@ -16,7 +16,7 @@ class Comprobante < ActiveRecord::Base
   acts_as_taggable
   
   #after_post_process :procesar
-  before_save :procesar
+  after_create :procesar
   validates_attachment :xml, :presence => true,
     :content_type => { :content_type => ["text/plain", "text/xml"] },
     :size => { :in => 0..900.kilobytes }
@@ -163,10 +163,6 @@ class Comprobante < ActiveRecord::Base
     rec_amount
   end
   
-  def process2
-    self.procesar
-  end
-
   private
     
     # Generar un UUID interno al comprobante para uso futuro
