@@ -164,7 +164,7 @@ class Comprobante < ActiveRecord::Base
   end
   
   def process2
-    self.process
+    self.procesar
   end
 
   private
