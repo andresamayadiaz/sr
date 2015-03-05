@@ -16,7 +16,7 @@ class Comprobante < ActiveRecord::Base
   acts_as_taggable
   
   #after_post_process :procesar
-  after_save :procesar
+  after_create :procesar
   validates_attachment :xml, :presence => true,
     :content_type => { :content_type => ["text/plain", "text/xml"] },
     :size => { :in => 0..900.kilobytes }
