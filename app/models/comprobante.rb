@@ -7,8 +7,7 @@ class Comprobante < ActiveRecord::Base
   has_many :notifications, :dependent => :destroy
   before_create :set_internal_uuid
   
-  has_attached_file :xml,
-  :path => ":class/:attachment/:id_partition/:filename",
+  has_attached_file :xml, :path => ":class/:attachment/:id_partition/:filename"
   #:url => "/comprobante/xml/:id"  
   #:url => "/system/:class/:attachment/:id_partition/:filename"
   # Tags
