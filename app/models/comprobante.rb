@@ -9,7 +9,7 @@ class Comprobante < ActiveRecord::Base
   
   has_attached_file :xml,
   :path => ":class/:attachment/:id_partition/:filename",
-  :url => "/comprobante/xml/:id"  
+  #:url => "/comprobante/xml/:id"  
   #:url => "/system/:class/:attachment/:id_partition/:filename"
   # Tags
   acts_as_taggable
