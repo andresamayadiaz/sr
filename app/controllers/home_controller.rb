@@ -158,14 +158,14 @@ class HomeController < ApplicationController
     if current_user.comprobantes.count<current_user.plan.max_uploaded
       @comprobante = Comprobante.new
       @comprobante.xml = params[:file]
-      logger.debug "PARAMS XML PATH: " + params[:file].to_s
+      #logger.debug "PARAMS XML PATH: " + params[:file].to_s
       @comprobante.user = current_user
       
       begin
         if @comprobante.save
           
           # Procesar
-          @comprobante.procesar
+          @comprobante.process2
           
           # Save Default Tags
           @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.tipoDeComprobante), :on => :tags)

@@ -160,6 +160,10 @@ class Comprobante < ActiveRecord::Base
     end
     rec_amount
   end
+  
+  def process2
+    self.process
+  end
 
   private
     
@@ -180,11 +184,11 @@ class Comprobante < ActiveRecord::Base
       logger.debug "=================== Comprobante.procesar ==================="
       #logger.debug self.xml.queued_for_write[:original].path rescue "Path didn't exist"
       logger.debug "XML PATH: " + self.xml.path.to_s
-      logger.debug "XML URL: " + self.xml.url.to_s
+      logger.debug "XML URL: " + URI.parse(self.xml.url)
       logger.debug "=================== /Comprobante.procesar ==================="
       
       begin
-        doc = Nokogiri::XML( File.read(self.xml.url) )
+        doc = Nokogiri::XML( File.read(URI.parse(self.xml.url)) )
         #doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
         @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
         
