@@ -181,13 +181,13 @@ class Comprobante < ActiveRecord::Base
       
       logger.debug "=================== Comprobante.procesar ==================="
       #logger.debug self.xml.queued_for_write[:original].path rescue "Path didn't exist"
-      logger.debug "QUEUED XML URL: " + self.xml.queued_for_write[:original].url
+      logger.debug "QUEUED XML URL: " + self.xml.queued_for_write[:original].path
       logger.debug "XML URL: " + self.xml.url
       logger.debug "=================== /Comprobante.procesar ==================="
       
       begin
-        #doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
-        doc = Nokogiri::XML( open(self.xml.url).read() )
+        doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
+        #doc = Nokogiri::XML( open(self.xml.url).read() )
         @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
         
         if @version == '3.2'
