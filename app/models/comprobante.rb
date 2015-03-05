@@ -16,7 +16,7 @@ class Comprobante < ActiveRecord::Base
   acts_as_taggable
   
   #after_post_process :procesar
-  after_create :procesar
+  after_save :procesar
   validates_attachment :xml, :presence => true,
     :content_type => { :content_type => ["text/plain", "text/xml"] },
     :size => { :in => 0..900.kilobytes }
@@ -283,6 +283,7 @@ class Comprobante < ActiveRecord::Base
       
       # TODO generar notificacion de comprobante erroneo
       logger.warn "============ Archivo Invalido ============"
+      logger.debug "@@@ XML URL: " + self.xml.url
       logger.warn e.message
       logger.warn e.backtrace.inspect
       logger.warn "============ /Archivo Invalido ============"
