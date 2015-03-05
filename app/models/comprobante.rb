@@ -181,7 +181,7 @@ class Comprobante < ActiveRecord::Base
       
       logger.debug "=================== Comprobante.procesar ==================="
       #logger.debug self.xml.queued_for_write[:original].path rescue "Path didn't exist"
-      logger.debug "XML PATH: " + self.xml.path.to_s
+      logger.debug "QUEUED XML URL: " + self.xml.queued_for_write[:original].url
       logger.debug "XML URL: " + self.xml.url
       logger.debug "=================== /Comprobante.procesar ==================="
       
