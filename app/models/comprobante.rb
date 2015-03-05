@@ -190,7 +190,6 @@ class Comprobante < ActiveRecord::Base
       logger.debug "=================== /Comprobante.procesar ==================="
       
       begin
-        #doc = Nokogiri::XML( File.read(URI.parse(self.xml.url)) )
         #doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
         doc = Nokogiri::XML( open(self.xml.url).read() )
         @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
