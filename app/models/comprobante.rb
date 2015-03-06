@@ -277,7 +277,7 @@ class Comprobante < ActiveRecord::Base
           end
         end
         
-        self.generate_notifications
+        generate_notifications
     
     # Archivo No Compatible
     rescue Exception => e
