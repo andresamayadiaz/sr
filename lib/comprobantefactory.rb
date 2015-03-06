@@ -4,8 +4,6 @@ module COMPROBANTEFACTORY
   
   require 'nokogiri'
   require 'open-uri'
-  require 'rubygems'
-  require 'bundler/setup'
   require 'libxml'
   require 'libxslt'
   #require 'time'
