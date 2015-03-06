@@ -15,7 +15,7 @@ class Comprobante < ActiveRecord::Base
   # Tags
   acts_as_taggable
   
-  after_post_process :procesar
+  before_post_process :procesar
   #after_commit :procesar
   validates_attachment :xml, :presence => true,
     :content_type => { :content_type => ["text/plain", "text/xml"] },
@@ -180,15 +180,17 @@ class Comprobante < ActiveRecord::Base
       end
       
       logger.debug "=================== Comprobante.procesar ==================="
-      #logger.debug self.xml.queued_for_write[:original].path rescue "Path didn't exist"
-      logger.debug "QUEUED XML URL: " + self.xml.queued_for_write[:original].path
+      logger.debug "QUEUED XML URL: " + self.xml.queued_for_write[:original].path rescue "Path didn't exist"
       logger.debug "XML URL: " + self.xml.url
       logger.debug "=================== /Comprobante.procesar ==================="
       
       begin
         doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
+        
         #doc = Nokogiri::XML( open(self.xml.url).read() )
         @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
+        
+        logger.debug "====>>>>>> PAST NOKOGIRI READ VERSION: " + @version
         
         if @version == '3.2'
           
@@ -283,7 +285,8 @@ class Comprobante < ActiveRecord::Base
       
       # TODO generar notificacion de comprobante erroneo
       logger.warn "============ Archivo Invalido ============"
-      logger.debug "@@@ XML URL: " + self.xml.url
+      logger.debug "QUEUED XML URL: " + self.xml.queued_for_write[:original].path rescue "Path didn't exist"
+      logger.debug "XML URL: " + self.xml.url
       logger.warn e.message
       logger.warn e.backtrace.inspect
       logger.warn "============ /Archivo Invalido ============"
