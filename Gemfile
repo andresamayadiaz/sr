@@ -18,7 +18,7 @@ gem 'delayed_job_active_record'
 gem 'daemons'
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 # gem "paperclip", "~> 4.1"
-gem 'libxml-ruby', '>= 2.8.0'
+gem 'libxml-ruby', '>= 2.7.0'
 gem 'libxslt-ruby', '>= 1.1.1'
 gem 'nokogiri', '>= 1.6.6'
 gem 'conekta'
