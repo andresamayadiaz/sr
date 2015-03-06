@@ -1,8 +1,6 @@
 # aad mayo 2014
 #require 'comprobantefactory'
 #require 'tfd1'
-require 'rubygems'
-require 'bundler/setup'
 require 'libxslt'
 
 module COMPROBANTEFACTORY

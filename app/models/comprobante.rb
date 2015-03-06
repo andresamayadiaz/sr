@@ -1,4 +1,5 @@
 require 'open-uri'
+require ''
 
 class Comprobante < ActiveRecord::Base
   
@@ -15,7 +16,7 @@ class Comprobante < ActiveRecord::Base
   # Tags
   acts_as_taggable
   
-  before_post_process :procesar
+  after_post_process :procesar
   #after_commit :procesar
   validates_attachment :xml, :presence => true,
     :content_type => { :content_type => ["text/plain", "text/xml"] },
