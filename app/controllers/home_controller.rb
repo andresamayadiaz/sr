@@ -1,6 +1,7 @@
 # aad mayo 2014 - inicial
 # aad julio 2014 - tags, lista con filtros de emitidos y recibidos, paginado
 # aad marzo 2015 - bug fixes, file upload in heroku, fog gem for paperclip
+require 'libxml'
 
 class HomeController < ApplicationController
   before_filter :authenticate_user!

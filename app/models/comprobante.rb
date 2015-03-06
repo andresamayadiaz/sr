@@ -1,4 +1,5 @@
 require 'open-uri'
+require 'libxml'
 
 class Comprobante < ActiveRecord::Base
   
