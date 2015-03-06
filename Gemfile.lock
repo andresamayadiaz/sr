@@ -201,7 +201,7 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     libxml-ruby (2.8.0)
-    libxslt-ruby (1.1.1)
+    libxslt-ruby (1.1.0)
       libxml-ruby (>= 2.4.0)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
@@ -328,7 +328,7 @@ DEPENDENCIES
   jquery-rails
   kaminari
   libxml-ruby (>= 2.7.0)
-  libxslt-ruby (>= 1.1.1)
+  libxslt-ruby (= 1.1.0)
   mini_magick
   mysql2
   nokogiri (>= 1.6.6)
