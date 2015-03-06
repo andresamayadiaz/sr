@@ -1,5 +1,4 @@
 require 'open-uri'
-require ''
 
 class Comprobante < ActiveRecord::Base
   
