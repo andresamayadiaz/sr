@@ -1,7 +1,7 @@
 # aad mayo 2014
 #require 'comprobantefactory'
 #require 'tfd1'
-require 'libxslt'
+#require 'libxslt'
 
 module COMPROBANTEFACTORY
   
