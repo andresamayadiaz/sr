@@ -2,9 +2,6 @@
 
 module COMPROBANTEFACTORY
   
-  require 'nokogiri'
-  require 'open-uri'
-  require 'libxml'
   #require 'time'
   #require 'base64'
   
