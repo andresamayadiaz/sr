@@ -322,6 +322,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   kaminari
+  libxml-ruby
   libxslt-ruby
   mini_magick
   mysql2

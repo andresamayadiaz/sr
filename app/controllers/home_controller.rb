@@ -1,17 +1,18 @@
 # aad mayo 2014 - inicial
 # aad julio 2014 - tags, lista con filtros de emitidos y recibidos, paginado
+# aad marzo 2015 - bug fixes, file upload in heroku, fog gem for paperclip
 
 class HomeController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_comprobante, only: [:comprobante, :add_tag, :remove_tag, :cbb, :eliminar, :download_xml, :download_pdf]
   before_filter :set_vars, only: [:emitidos, :recibidos, :otros, :alertas, :view_single_notification, :buscar_de_alertas, :upgrade, :downgrade]
   before_filter :set_sort
-
+  
   def download_xml
     send_file @comprobante.xml.path,
             :type => 'text/xml; charset=UTF-8;' 
   end
-
+  
   def download_pdf
     @warnings = @comprobante.notifications.warnings
     @errors = @comprobante.notifications.errors
@@ -251,7 +252,7 @@ class HomeController < ApplicationController
     end
   end
 
- 
+
   private
     def set_vars
       if params[:from] and params[:to]

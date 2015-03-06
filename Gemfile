@@ -20,6 +20,7 @@ gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 # gem "paperclip", "~> 4.1"
 gem 'nokogiri'
 gem 'libxslt-ruby'
+gem 'libxml-ruby'
 gem 'conekta'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
