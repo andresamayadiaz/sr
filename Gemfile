@@ -45,3 +45,5 @@ gem 'acts-as-taggable-on', '>=3.0'
 # QR Code
 gem 'rqrcode-rails3'
 gem 'mini_magick'
+
+gem 'rails_12factor', group: :production
