@@ -158,9 +158,8 @@ class HomeController < ApplicationController
   def upload_comprobante  
     if current_user.comprobantes.count<current_user.plan.max_uploaded
       @comprobante = Comprobante.new
-      @comprobante.xml = params[:file]
-      #logger.debug "PARAMS XML PATH: " + params[:file].to_s
       @comprobante.user = current_user
+      @comprobante.xml = params[:file]
       
       begin
         if @comprobante.save

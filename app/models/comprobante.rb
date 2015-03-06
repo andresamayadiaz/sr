@@ -181,7 +181,6 @@ class Comprobante < ActiveRecord::Base
       
       logger.debug "=================== Comprobante.procesar ==================="
       logger.debug "QUEUED XML URL: " + self.xml.queued_for_write[:original].path rescue "Path didn't exist"
-      logger.debug "XML URL: " + self.xml.url
       logger.debug "=================== /Comprobante.procesar ==================="
       
       begin
@@ -285,8 +284,6 @@ class Comprobante < ActiveRecord::Base
       
       # TODO generar notificacion de comprobante erroneo
       logger.warn "============ Archivo Invalido ============"
-      logger.debug "QUEUED XML URL: " + self.xml.queued_for_write[:original].path rescue "Path didn't exist"
-      logger.debug "XML URL: " + self.xml.url
       logger.warn e.message
       logger.warn e.backtrace.inspect
       logger.warn "============ /Archivo Invalido ============"
