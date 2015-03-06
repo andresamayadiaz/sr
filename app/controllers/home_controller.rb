@@ -3,8 +3,8 @@
 # aad marzo 2015 - bug fixes, file upload in heroku, fog gem for paperclip
 require 'nokogiri'
 require 'open-uri'
-require 'libxml'
-require 'libxslt'
+require 'libxml-ruby'
+require 'libxslt-ruby'
 
 class HomeController < ApplicationController
   before_filter :authenticate_user!
