@@ -2,7 +2,20 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   
   # PaperClip
-  config.paperclip_defaults = {:storage => :fog, :fog_credentials => {:provider => "Local", :local_root => "#{Rails.root}/public"}, :fog_directory => "", :fog_host => "localhost"}
+  Paperclip::Attachment.default_options.update({
+       :path => ":class/:attachment/:id_partition/:filename",
+       :storage => :fog,
+       :fog_credentials => {
+          :provider           => 'Rackspace',
+          :rackspace_region    => :ord,
+          :rackspace_username => ENV["RACKSPACE_USERNAME"],
+          :rackspace_api_key  => ENV["RACKSPACE_APIKEY"],
+          :persistent => false
+       },
+       :fog_directory => 'soyreceptor_dev',
+       :fog_public => true,
+       :fog_host => ENV["RACKSPACE_HOST"]
+  })
   
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development

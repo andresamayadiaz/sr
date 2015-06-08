@@ -23,7 +23,7 @@ class HomeController < ApplicationController
     end
     send_file save_path
   end
- 
+  
   def index
     @perfil = current_user.perfil
     @top_10_clients = Comprobante.top_10_clients(current_user.id)
@@ -39,11 +39,13 @@ class HomeController < ApplicationController
     @errors = @comprobante.notifications.errors
     
     txt = @comprobante.xml_obj.timbre.cadena_original
-    qrcode = RQRCode::QRCode.new(txt, :size => 10, :level => :l, :unit => 10)
-    svg    = RQRCode::Renderers::SVG::render(qrcode)
-    image = MiniMagick::Image.read(svg) { |i| i.format "svg" }
-    image.format "png"
-    image.write(Rails.root.join('public',"#{@comprobante.id.to_s}.png"))
+    
+    @qrcode = RQRCode::QRCode.new(txt, :size => 10, :level => :l, :unit => 10)
+    #@qrcode.save(Rails.root.join('public',"#{@comprobante.id.to_s}.png"))
+    #svg    = RQRCode::Renderers::SVG::render(qrcode)
+    #image = MiniMagick::Image.read(@qrcode.as_png) { |i| i.format "png" }
+    #image.format "png"
+    #image.write(Rails.root.join('public',"#{@comprobante.id.to_s}.png"))
 
     render layout: "comprobante"
     

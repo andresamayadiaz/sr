@@ -168,8 +168,8 @@
   </table>
   <div class="well m-t">
     <div class="row">
-      <div class="col-xs-12">
-        <%= image_tag cbb_url(format: :png, id: @comprobante.id), height: '200', width: '200' %>
+      <div class="col-xs-12" id="applyQR">
+				<%= raw @qrcode.as_html %>
         <br><br>
         <strong>Cadena Original del Complemento de Certificacion:</strong>
         <p style="word-wrap: break-word;">

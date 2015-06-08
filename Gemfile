@@ -43,7 +43,6 @@ gem 'kaminari'
 gem 'acts-as-taggable-on', '>=3.0'
 
 # QR Code
-gem 'rqrcode-rails3'
-gem 'mini_magick'
-
-gem 'rails_12factor', group: :production
+#gem 'rqrcode-rails3'
+gem 'rqrcode', :git => "https://github.com/whomwah/rqrcode.git"
+gem 'mini_magick', :git => "https://github.com/minimagick/minimagick.git"
