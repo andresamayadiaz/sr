@@ -117,38 +117,13 @@
               <a href="<%= alertas_url %>"  >
                 <b class="badge bg-danger pull-right"><%= @unreads_count %></b>
                 <i class="fa fa-bell icon">
-                  <b class="bg-primary dker"></b>
+                  <b class="bg-dark dker"></b>
                 </i>
                 <span>Alertas</span>
               </a>
             </li>
             
-            <li >
-              <a href="#subir">
-                <i class="fa fa-cloud-upload icon">
-                  <b class="bg-dark"></b>
-                </i>
-                <span class="pull-right">
-                  <i class="fa fa-angle-down text"></i>
-                  <i class="fa fa-angle-up text-active"></i>
-                </span>
-                <span>Cargar</span>
-              </a>
-              <ul class="nav lt">
-				<li>
-					<strong>Drag & Drop</strong>
-					<div class="dropfile visible-lg" id="nuevo_comprobanteOLD">
-						<small>Arrastre un Comprobante para Cargar</small>
-					</div>
-				</li>
-				<hr>
-				<li>
-					<strong>O Seleccione un Archivo</strong>
-					<%= form_for(Comprobante.new, :url => upload_comprobante_path, :html => {:multipart => true, :class => 'bs-example form-horizontal', :id => 'new_comprobante'} ) do |f| %>
-					  <%= f.file_field :comprobante %>
-					  <%= f.submit 'Cargar', {:class => 'btn btn-sm btn-primary'} %>
-					<% end %>
-				</li>
+            
 			</ul>
 		</li>
           </ul>
