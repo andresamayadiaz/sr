@@ -36,9 +36,21 @@
               </a>
               <ul class="nav lt">
                 <li >
-                  <a href="<%= emitidos_url %>" >                                                        
+                  <a href="<%= emitidos_url %>?from=<%= Date.today.at_beginning_of_month %>&to=<%= Date.today.at_end_of_month %>" >
                     <i class="fa fa-angle-right"></i>
-                    <span>Todos</span>
+                    <span>Mes Actual</span>
+                  </a>
+                </li>
+                <li >
+                  <a href="<%= emitidos_url %>?from=<%= (Date.today-1.month).at_beginning_of_month %>&to=<%= (Date.today-1.month).at_end_of_month %>" >
+                    <i class="fa fa-angle-right"></i>
+                    <span>Mes Pasado</span>
+                  </a>
+                </li>
+                <li >
+                  <a href="<%= emitidos_url %>?from=<%= Date.today.at_beginning_of_week %>&to=<%= Date.today.at_end_of_week %>" >
+                    <i class="fa fa-angle-right"></i>
+                    <span>Esta Semana</span>
                   </a>
                 </li>
               </ul>
@@ -56,9 +68,21 @@
               </a>
               <ul class="nav lt">
                 <li >
-                  <a href="<%= recibidos_url %>" >                                                        
+                  <a href="<%= recibidos_url %>?from=<%= Date.today.at_beginning_of_month %>&to=<%= Date.today.at_end_of_month %>" >
                     <i class="fa fa-angle-right"></i>
-                    <span>Todos</span>
+                    <span>Mes Actual</span>
+                  </a>
+                </li>
+                <li >
+                  <a href="<%= recibidos_url %>?from=<%= (Date.today-1.month).at_beginning_of_month %>&to=<%= (Date.today-1.month).at_end_of_month %>" >
+                    <i class="fa fa-angle-right"></i>
+                    <span>Mes Pasado</span>
+                  </a>
+                </li>
+                <li >
+                  <a href="<%= recibidos_url %>?from=<%= Date.today.at_beginning_of_week %>&to=<%= Date.today.at_end_of_week %>" >
+                    <i class="fa fa-angle-right"></i>
+                    <span>Esta Semana</span>
                   </a>
                 </li>
               </ul>

@@ -226,8 +226,38 @@ module COMPROBANTEFACTORY
       @totalImpuestosRetenidos
     end
     
+    def detalleImpuestosRetenidos
+      
+      # Impuestos Retenidos
+      @imptos_retenidos = Array.new
+      @doc.root.xpath("//cfdi:Retencion", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).each do |impuesto|
+        
+        i = {:impuesto => impuesto.attribute("impuesto").to_s, :importe => impuesto.attribute("importe").to_s}
+        @imptos_retenidos.push ( i )
+        
+      end
+      
+      return @imptos_retenidos
+      
+    end
+    
     def totalImpuestosTrasladados
       @totalImpuestosTrasladados
+    end
+    
+    def detalleImpuestosTrasladados
+      
+      # Impuestos Trasladados
+      @imptos_trasladados = Array.new
+      @doc.root.xpath("//cfdi:Traslado", 'cfdi' => @doc.collect_namespaces["xmlns:cfdi"]).each do |impuesto|
+        
+        i = {:impuesto => impuesto.attribute("impuesto").to_s, :importe => impuesto.attribute("importe").to_s, :tasa => impuesto.attribute("tasa").to_s}
+        @imptos_trasladados.push ( i )
+        
+      end
+      
+      return @imptos_trasladados
+      
     end
     
     def tipoDeComprobante

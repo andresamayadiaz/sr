@@ -46,7 +46,7 @@ class HomeController < ApplicationController
     #image = MiniMagick::Image.read(@qrcode.as_png) { |i| i.format "png" }
     #image.format "png"
     #image.write(Rails.root.join('public',"#{@comprobante.id.to_s}.png"))
-
+    
     render layout: "comprobante"
     
   end
@@ -101,6 +101,13 @@ class HomeController < ApplicationController
     @emitidos = current_user.comprobantes.joins(:receptor).where("emitido = ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q)
     @emitidos = Sorter.sort_by_fecha(@sort,@emitidos)
     @emitidos = Kaminari.paginate_array(@emitidos).page params[:page]
+  end
+  
+  # emitidos mes actual
+  def emitidos_mes_actual
+    
+    
+    
   end
   
   def recibidos

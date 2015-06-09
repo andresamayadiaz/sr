@@ -100,6 +100,34 @@ class Comprobante < ActiveRecord::Base
       end
       
     end
+    
+    def detalle_retenciones_html
+      
+      @retenciones_html = ""
+      
+      self.xml_obj.detalleImpuestosRetenidos.each do |impto|
+        
+        @retenciones_html + "<p><strong>#{impto[:impuesto]} :</strong>#{number_to_currency(impto[:importe])}</p>"
+        
+      end
+      
+      return @retenciones_html
+      
+    end
+    
+    def detalle_traslados_html
+      
+      @traslados_html = ""
+      
+      self.xml_obj.detalleImpuestosTrasladados.each do |impto|
+        
+        @traslados_html << "<p><strong>#{impto[:impuesto]} (#{impto[:tasa]}%):</strong> $#{impto[:importe]}</p>"
+        
+      end
+      
+      return @traslados_html
+      
+    end
   
   def self.top_10_clients(current_user_id)
     top_10 = []

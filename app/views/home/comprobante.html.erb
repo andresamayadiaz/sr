@@ -141,7 +141,10 @@
         <td align="right"><%= number_to_currency(@comprobante.xml_obj.descuento) %></td>
       </tr>
       <tr>
-        <td colspan="4" class="text-right no-border"><strong>Impuestos Trasladados</strong></td>
+        <td colspan="4" class="text-right no-border">
+					<strong>Impuestos Trasladados</strong>
+					<button class="btn btn-xs btn-info" data-toggle="popover" data-html="true" data-placement="top" data-content="<%= @comprobante.detalle_traslados_html %>" title="" data-original-title='<button type="button" class="close pull-right" data-dismiss="popover">&times;</button>Imptos. Trasladados'><i class="fa fa-plus"></i> Detalle</button>
+				</td>
         <td align="right"><%= number_to_currency(@comprobante.xml_obj.totalImpuestosTrasladados) %></td>
       </tr>
       <!--
@@ -151,7 +154,10 @@
       </tr>
     -->
       <tr>
-        <td colspan="4" class="text-right no-border"><strong>Impuestos Retenidos</strong></td>
+        <td colspan="4" class="text-right no-border">
+					<strong>Impuestos Retenidos</strong>
+					<button class="btn btn-xs btn-info" data-toggle="popover" data-html="true" data-placement="top" data-content="<%= @comprobante.detalle_retenciones_html %>" title="" data-original-title='<button type="button" class="close pull-right" data-dismiss="popover">&times;</button>Imptos. Retenidos'><i class="fa fa-plus"></i> Detalle</button>
+				</td>
         <td align="right"><%= number_to_currency(@comprobante.xml_obj.totalImpuestosRetenidos) %></td>
       </tr>
     <!--
