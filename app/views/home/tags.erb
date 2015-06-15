@@ -50,6 +50,7 @@
         <tr>
           <th width="20"></th>
           <th>UUID, Serie-Folio</th>
+					<th>Emisor (RFC, Razón Social)</th>
           <th>Receptor (RFC, Razón Social)</th>
 		  <th class="text-center">Total</th>
           <th class="th-sortable">Fecha
@@ -68,6 +69,7 @@
 	        <tr>
 	          <td><i class="text-success fa fa-circle"></i></td>
 	          <td><%= e.to_s %></td>
+						<td><%= e.emisor.to_s %></td>
 	          <td><%= e.receptor.to_s %></td>
 	          <td class="text-right"><%= number_to_currency(e.total) %></td>
 	          <td><%= e.fecha %></td>

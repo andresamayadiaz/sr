@@ -107,7 +107,9 @@ class Comprobante < ActiveRecord::Base
       
       self.xml_obj.detalleImpuestosRetenidos.each do |impto|
         
-        @retenciones_html + "<p><strong>#{impto[:impuesto]} :</strong>#{number_to_currency(impto[:importe])}</p>"
+        num = 0
+        num = ActionController::Base.helpers.number_to_currency(impto[:importe], separator: ",", delimiter: ".")
+        @retenciones_html + "<p><strong>#{impto[:impuesto]}:</strong> #{num}</p>"
         
       end
       
@@ -121,7 +123,9 @@ class Comprobante < ActiveRecord::Base
       
       self.xml_obj.detalleImpuestosTrasladados.each do |impto|
         
-        @traslados_html << "<p><strong>#{impto[:impuesto]} (#{impto[:tasa]}%):</strong> $#{impto[:importe]}</p>"
+        num = 0
+        num = ActionController::Base.helpers.number_to_currency(impto[:importe], separator: ",", delimiter: ".")
+        @traslados_html << "<p><strong>#{impto[:impuesto]} (#{impto[:tasa]}%):</strong> #{num}</p>"
         
       end
       
@@ -305,29 +309,29 @@ class Comprobante < ActiveRecord::Base
           end
         end
         
-        generate_notifications
+        self.generate_notifications(self)
     
-    # Archivo No Compatible
-    rescue Exception => e
+      # Archivo No Compatible
+      rescue Exception => e
       
-      # TODO generar notificacion de comprobante erroneo
-      logger.warn "============ Archivo Invalido ============"
-      logger.warn e.message
-      logger.warn e.backtrace.inspect
-      logger.warn "============ /Archivo Invalido ============"
-      return false
+        # TODO generar notificacion de comprobante erroneo
+        logger.warn "============ Archivo Invalido ============"
+        logger.warn e.message
+        logger.warn e.backtrace.inspect
+        logger.warn "============ /Archivo Invalido ============"
+        return false
+      
+      end
       
     end
-      
-    end
-  
-    def generate_notifications
-        c = self
+    
+    def generate_notifications(comp)
+        c = comp
         
         #check if it's already exists
         user_invoices_name = c.user.comprobantes.map(&:xml_file_name)
         dup_invoice = user_invoices_name.select{|i|i==c.xml_file_name}.length rescue 0
-        same_notifications = Notification.where(:comprobante_id=>c.id,:description=>"Already exists")
+        same_notifications = Notification.where(:comprobante_id=>c.id,:description=>"El comprobante ya existe.")
         if dup_invoice>1 && same_notifications.blank?
             Notification.create!(
               :description=>"Already exists",
@@ -342,10 +346,10 @@ class Comprobante < ActiveRecord::Base
         end
         
         if c.recibido 
-          same_notifications = Notification.where(:comprobante_id=>c.id,:description=>"Received invoice RFC not match")
+          same_notifications = Notification.where(:comprobante_id=>c.id,:description=>"RFC de receptor no coincide.")
           if c.receptor.rfc != c.user.rfc && same_notifications.blank?
             Notification.create!(
-              :description=>"Received invoice RFC not match",
+              :description=>"RFC de receptor no coincide.",
               :status=>false,
               :email=>c.user.perfil.try(:emailadicional1),
               :invoice_file_name=>c.xml_file_name,
@@ -356,12 +360,12 @@ class Comprobante < ActiveRecord::Base
             )
           end
         end
-    
+        
         if c.emitido
-          same_notifications = Notification.where(:comprobante_id=>c.id,:description=>"Sent invoice RFC not match")
+          same_notifications = Notification.where(:comprobante_id=>c.id,:description=>"RFC de emisor no coincide.")
           if c.emisor.rfc != c.user.rfc && same_notifications.blank?
             Notification.create!(
-              :description=>"Sent invoice RFC not match",
+              :description=>"RFC de emisor no coincide.",
               :status=>false,
               :email=>c.user.perfil.try(:emailadicional1),
               :invoice_file_name=>c.xml_file_name,
@@ -386,7 +390,7 @@ class Comprobante < ActiveRecord::Base
                 :status=>false,
                 :email=>c.user.perfil.try(:emailadicional1),
                 :invoice_file_name=>c.xml_file_name,
-                :validation=>"Validate XML against XSLT Schema Files",
+                :validation=>"Validacion de estructura contra XSLT.",
                 :category=>category,
                 :comprobante_id=>c.id,
                 :user_id=>c.user.id
@@ -399,11 +403,11 @@ class Comprobante < ActiveRecord::Base
         other_notifications = Notification.where(:comprobante_id=>c.id)
         if other_notifications.blank?
             Notification.create!(
-              :description=>"Success",
+              :description=>"Comprobante correcto.",
               :status=>false,
               :email=>c.user.perfil.try(:emailadicional1),
               :invoice_file_name=>c.xml_file_name,
-              :validation=>"Success notification",
+              :validation=>"Comprobante correcto.",
               :category=>"Success",
               :comprobante_id=>c.id,
               :user_id=>c.user.id

@@ -1,7 +1,7 @@
 class Receptor < ActiveRecord::Base
   
-  belongs_to :comprobante
-
+  belongs_to :comprobante, dependent: :destroy
+  
 =begin  
   validates :rfc, presence: true
 =end
