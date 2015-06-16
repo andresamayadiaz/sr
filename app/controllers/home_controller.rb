@@ -186,6 +186,7 @@ class HomeController < ApplicationController
             @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.xml_obj.moneda), :on => :tags)
           end
           
+          # TODO Validar que realmente se mande llamar a crear las notificaciones y de manera correcta
           @comprobante.delay.generate_notifications(@comprobante)
           
           render :json => @comprobante.xml.url
@@ -201,7 +202,9 @@ class HomeController < ApplicationController
       end
       
     else
-      render :json => {:error => "Upload failed! You have exceeded your plan limit. Consider to <a href='/upgrade' style='text-decoration: underline;font-weight:bold;'>upgrade</a> your plan".html_safe}.to_json, :status => 422
+      
+      render :json => {:error => "Error al cargar comprobante. Se ha excedido el limite de carga. Le sugerimos <a href='/upgrade' style='text-decoration: underline;font-weight:bold;'>aumentar</a> su plan contratado.".html_safe}.to_json, :status => 422
+      
     end
   end
   

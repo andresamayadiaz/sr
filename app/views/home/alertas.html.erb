@@ -3,7 +3,6 @@
       <section class="hbox stretch">
         <!-- .aside -->
         <!-- /.aside -->
-		
         <section id="content">
           <section class="hbox stretch">
             <!-- .aside -->
@@ -102,7 +101,7 @@
                         <% end %>
                         <a href="/vistadealertas?id=<%= a.id %>" class="clear">
                           <small class="pull-right text-muted"><%= time_ago_in_words(a.created_at) %></small>
-                          <strong><%= a.comprobante.to_s rescue '' %></strong> <span><%= number_to_currency(a.comprobante.try(:total))%> MXN</span>
+                          <strong><%= a.comprobante.to_s rescue '' %></strong> <span><%= number_to_currency(a.comprobante.try(:total))%> </span>
 						              <br />
 						              <span><%= a.comprobante.try(:fecha) %></span> - <span><%= a.comprobante.try(:tipoDeComprobante) %></span>
 						              <br />
@@ -132,71 +131,9 @@
               </section>
             </aside>
             <!-- /.aside -->
-            <!-- .aside -->
-            <aside class="bg-white hide b-l" id="email-content">
-              <section class="vbox">
-                <section class="scrollable">
-                  <div class="wrapper b-b b-light">
-                    <a href="#" data-toggle="class" class="pull-left m-r-sm"><i class="fa fa-star-o fa-1x text"></i><i class="fa fa-star text-warning fa-1x text-active"></i></a>
-                    <a href="#email-content, #email-list" data-toggle="class:show,hide" class="pull-right text">
-                      <i class="fa fa-trash-o"></i>
-                    </a>
-                    <h4 class="m-n"> Kickoff meeting</h4>
-                  </div>
-                  <div class="text-sm padder m-t">
-                    <div class="block clearfix m-b">
-                      <a href="#" class="thumb-xs inline"><img src="images/avatar.jpg" class="img-circle"></a> 
-                      <span class="inline m-t-xs">Mika Sokeil
-                      &lt;mica_sokeil@gmail.com&gt; to me</span>
-                      <div class="pull-right inline">May 12 (<em>4 days ago</em>)                         
-                        <div class="btn-group">
-                          <button class="btn btn-default btn-xs" data-toggle="tooltip" data-title="Reply"><i class="fa fa-reply"></i></button>
-                          <button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-                          <ul class="dropdown-menu pull-right">
-                            <li><a href="#"><i class="fa fa-reply"></i> Reply</a></li>
-                            <li><a href="#"><i class="fa fa-signout"></i> Forward</a></li>
-                            <li><a href="#">Add Mika Sokeil to contact list</a></li>
-                            <li><a href="#">Mark as unread</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Delete this message</a></li>
-                            <li><a href="#">Report spam</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="line pull-in"></div>
-                    <p>Mr. Soe</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum ullamcorper sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat. Phasellus at ultricies neque, quis malesuada augue. Donec eleifend condimentum nisl eu consectetur. Integer eleifend, nisl venenatis consequat iaculis, lectus arcu malesuada sem, dapibus porta quam lacus eu neque.</p>
-                    <blockquote>
-                      <em>Morbi nec nunc condimentum, egestas dui nec, fermentum diam. Vivamus vel tincidunt libero, vitae elementum ligula. Nunc placerat purus quam, ac adipiscing arcu rutrum eu. Vestibulum adipiscing ut augue ut auctor. Vestibulum nec lorem imperdiet nibh mollis gravida ut a justo.<br><br>Vestibulum ullamcorper sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat. Phasellus at ultricies neque, quis malesuada augue. Donec eleifend condimentum nisl eu consectetur. Integer eleifend, nisl venenatis consequat iaculis</em>
-                    </blockquote>
-                    <div class="show">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum ullamcorper sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat. Phasellus at ultricies neque, quis malesuada augue. Donec eleifend condimentum nisl eu consectetur. Integer eleifend, nisl venenatis consequat iaculis, lectus arcu malesuada sem, dapibus porta quam lacus eu neque.</p>
-                      <p>Duis non malesuada est, quis congue nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum ullamcorper sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat. Phasellus at ultricies neque, quis malesuada augue. Donec eleifend condimentum nisl eu consectetur. Integer eleifend, nisl venenatis consequat iaculis, lectus arcu malesuada sem, dapibus porta quam lacus eu neque.</p>
-                      <p>Duis non malesuada est, quis congue nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum ullamcorper sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat. Phasellus at ultricies neque, quis malesuada augue. Donec eleifend</p>
-                    </div>
-                    <p>Best Regards<br>Mical</p>
-                  </div>
-                  <div class="padder">
-                    <div class="panel text-sm bg-light">
-                      <div class="panel-body">
-                        Click here to <a href="#">Reply</a> or <a href="#">Forward</a>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </section>
-            </aside>
-            <!-- /.aside -->
           </section>
           <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>
         </section>
-		
-        <aside class="bg-light lter b-l aside-md hide" id="notes">
-          <div class="wrapper">Notification</div>
-        </aside>
       </section>
     </section>
   </section>

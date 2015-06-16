@@ -79,14 +79,17 @@ class User < ActiveRecord::Base
   end
   
   def tag_cloud
+    
     tag_cloud = Array.new
-    self.comprobantes.limit(50).each do |comprobante|
-      comprobante.tag_list.each do |tag|
-        return tag_cloud if tag_cloud.size >= 10
-        tag_cloud.push(tag)
-      end
+    
+    self.comprobantes.tag_counts_on(:tags).limit(10).each do |tag|
+      
+      tag_cloud.push(tag.name)
+      
     end
+    
     return tag_cloud
-  end 
+    
+  end
   
 end
