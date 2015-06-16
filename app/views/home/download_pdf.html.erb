@@ -1,7 +1,7 @@
 <section class="scrollable wrapper">
   <div class="row">
     <div class="col-xs-2">
-      <%= wicked_pdf_image_tag current_user.logo.url(:medium) %>
+      <%= image_tag current_user.logo.url(:medium) %>
     </div>
     <div class="col-xs-6">
       <h4><strong><%= @comprobante.emisor.nombre %></strong></h4>
@@ -122,8 +122,8 @@
 					<%= @comprobante.xml_obj.timbre.cadena_original %>
 				</p>
 			</div>
-      <div clas="col-xs-4">
-				<%= wicked_pdf_image_tag "/#{@comprobante.id.to_s}.png", height: '200', width: '200', style: 'float:right;' %>
+      <div clas="col-xs-4"  id="applyQR">
+				<%= raw @qrcode.as_html %>
       </div>
 		</div>
 	</div>

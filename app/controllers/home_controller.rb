@@ -16,6 +16,11 @@ class HomeController < ApplicationController
   def download_pdf
     @warnings = @comprobante.notifications.warnings
     @errors = @comprobante.notifications.errors
+    
+    txt = @comprobante.xml_obj.timbre.cadena_original
+    @qrcode = RQRCode::QRCode.new(txt, :size => 10, :level => :l, :unit => 10)
+    #@qrcode.save(Rails.root.join('public',"#{@comprobante.id.to_s}.png"))
+    
     pdf = render_to_string :pdf => "PDF_SoyReceptor", :template => "home/download_pdf.html.erb", :encoding => "UTF-8", :layout=>'pdf'
     save_path = Rails.root.join('public',"#{@comprobante.id.to_s}.pdf")
     File.open(save_path, 'wb') do |file|
@@ -53,9 +58,9 @@ class HomeController < ApplicationController
 
   def eliminar
     if @comprobante.destroy
-      redirect_to authenticated_root_url, notice: "Invoice and all of its related info have been deleted"
+      redirect_to authenticated_root_url, notice: "El Comprobantes se ha eliminado."
     else
-      redirect_to authenticated_root_url, error: "Failed to delete invoice"
+      redirect_to authenticated_root_url, error: "Ocurrio un error al eliminar el comprobante."
     end
   end
   
@@ -103,13 +108,6 @@ class HomeController < ApplicationController
     @emitidos = Kaminari.paginate_array(@emitidos).page params[:page]
   end
   
-  # emitidos mes actual
-  def emitidos_mes_actual
-    
-    
-    
-  end
-  
   def recibidos
     
     if params[:q]
@@ -131,9 +129,12 @@ class HomeController < ApplicationController
       @q = '%%'
     end
     
-    @otros = current_user.comprobantes.joins(:receptor).where("emitido = ? AND recibido= ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", false, false, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q) 
+    #@otros = current_user.comprobantes.joins(:receptor).where("emitido = ? AND recibido= ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", false, false, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q) 
+    
+    @otros = current_user.comprobantes.joins(:receptor, :emisor).where("emitido = ? AND recibido= ? AND ( (receptors.rfc LIKE ? OR receptors.nombre LIKE ?) OR  (emisors.rfc LIKE ? OR emisors.nombre LIKE ?) )", false, false, @q, @q, @q, @q)
     @otros = Sorter.sort_by_fecha(@sort,@otros)
     @otros = Kaminari.paginate_array(@otros).page params[:page]
+    
   end
   
   def add_tag
@@ -171,6 +172,10 @@ class HomeController < ApplicationController
       @comprobante.xml = params[:file]
       
       begin
+        
+        logger.debug "Antes del Save"
+        logger.debug "UUID: #{@comprobante.TimbreFiscalDigital.uuid}"
+        
         if @comprobante.save
           
           # Save Default Tags
@@ -178,7 +183,9 @@ class HomeController < ApplicationController
           if !@comprobante.xml_obj.moneda.blank?
             @comprobante.user.tag(@comprobante, :with => @comprobante.tags_from(@comprobante.user).add(@comprobante.xml_obj.moneda), :on => :tags)
           end
-      
+          
+          @comprobante.delay.generate_notifications(@comprobante)
+          
           render :json => @comprobante.xml.url
       
         else
@@ -186,14 +193,16 @@ class HomeController < ApplicationController
           render :json => {:error => "Not Acceptable"}.to_json, :status => 406
       
         end
+        
       rescue => e
           render :json=> {:error => e.message}.to_json, :status => 406
       end
+      
     else
       render :json => {:error => "Upload failed! You have exceeded your plan limit. Consider to <a href='/upgrade' style='text-decoration: underline;font-weight:bold;'>upgrade</a> your plan".html_safe}.to_json, :status => 422
     end
   end
-
+  
   def buscar
     if params[:q]
       @q = '%' + params[:q] + '%'
@@ -205,11 +214,11 @@ class HomeController < ApplicationController
     @buscar = Sorter.sort_by_fecha(@sort,@buscar)
     @buscar = Kaminari.paginate_array(@buscar).page params[:page]
   end
-
+  
   def alertas
     @alertas = Kaminari.paginate_array(@alertas).page(params[:page])
   end
-
+  
   def view_single_notification
     @notification = Notification.find(params[:id])
     if @notification.present?
@@ -249,7 +258,7 @@ class HomeController < ApplicationController
     @new_plan = Plan.find(params[:plan_id])
     if @new_plan.price==0
       current_user.update_attribute('plan_id',params[:plan_id])
-      redirect_to authenticated_root_url, notice: "You are now on Free plan"
+      redirect_to authenticated_root_url, notice: "Tu plan ahora es gratuito."
     else
       if current_user.customer_id.blank?
         render 'new_payment'
@@ -259,8 +268,7 @@ class HomeController < ApplicationController
       end
     end
   end
-
-
+  
   private
     def set_vars
       if params[:from] and params[:to]

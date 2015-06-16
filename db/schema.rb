@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150114014020) do
+ActiveRecord::Schema.define(version: 20150616174409) do
 
   create_table "comprobantes", force: true do |t|
     t.string   "version"

@@ -43,10 +43,10 @@
     </div>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="input-sm form-control" placeholder="Buscar" data-toggle="tooltip" data-placement="top" title="RFC, Razon Social, UUID, ..." name="q" value="<%= params[:q] %>">
-        <span class="input-group-btn">
-          <%= button_tag "Buscar", class: 'btn btn-sm btn-default' %>
-        </span>
+		    <span class="help-block m-b-none">Palabra Clave</span>
+			  <input type="text" class="input-sm form-control" size="30" placeholder="RFC, Razon Social, ..." data-toggle="tooltip" data-placement="top" title="RFC, Razon Social, UUID, ..." name="q" value="<%= params[:q] %>">
+			  <span class="help-block m-b-none">&nbsp;</span>
+			  <%= button_tag "Buscar", class: 'btn btn-sm btn-primary' %>
       </div>
     </div>
 	<% end %>

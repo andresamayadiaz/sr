@@ -1,4 +1,5 @@
 class Notification < ActiveRecord::Base
+  
   belongs_to :comprobante
   belongs_to :user
   
@@ -7,7 +8,6 @@ class Notification < ActiveRecord::Base
   scope :success, -> { where(category: 'Success') }
   
   after_create :send_email
-  
   
   private
   

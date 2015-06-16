@@ -1,15 +1,15 @@
 # aad mayo 2014
 
+require 'nokogiri'
+require 'open-uri'
+require 'xslt'
+#require 'time'
+#require 'base64'
+
+require 'cfdi32/cfdi32'
+require 'timbrefiscaldigital/tfd1'
+
 module COMPROBANTEFACTORY
-  
-  require 'nokogiri'
-  require 'open-uri'
-  require 'xslt'
-  #require 'time'
-  #require 'base64'
-  
-  require 'cfdi32/cfdi32'
-  require 'timbrefiscaldigital/tfd1'
   
   class Emisor
     

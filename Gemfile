@@ -40,7 +40,7 @@ gem 'fog'
 gem 'kaminari'
 
 # Tags
-gem 'acts-as-taggable-on', '>=3.0'
+gem 'acts-as-taggable-on', '~> 3.4' #'>=3.0'
 
 # QR Code
 #gem 'rqrcode-rails3'

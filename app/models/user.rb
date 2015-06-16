@@ -19,6 +19,8 @@ class User < ActiveRecord::Base
   
   validates :rfc, presence: true
   
+  validates_acceptance_of :terms, :allow_nil => false, :accept => true, :on => :create
+  
   has_one :perfil
   has_many :notifications
   belongs_to :plan
@@ -38,7 +40,7 @@ class User < ActiveRecord::Base
       customer = Conekta::Customer.create({
         name: self.name,
         email: self.email,
-        phone: "55-5555-5555",
+        phone: "00-0000-0000",
         cards: [params[:conektaTokenId]]
       })
       subscription = customer.create_subscription({
@@ -61,7 +63,7 @@ class User < ActiveRecord::Base
       customer = Conekta::Customer.create({
         name: self.name,
         email: self.unconfirmed_email,
-        phone: "55-5555-5555",
+        phone: "00-0000-0000",
         cards: [self.conektaTokenId]
       })
       plan = Conekta::Plan.find(self.plan.id)

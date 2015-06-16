@@ -5,7 +5,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <section class="panel panel-default">
-                    <header class="panel-heading font-bold">Top 10 clients of the year</header>
+                    <header class="panel-heading font-bold">Top 10 Clientes en el Año</header>
                     <input type="hidden" id="top_10_clients_data" value="<%= @top_10_clients %>"/>
                     <div class="panel-body">
                       <div id="client-bar"  style="height:240px"></div>
@@ -14,7 +14,7 @@
                 </div>
                 <div class="col-md-12">
                   <section class="panel panel-default">
-                    <header class="panel-heading font-bold">Top 10 suppliers of the year</header>
+                    <header class="panel-heading font-bold">Top 10 Proveedores en el Año</header>
                     <input type="hidden" id="top_10_suppliers_data" value="<%= @top_10_suppliers %>"/>
                     <div class="panel-body">
                       <div id="supplier-bar"  style="height:240px"></div>
@@ -25,7 +25,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <section class="panel panel-default">
-                    <header class="panel-heading font-bold">Invoices Sent Per Month / Invoices Received Per Month of the Year</header>
+                    <header class="panel-heading font-bold">Cantidad de Comprobantes Enviados vs. Comprobantes Recibidos por Mes</header>
                     <div class="panel-body">
                       <div id="flot-chart-1"  style="height:240px"></div>
                     </div>                  
@@ -33,10 +33,244 @@
                 </div>
                 <div class="col-md-12">
                   <section class="panel panel-default">
-                    <header class="panel-heading font-bold">Amount Sent Per Month / Amount Received Per Month of the Year</header>
+                    <header class="panel-heading font-bold">Monto Total Emitido vs. Monto Total Recibido por Mes</header>
                     <div class="panel-body">
                       <div id="flot-chart-2"  style="height:240px"></div>
                     </div>                  
                   </section>
                 </div>
               </div>
+<% content_for :specific_js do %>
+	<script type="text/javascript" charset="utf-8">
+
+	   $(function(){
+
+	  var sent_invoices = <%= raw @sent_invoices %>;
+	  var rec_invoices = <%= raw @rec_invoices %>;
+  
+	  var sent_amount = <%= raw @sent_amount %>;
+	  var rec_amount = <%= raw @rec_amount %>;
+  
+	  if(rec_invoices.length>0) {
+	    $("#flot-chart-1").length && $.plot($("#flot-chart-1"), [{
+	          data: rec_invoices,
+	          label: "Comprobantes Recibidos"
+	      }, {
+	          data: sent_invoices,
+	          label: "Comprobantes Enviados"
+	      }], 
+	      {
+	        series: {
+	            lines: {
+	                show: true,
+	                lineWidth: 1,
+	                fill: false,
+	                fillColor: {
+	                    colors: [{
+	                        opacity: 0.2
+	                    }, {
+	                        opacity: 0.1
+	                    }]
+	                }
+	            },
+	            points: {
+	                show: true
+	            },
+	            shadowSize: 2
+	        },
+	        grid: {
+	            hoverable: true,
+	            clickable: true,
+	            tickColor: "#f0f0f0",
+	            borderWidth: 0
+	        },
+	        colors: ["#dddddd","#89cb4e"],
+	        xaxis: {
+	            ticks: 15,
+	            tickDecimals: 0
+	        },
+	        yaxis: {
+	            ticks: 10,
+	            tickDecimals: 0
+	        },
+	        tooltip: true,
+	        tooltipOpts: {
+	          content: "%y",
+	          defaultTheme: false
+	        }
+	      }
+	    );
+	  }
+
+	  if(rec_amount.length>0){
+	    $("#flot-chart-2").length && $.plot($("#flot-chart-2"), [{
+	          data: rec_amount,
+	          label: "Monto Total Recibido"
+	      }, {
+	          data: sent_amount,
+	          label: "Monto Total Enviado"
+	      }], 
+	      {
+	        series: {
+	            lines: {
+	                show: true,
+	                lineWidth: 1,
+	                fill: false,
+	                fillColor: {
+	                    colors: [{
+	                        opacity: 0.2
+	                    }, {
+	                        opacity: 0.1
+	                    }]
+	                }
+	            },
+	            points: {
+	                show: true
+	            },
+	            shadowSize: 2
+	        },
+	        grid: {
+	            hoverable: true,
+	            clickable: true,
+	            tickColor: "#f0f0f0",
+	            borderWidth: 0
+	        },
+	        colors: ["#dddddd","#89cb4e"],
+	        xaxis: {
+	            ticks: 15,
+	            tickDecimals: 0
+	        },
+	        yaxis: {
+	            ticks: 10,
+	            tickDecimals: 0
+	        },
+	        tooltip: true,
+	        tooltipOpts: {
+	            content: function(label, xval, yval) {
+	              var content = yval.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+	              return content;
+	            },
+	            defaultTheme: false
+	        }
+	      }
+	    );
+	  }
+
+	  // bar
+	  var top_10_clients = <%= raw @top_10_clients %>;
+	  var client_x_axis = [];
+	  var client_data = [];
+	  $.map(top_10_clients,function(val,i) {
+	    ind = parseInt((i+1)*5);
+	    company_name = val[0];
+	    client_x_axis.push([ind,company_name]);
+	    client_data.push([ind,val[1]]);
+	  });
+  
+	  var top_10_suppliers = <%= raw @top_10_suppliers %>;
+	  var supplier_x_axis = [];
+	  var supplier_data = [];
+	  $.map(top_10_suppliers,function(val,i) {
+	    ind = parseInt((i+1)*5);
+	    company_name = val[0];
+	    supplier_x_axis.push([ind,company_name]);
+	    supplier_data.push([ind,val[1]]);
+	  });
+  
+	  var data1 = [
+	    {
+	        label: "Top 10 Clientes en el Año Actual",
+	        data: client_data,
+	        bars: {
+	            show: true,
+	            fill: true,
+	            lineWidth: 1,
+	            order: 1,
+	            fillColor:  "#6783b7"
+	        },
+	        color: "#6783b7"
+	    }
+	  ];
+  
+	  var data2 = [
+	    {
+	        label: "Top 10 Proveedores en el Año Actual",
+	        data: supplier_data,
+	        bars: {
+	            show: true,
+	            fill: true,
+	            lineWidth: 1,
+	            order: 1,
+	            fillColor:  "#6783b7"
+	        },
+	        color: "#6783b7"
+	    }
+	  ];
+
+	  if(client_data.length>0){
+	    $("#client-bar").length && $.plot($("#client-bar"), data1, {
+	      xaxis: {
+	         ticks: client_x_axis
+	      },
+	      yaxis: {
+          
+	      },
+	      grid: {
+	          hoverable: true,
+	          clickable: false,
+	          borderWidth: 0
+	      },
+	      legend: {
+	          labelBoxBorderColor: "none",
+	          position: "left"
+	      },
+	      series: {
+	          shadowSize: 1
+	      },
+	      tooltip: true,
+	      tooltipOpts: {
+	          content: function(label, xval, yval) {
+	            var content = yval.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+	            return content;
+	          },
+	          defaultTheme: false
+	      }
+	    });
+	  }
+
+	  if(supplier_data.length>0){
+	    $("#supplier-bar").length && $.plot($("#supplier-bar"), data2, {
+	      xaxis: {
+	         ticks: supplier_x_axis 
+	      },
+	      yaxis: {
+          
+	      },
+	      grid: {
+	          hoverable: true,
+	          clickable: false,
+	          borderWidth: 0
+	      },
+	      legend: {
+	          labelBoxBorderColor: "none",
+	          position: "left"
+	      },
+	      series: {
+	          shadowSize: 1
+	      },
+	      tooltip: true,
+	      tooltipOpts: {
+	          content: function(label, xval, yval) {
+	            var content = yval.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+	            return content;
+	          },
+	          defaultTheme: false
+	      }
+	    });
+	  }
+
+	});
+   
+  </script>
+
+<% end %>

@@ -88,13 +88,22 @@ class Comprobante < ActiveRecord::Base
     
     def xml_obj
       
-      # TODO validar si ya cargo el objeto no volverlo a cargar cada que se mande llamar
-      
-      doc = Nokogiri::XML( open(self.xml.url).read() )
-      @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
+      if @version.nil?
+        
+        # Aun no se ha cargado el comprobante
+        #logger.debug "Primera carga del comprobante"
+        logger.debug "Comprobante URL: #{self.xml.url}"
+        @doc = Nokogiri::XML( open(self.xml.url).read() )
+        @version = @doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
+        
+      else
+        
+        #logger.debug "Comprobante previamente cargado"
+        
+      end
       
       if @version == '3.2'
-        return COMPROBANTEFACTORY::Cfdi32.new(doc)
+        return COMPROBANTEFACTORY::Cfdi32.new(@doc)
       else
         raise "Version #{@version} No Soportada"
       end
@@ -208,7 +217,7 @@ class Comprobante < ActiveRecord::Base
         # Se esta haciendo un save a un comprobante previamente guardado,
         # probablemente se este actualizando el tags_list
         logger.debug "Comprobante Already Exists!"
-        return
+        return true
       end
       
       logger.debug "=================== Comprobante.procesar ==================="
@@ -216,16 +225,16 @@ class Comprobante < ActiveRecord::Base
       logger.debug "=================== /Comprobante.procesar ==================="
       
       begin
-        doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
+        @doc = Nokogiri::XML( File.read(self.xml.queued_for_write[:original].path) )
         
         #doc = Nokogiri::XML( open(self.xml.url).read() )
-        @version = doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
+        @version = @doc.root.xpath("//cfdi:Comprobante").attribute("version").to_s
         
         logger.debug "====>>>>>> PAST NOKOGIRI READ VERSION: " + @version
         
         if @version == '3.2'
           
-          file = COMPROBANTEFACTORY::Cfdi32.new(doc)
+          file = COMPROBANTEFACTORY::Cfdi32.new(@doc)
           
           # Atributos Requeridos de un CFDv3.2
           self.version = file.version
@@ -309,8 +318,6 @@ class Comprobante < ActiveRecord::Base
           end
         end
         
-        self.generate_notifications(self)
-    
       # Archivo No Compatible
       rescue Exception => e
       
@@ -328,21 +335,20 @@ class Comprobante < ActiveRecord::Base
     def generate_notifications(comp)
         c = comp
         
-        #check if it's already exists
-        user_invoices_name = c.user.comprobantes.map(&:xml_file_name)
-        dup_invoice = user_invoices_name.select{|i|i==c.xml_file_name}.length rescue 0
-        same_notifications = Notification.where(:comprobante_id=>c.id,:description=>"El comprobante ya existe.")
-        if dup_invoice>1 && same_notifications.blank?
-            Notification.create!(
-              :description=>"Already exists",
-              :status=>false,
-              :email=>c.user.perfil.try(:emailadicional1),
-              :invoice_file_name=>c.xml_file_name,
-              :validation=>"Already exists",
-              :category=>"Warning",
-              :comprobante_id=>c.id,
-              :user_id=>c.user.id
-            )
+        # check if already exists
+        if c.user.comprobantes.joins(:TimbreFiscalDigital).where('timbre_fiscal_digitals.uuid = ?', c.TimbreFiscalDigital.uuid).count > 1
+          
+          Notification.create!(
+            :description=>"El Comprobante ya se habia cargado previamente al portal SoyReceptor",
+            :status=>false,
+            :email=>c.user.perfil.try(:emailadicional1),
+            :invoice_file_name=>c.xml_file_name,
+            :validation=>"Comprobante ya existente",
+            :category=>"Warning",
+            :comprobante_id=>c.id,
+            :user_id=>c.user.id
+          )
+          
         end
         
         if c.recibido 
@@ -385,6 +391,9 @@ class Comprobante < ActiveRecord::Base
             category = "Warning" if !file_validate_schema.first.error? and file_validate_schema.first.warning?
             same_notifications = Notification.where(:comprobante_id=>c.id,:description=>file_validate_schema.first.to_s)
             if same_notifications.blank?
+              
+              # TODO: crear un notification por cada error o incluirlo en un gran resumen en description
+              
               Notification.create!(
                 :description=>file_validate_schema.first.to_s,
                 :status=>false,
@@ -398,10 +407,11 @@ class Comprobante < ActiveRecord::Base
             end
           end
         end
-       
-        #generate success notification and send email"
+        
+        #generate success notification and send email
         other_notifications = Notification.where(:comprobante_id=>c.id)
         if other_notifications.blank?
+          
             Notification.create!(
               :description=>"Comprobante correcto.",
               :status=>false,
