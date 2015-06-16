@@ -19,14 +19,16 @@ class HomeController < ApplicationController
     
     txt = @comprobante.xml_obj.timbre.cadena_original
     @qrcode = RQRCode::QRCode.new(txt, :size => 10, :level => :l, :unit => 10)
-    #@qrcode.save(Rails.root.join('public',"#{@comprobante.id.to_s}.png"))
     
-    pdf = render_to_string :pdf => "PDF_SoyReceptor", :template => "home/download_pdf.html.erb", :encoding => "UTF-8", :layout=>'pdf'
-    save_path = Rails.root.join('public',"#{@comprobante.id.to_s}.pdf")
-    File.open(save_path, 'wb') do |file|
-      file << pdf
-    end
-    send_file save_path
+    #pdf = render_to_string :pdf => "PDF_SoyReceptor", :template => "home/download_pdf.html.erb", :encoding => "UTF-8", :layout=>'pdf'
+    #save_path = Rails.root.join('public',"#{@comprobante.id.to_s}.pdf")
+    #File.open(save_path, 'wb') do |file|
+    #  file << pdf
+    #end
+    #send_file save_path
+    
+    render pdf: "#{@comprobante.TimbreFiscalDigital.uuid}", :template => "home/download_pdf.html.erb", :encoding => "UTF-8", :layout=>'pdf'
+    
   end
   
   def index

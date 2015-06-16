@@ -3,9 +3,9 @@
   <button class="btn btn-sm btn-info dropdown-toggle pull-right" data-toggle="dropdown">Acciones <span class="caret"></span></button>
   <ul class="dropdown-menu pull-right">
     <li><a onClick="window.print();" href="javascript:void(0);">Imprimir</a></li>
-    <li><%= link_to 'Descargar XML', @comprobante.xml.url(:original, false) %></li>
-    <li><a href="/comprobante/pdf/<%= @comprobante.id %>">Generar PDF</a></li>
-    <li><a href="<%= eliminar_url(:id=>@comprobante.id) %>" class='btn-warning' data-confirm="Are you sure?">Eliminar</a></li>
+    <li><%= link_to 'Descargar XML', @comprobante.xml.url(:original, false), :target => "_blank" %></li>
+    <li><a href="/comprobante/pdf/<%= @comprobante.id %>" target="_blank">Generar PDF</a></li>
+    <li><a href="<%= eliminar_url(:id=>@comprobante.id) %>" class='btn-warning' data-confirm="¿Estas Seguro?">Eliminar</a></li>
   </ul>
   <p>Comprobante <%= @comprobante.to_s %></p>
 </header>
