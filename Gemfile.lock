@@ -327,6 +327,7 @@ DEPENDENCIES
   devise
   figaro!
   fog
+  i18n
   jbuilder (~> 2.0)
   jquery-rails
   kaminari

@@ -122,7 +122,8 @@
       <div class="col-sm-4 hidden-xs">
       	<small class="text-muted inline m-t-sm m-b-sm"><%= page_entries_info @emitidos %></small>
       </div>
-      <div class="col-sm-4 text-center">        
+      <div class="col-sm-4 text-center">
+				<%= link_to 'Exportar a XLS', :from => "#{params[:from]}", :to => "#{params[:to]}", :q => "#{params[:q]}", :format => :xls %>    
       </div>
       <div class="col-sm-4 text-right text-center-xs">
 		<%= paginate @emitidos %>

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<ss:Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <ss:Styles>
+      <ss:Style ss:ID="1">
+          <ss:Font ss:Bold="1"/>
+      </ss:Style>
+	  <ss:Style ss:ID="s23" ss:Name="Currency">
+	     <NumberFormat ss:Format="_(&quot;$&quot;* #,##0.00_);_(&quot;$&quot;* \(#,##0.00\);_(&quot;$&quot;* &quot;-&quot;??_);_(@_)"/>
+	  </ss:Style>
+  </ss:Styles>
+  <ss:Worksheet ss:Name="Sheet1">
+    <ss:Table>
+      <ss:Row ss:StyleID="1">
+        <ss:Cell><ss:Data ss:Type="String">Serie</ss:Data></ss:Cell>
+        <ss:Cell><ss:Data ss:Type="String">Folio</ss:Data></ss:Cell>
+        <ss:Cell><ss:Data ss:Type="String">Fecha</ss:Data></ss:Cell>
+        <ss:Cell><ss:Data ss:Type="String">Version</ss:Data></Cell>
+				<ss:Cell><ss:Data ss:Type="String">Forma de Pago</ss:Data></ss:Cell>
+				<ss:Cell><ss:Data ss:Type="String">No. Certificado</ss:Data></ss:Cell>
+				<ss:Cell><ss:Data ss:Type="String">SubTotal</ss:Data></ss:Cell>
+				<ss:Cell><ss:Data ss:Type="String">Total</ss:Data></ss:Cell>
+				<ss:Cell><ss:Data ss:Type="String">Tipo De Comprobante</Data></ss:Cell>
+				<ss:Cell><ss:Data ss:Type="String">Metodo De Pago</ss:Data></ss:Cell>
+				<ss:Cell><ss:Data ss:Type="String">RFC Emisor</ss:Data></ss:Cell>
+				<ss:Cell><ss:Data ss:Type="String">Razon Social Emisor</ss:Data></ss:Cell>
+				<ss:Cell><ss:Data ss:Type="String">RFC Receptor</ss:Data></ss:Cell>
+				<ss:Cell><ss:Data ss:Type="String">Razon Social Receptor</ss:Data></ss:Cell>
+      </ss:Row>
+    <% @emitidos.each do |emitido| %>
+      <ss:Row>
+        <ss:Cell><ss:Data ss:Type="String"><%= emitido.serie %></ss:Data></ss:Cell>
+        <ss:Cell><Data ss:Type="String"><%= emitido.folio %></ss:Data></ss:Cell>
+        <ss:Cell><Data ss:Type="String"><%= emitido.fecha %></ss:Data></ss:Cell>
+        <ss:Cell><Data ss:Type="String"><%= emitido.version %></ss:Data></ss:Cell>
+				<ss:Cell><Data ss:Type="String"><%= emitido.formaDePago %></ss:Data></ss:Cell>
+				<ss:Cell><Data ss:Type="String"><%= emitido.noCertificado %></ss:Data></ss:Cell>
+				<ss:Cell ss:StyleID="s23"><Data ss:Type="Number"><%= emitido.subTotal %></ss:Data></ss:Cell>
+				<ss:Cell ss:StyleID="s23"><Data ss:Type="Number"><%= emitido.total %></ss:Data></ss:Cell>
+				<ss:Cell><Data ss:Type="String"><%= emitido.tipoDeComprobante %></Data></ss:Cell>
+				<ss:Cell><Data ss:Type="String"><%= emitido.metodoDePago %></ss:Data></ss:Cell>
+				<ss:Cell><Data ss:Type="String"><%= emitido.emisor.rfc %></ss:Data></ss:Cell>
+				<ss:Cell><Data ss:Type="String"><%= emitido.emisor.nombre %></ss:Data></ss:Cell>
+				<ss:Cell><Data ss:Type="String"><%= emitido.receptor.rfc %></ss:Data></ss:Cell>
+				<ss:Cell><Data ss:Type="String"><%= emitido.receptor.nombre %></ss:Data></ss:Cell>
+      </ss:Row>
+    <% end %>
+    </ss:Table>
+  </ss:Worksheet>
+</ss:Workbook>

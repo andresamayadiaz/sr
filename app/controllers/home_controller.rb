@@ -107,7 +107,22 @@ class HomeController < ApplicationController
     
     @emitidos = current_user.comprobantes.joins(:receptor).where("emitido = ? AND fecha BETWEEN ? AND ? AND (receptors.rfc LIKE ? OR receptors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q)
     @emitidos = Sorter.sort_by_fecha(@sort,@emitidos)
-    @emitidos = Kaminari.paginate_array(@emitidos).page params[:page]
+    
+    respond_to do |format|
+      
+      format.html { 
+        
+        @emitidos = Kaminari.paginate_array(@emitidos).page params[:page] 
+        
+      }
+      format.xls { 
+        
+        response.header["Content-Disposition"] = "attachment; filename=Emitidos_SoyReceptor.xls" 
+        
+      }
+      
+    end
+    
   end
   
   def recibidos
@@ -120,7 +135,22 @@ class HomeController < ApplicationController
     
     @recibidos = current_user.comprobantes.joins(:emisor).where("recibido = ? AND fecha BETWEEN ? AND ? AND (emisors.rfc LIKE ? OR emisors.nombre LIKE ?)", true, @from + ' 00:00:00', @to + ' 23:59:59', @q, @q)
     @recibidos = Sorter.sort_by_fecha(@sort,@recibidos)
-    @recibidos = Kaminari.paginate_array(@recibidos).page params[:page]
+    
+    respond_to do |format|
+      
+      format.html { 
+        
+        @recibidos = Kaminari.paginate_array(@recibidos).page params[:page] 
+        
+      }
+      format.xls { 
+        
+        response.header["Content-Disposition"] = "attachment; filename=Recibidos_SoyReceptor.xls" 
+        
+      }
+      
+    end
+    
   end
   
   def otros

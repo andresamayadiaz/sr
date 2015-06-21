@@ -46,3 +46,6 @@ gem 'acts-as-taggable-on', '~> 3.4' #'>=3.0'
 #gem 'rqrcode-rails3'
 gem 'rqrcode', :git => "https://github.com/whomwah/rqrcode.git"
 gem 'mini_magick', :git => "https://github.com/minimagick/minimagick.git"
+
+# i18n
+gem 'i18n'
