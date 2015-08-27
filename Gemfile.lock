@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/eventmachine/eventmachine.git
+  revision: a1fa52a7ca840b59bdf1d849ff47eb72cb7ca73c
+  specs:
+    eventmachine (1.0.8)
+
+GIT
   remote: git://github.com/laserlemon/figaro.git
   revision: ae200e44e8f2770ce1037753865985b02ee0048f
   specs:
@@ -111,7 +117,6 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
     erubis (2.7.0)
-    eventmachine (1.0.3)
     excon (0.44.3)
     execjs (2.1.0)
     faraday (0.9.0)
@@ -325,6 +330,7 @@ DEPENDENCIES
   daemons
   delayed_job_active_record
   devise
+  eventmachine!
   figaro!
   fog
   i18n
@@ -350,3 +356,6 @@ DEPENDENCIES
   ultrahook
   wicked_pdf
   wkhtmltopdf-binary
+
+BUNDLED WITH
+   1.10.5

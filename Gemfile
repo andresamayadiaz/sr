@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.5'
+ruby '2.2.2'
 gem 'rails', '4.1.8'
 gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
@@ -49,3 +49,6 @@ gem 'mini_magick', :git => "https://github.com/minimagick/minimagick.git"
 
 # i18n
 gem 'i18n'
+
+# eventmachine
+gem 'eventmachine', github: "eventmachine/eventmachine"
